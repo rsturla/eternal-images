@@ -69,7 +69,7 @@ jobs:
         with:
           context: lumina/.
           file: lumina/Containerfile
-          push: false
+          push: true
           tags: ${{ env.TAGS_CONCAT }}
           build-args: |
             BASE_TAG=${{ matrix.fedora-version }}
@@ -144,7 +144,7 @@ jobs:
         with:
           context: lumina/.
           file: lumina/Containerfile
-          push: false
+          push: true
           tags: ${{ env.TAGS_CONCAT }}
           build-args: |
             BASE_TAG=${{ matrix.fedora-version }}-nvidia${{ matrix.nvidia-version }}
