@@ -143,7 +143,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: lumina/.
-          file: lumina/Containerfile.nvidia
+          file: lumina/Containerfile
           push: false
           tags: ${{ env.TAGS_CONCAT }}
           build-args: |
