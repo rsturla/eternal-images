@@ -91,7 +91,7 @@ jobs:
     env:
       TAGS: ""
       TAGS_CONCAT: ""
-      IMAGE_NAME: eternal-linux/lumina-nvidia
+      IMAGE_NAME: eternal-linux/lumina
     steps:
       - name: Checkout
         uses: actions/checkout@v3
