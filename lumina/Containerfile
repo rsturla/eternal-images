@@ -1,5 +1,6 @@
 ARG BASE_IMAGE=ghcr.io/rsturla/eternal-linux/main/silverblue
 ARG BASE_TAG=38
+ARG FEDORA_VERSION=${BASE_TAG}
 
 FROM ${BASE_IMAGE}:${BASE_TAG}
 
@@ -16,6 +17,35 @@ RUN rpm-ostree install \
   gnome-shell-extension-gsconnect \
   nautilus-gsconnect \
   yaru-theme \
+  gnome-tweaks \
   && \
   rm -rf /tmp/* /var/* && \
+  ostree container commit
+
+# Install virt-manager
+RUN rpm-ostree install \
+  libvirt \
+  virt-manager \
+  && \
+  rm -rf /tmp/* /var/* && \
+  ostree container commit
+
+# Install LXC/LXD
+RUN wget https://copr.fedorainfracloud.org/coprs/ganto/lxc4/repo/fedora-${FEDORA_VERSION}/ganto-lxc4-fedora-${FEDORA_VERSION}.repo -O /etc/yum.repos.d/ganto-lxc4-fedora-${FEDORA_VERSION}.repo && \
+  rpm-ostree install \
+  lxc \
+  lxd \
+  && \
+  rm -rf /tmp/* /var/* && \
+  ostree container commit
+
+# Install OpenVPN3
+RUN wget https://copr.fedorainfracloud.org/coprs/dsommers/openvpn3/repo/fedora-$(rpm -E %fedora)/dsommers-openvpn3-fedora-$(rpm -E %fedora).repo -O /etc/yum.repos.d/dsommers-openvpn3-fedora-$(rpm -E %fedora).repo && \
+  rpm-ostree install \
+  openvpn3 \
+  kmod-ovpn-dco \
+  && \
+  rm -rf /etc/yum.repos.d/dsommers-openvpn3-fedora-$(rpm -E %fedora).repo \
+  && \
+  rm -rf /var/* /tmp/* && \
   ostree container commit
