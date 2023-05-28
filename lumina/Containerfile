@@ -5,6 +5,7 @@ ARG FEDORA_VERSION=${BASE_TAG}
 FROM ${BASE_IMAGE}:${BASE_TAG}
 
 COPY files/etc /etc
+COPY files/usr /usr
 
 RUN rpm-ostree override remove \
   gnome-tour \
