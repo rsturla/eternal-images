@@ -25,7 +25,7 @@ RUN rpm-ostree install \
   ostree container commit
 
 # Configure dconf
-RUN systemctl umask dconf-update.service && \
+RUN systemctl unmask dconf-update.service && \
   systemctl enable dconf-update.service \
   && \
   rm -rf /tmp/* /var/* && \
