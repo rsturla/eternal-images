@@ -1,0 +1,21 @@
+ARG BASE_IMAGE=ghcr.io/rsturla/eternal-linux/main/silverblue
+ARG BASE_TAG=38
+
+FROM ${BASE_IMAGE}:${BASE_TAG}
+
+RUN rpm-ostree override remove \
+  gnome-tour \
+  && \
+  rm -rf /tmp/* /var/* && \
+  ostree container commit
+
+RUN rpm-ostree install \
+  gnome-shell-extension-appindicator \
+  gnome-shell-extension-dash-to-dock \
+  gnome-shell-extension-blur-my-shell \
+  gnome-shell-extension-gsconnect \
+  nautilus-gsconnect \
+  yaru-theme \
+  && \
+  rm -rf /tmp/* /var/* && \
+  ostree container commit
