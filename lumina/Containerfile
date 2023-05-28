@@ -24,6 +24,13 @@ RUN rpm-ostree install \
   rm -rf /tmp/* /var/* && \
   ostree container commit
 
+# Configure dconf
+RUN systemctl umask dconf-update.service && \
+  systemctl enable dconf-update.service \
+  && \
+  rm -rf /tmp/* /var/* && \
+  ostree container commit
+
 # Install virt-manager
 RUN rpm-ostree install \
   libvirt \
