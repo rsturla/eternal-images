@@ -1,0 +1,150 @@
+name: Build Images
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+env:
+  IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
+
+jobs:
+  build-lumina:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        fedora-version: [37, 38]
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+    env:
+      TAGS: ""
+      TAGS_CONCAT: ""
+      IMAGE_NAME: eternal-linux/lumina
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Generate Image Metadata
+        if: github.event_name != 'pull_request'
+        shell: bash
+        run: |
+          TAGS=()
+
+          TAGS+=("${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.fedora-version }}")
+          TAGS+=("${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:$(git rev-parse --short HEAD)-${{ matrix.fedora-version }}")
+
+          echo "TAGS=${TAGS[*]}" >> $GITHUB_ENV
+          echo "TAGS_CONCAT=$(IFS=, ; echo "${TAGS[*]}")" >> $GITHUB_ENV
+
+      - name: Generate Image Metadata (Pull Request)
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          TAGS=()
+
+          TAGS+=("${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:pr${{ github.event.number }}-${{ matrix.fedora-version }}")
+          TAGS+=("${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:pr${{ github.event.number }}-$(git rev-parse --short HEAD)-${{ matrix.fedora-version }}")
+
+          echo "TAGS=${TAGS[*]}" >> $GITHUB_ENV
+          echo "TAGS_CONCAT=$(IFS=, ; echo "${TAGS[*]}")" >> $GITHUB_ENV
+
+      - name: Login to GHCR
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build Image
+        id: build
+        uses: docker/build-push-action@v4
+        with:
+          context: lumina/.
+          file: lumina/Containerfile
+          push: true
+          tags: ${{ env.TAGS_CONCAT }}
+          build-args: |
+            BASE_TAG=${{ matrix.fedora-version }}
+
+
+  build-lumina-nvidia:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        fedora-version: [37, 38]
+        nvidia-version: [530]
+        include:
+          - nvidia-version: 530
+            nvidia-is-stable: true
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+    env:
+      TAGS: ""
+      TAGS_CONCAT: ""
+      IMAGE_NAME: eternal-linux/lumina
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Generate Image Metadata
+        if: github.event_name != 'pull_request'
+        shell: bash
+        run: |
+          TAGS=()
+
+          TAGS+=("${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.fedora-version }}-nvidia${{ matrix.nvidia-version }}")
+          TAGS+=("${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:$(git rev-parse --short HEAD)-${{ matrix.fedora-version }}-nvidia${{ matrix.nvidia-version }}")
+          if ${{ matrix.nvidia-is-stable }}; then
+            TAGS+=("${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.fedora-version }}-nvidia")
+            TAGS+=("${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:$(git rev-parse --short HEAD)-${{ matrix.fedora-version }}-nvidia")
+          fi
+
+          echo "TAGS=${TAGS[*]}" >> $GITHUB_ENV
+          echo "TAGS_CONCAT=$(IFS=, ; echo "${TAGS[*]}")" >> $GITHUB_ENV
+
+      - name: Generate Image Metadata (Pull Request)
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          TAGS=()
+
+          TAGS+=("${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:pr${{ github.event.number }}-${{ matrix.fedora-version }}-nvidia${{ matrix.nvidia-version }}")
+          TAGS+=("${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:pr${{ github.event.number }}-$(git rev-parse --short HEAD)-${{ matrix.fedora-version }}-nvidia${{ matrix.nvidia-version }}")
+          if ${{ matrix.nvidia-is-stable }}; then
+            TAGS+=("${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:pr${{ github.event.number }}-${{ matrix.fedora-version }}-nvidia")
+            TAGS+=("${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:pr${{ github.event.number }}-$(git rev-parse --short HEAD)-${{ matrix.fedora-version }}-nvidia")
+          fi
+
+          echo "TAGS=${TAGS[*]}" >> $GITHUB_ENV
+          echo "TAGS_CONCAT=$(IFS=, ; echo "${TAGS[*]}")" >> $GITHUB_ENV
+
+      - name: Login to GHCR
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build Image
+        id: build
+        uses: docker/build-push-action@v4
+        with:
+          context: lumina/.
+          file: lumina/Containerfile
+          push: true
+          tags: ${{ env.TAGS_CONCAT }}
+          build-args: |
+            BASE_TAG=${{ matrix.fedora-version }}-nvidia${{ matrix.nvidia-version }}

@@ -1,0 +1,50 @@
+ARG BASE_IMAGE=ghcr.io/rsturla/eternal-linux/main/silverblue
+ARG BASE_TAG=38
+ARG FEDORA_VERSION=${BASE_TAG}
+
+FROM ${BASE_IMAGE}:${BASE_TAG}
+
+COPY files/etc /etc
+COPY files/usr /usr
+
+RUN rpm-ostree override remove \
+  gnome-tour \
+  && \
+  rm -rf /tmp/* /var/* && \
+  ostree container commit
+
+RUN rpm-ostree install \
+  gnome-shell-extension-appindicator \
+  gnome-shell-extension-dash-to-dock \
+  gnome-shell-extension-blur-my-shell \
+  gnome-shell-extension-gsconnect \
+  nautilus-gsconnect \
+  yaru-theme \
+  gnome-tweaks \
+  && \
+  rm -rf /tmp/* /var/* && \
+  ostree container commit
+
+# Configure dconf
+RUN systemctl unmask dconf-update.service && \
+  systemctl enable dconf-update.service \
+  && \
+  rm -rf /tmp/* /var/* && \
+  ostree container commit
+
+# Install virt-manager
+RUN rpm-ostree install \
+  libvirt \
+  virt-manager \
+  && \
+  rm -rf /tmp/* /var/* && \
+  ostree container commit
+
+# Install LXC/LXD
+RUN wget https://copr.fedorainfracloud.org/coprs/ganto/lxc4/repo/fedora-${FEDORA_VERSION}/ganto-lxc4-fedora-${FEDORA_VERSION}.repo -O /etc/yum.repos.d/ganto-lxc4-fedora-${FEDORA_VERSION}.repo && \
+  rpm-ostree install \
+  lxc \
+  lxd \
+  && \
+  rm -rf /tmp/* /var/* && \
+  ostree container commit
