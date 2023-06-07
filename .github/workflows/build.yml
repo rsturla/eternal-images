@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        fedora-version: [37, 38]
+        fedora-version: [38]
     permissions:
       contents: read
       packages: write
