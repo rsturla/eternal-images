@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        fedora-version: [37, 38]
+        fedora-version: [38]
     permissions:
       contents: read
       packages: write
@@ -82,7 +82,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        fedora-version: [37, 38]
+        fedora-version: [38]
         nvidia-version: [530]
         include:
           - nvidia-version: 530
