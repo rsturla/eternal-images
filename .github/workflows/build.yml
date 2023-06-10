@@ -7,6 +7,9 @@ on:
   pull_request:
     branches:
       - main
+  schedule:
+    - cron: "0 6/12 * * *" # 6am & 6pm every day
+  workflow_dispatch:
 
 env:
   IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
