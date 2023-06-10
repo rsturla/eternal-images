@@ -7,6 +7,16 @@ FROM ${BASE_IMAGE}:${BASE_TAG}
 COPY files/etc /etc
 COPY files/usr /usr
 
+# Install ublue-os GNOME Software
+RUN wget https://copr.fedorainfracloud.org/coprs/ublue-os/gnome-software/repo/fedora-${FEDORA_VERSION}/ublue-os-gnome-software-fedora-${FEDORA_VERSION}.repo -O /etc/yum.repos.d/ublue-os-gnome-software.repo && \
+  rpm-ostree override replace --experimental --from repo=copr:copr.fedorainfracloud.org:ublue-os:gnome-software \
+    gnome-software \
+    gnome-software-rpm-ostree \
+  && \
+  rm /etc/yum.repos.d/ublue-os-gnome-software.repo && \
+  rm -rf /tmp/* /var/* && \
+  ostree container commit
+
 RUN rpm-ostree override remove \
     gnome-tour \
   && \
@@ -47,15 +57,5 @@ RUN wget https://copr.fedorainfracloud.org/coprs/ganto/lxc4/repo/fedora-${FEDORA
     lxd \
   && \
   rm /etc/yum.repos.d/ganto-lxc4.repo && \
-  rm -rf /tmp/* /var/* && \
-  ostree container commit
-
-# Install ublue-os GNOME Software
-RUN wget https://copr.fedorainfracloud.org/coprs/ublue-os/gnome-software/repo/fedora-${FEDORA_VERSION}/ublue-os-gnome-software-fedora-${FEDORA_VERSION}.repo -O /etc/yum.repos.d/ublue-os-gnome-software.repo && \
-  rpm-ostree override replace --experimental --from repo=copr:copr.fedorainfracloud.org:ublue-os:gnome-software \
-    gnome-software \
-    gnome-software-rpm-ostree \
-  && \
-  rm /etc/yum.repos.d/ublue-os-gnome-software.repo && \
   rm -rf /tmp/* /var/* && \
   ostree container commit
