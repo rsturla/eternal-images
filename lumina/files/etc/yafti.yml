@@ -1,0 +1,142 @@
+title: Welcome to Lumina!
+properties:
+  mode: "run-on-change"
+screens:
+  first-screen:
+    source: yafti.screen.title
+    values:
+      title: "Welcome to Lumina"
+      icon: "/usr/share/icons/hicolor/scalable/apps/org.gnome.Settings.svg"
+      description: |
+        Pick some apps to get started
+  consent-modify-flatpaks:
+    source: yafti.screen.consent
+    values:
+      title: Install Apps
+      condition:
+        run: flatpak remotes --system | grep fedora
+      description: |
+        WARNING: This will modify your Flatpaks if you are rebasing! If you do not want to do this exit the installer.
+      actions:
+        - run: /usr/lib/fedora-third-party/fedora-third-party-opt-out
+        - run: /usr/bin/fedora-third-party disable
+        - run: flatpak remote-delete fedora --force
+        - run: flatpak remove --system --noninteractive --all
+        - run: flatpak remote-add --system --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+        - run: flatpak remote-modify --system flathub --no-filter --title="Flathub (System)"
+        - run: flatpak remote-add --if-not-exists --user flathub https://flathub.org/repo/flathub.flatpakrepo
+  applications:
+    source: yafti.screen.package
+    values:
+      title: Install Apps
+      show_terminal: true
+      package_manager: yafti.plugin.flatpak
+      groups:
+        Core:
+          description: GNOME Apps
+          default: true
+          packages:
+          - Calculator:
+              package: org.gnome.Calculator
+              system: true
+              user: false
+          - Calendar:
+              package: org.gnome.Calendar
+              system: true
+              user: false
+          - Characters:
+              package: org.gnome.Characters
+              system: true
+              user: false
+          - Clocks:
+              package: org.gnome.clocks
+              system: true
+              user: false
+          - Contacts:
+              package: org.gnome.Contacts
+              system: true
+              user: false
+          - Document Viewer:
+              package: org.gnome.Evince
+              system: true
+              user: false
+          - Fonts:
+              package: org.gnome.font-viewer
+              system: true
+              user: false
+          - Loupe:
+              package: org.gnome.Loupe
+              system: true
+              user: false
+          - Maps:
+              package: org.gnome.Maps
+              system: true
+              user: false
+          - Music:
+              package: org.gnome.Music
+              system: true
+              user: false
+          - Nautilus Preview:
+              package: org.gnome.NautilusPreviewer
+              system: true
+              user: false
+          - Snapshot:
+              package: org.gnome.Snapshot
+              system: true
+              user: false
+          - Text Editor:
+              package: org.gnome.TextEditor
+              system: true
+              user: false
+          - Videos:
+              package: org.gnome.Totem
+              system: true
+              user: false
+          - Weather:
+              package: org.gnome.Weather
+              system: true
+              user: false
+          - Web:
+              package: org.gnome.Epiphany
+              system: true
+              user: false
+        Utilities:
+          description: Potentially useful apps for advanced users
+          default: false
+          packages:
+          - Boxes:
+              package: org.gnome.Boxes
+              system: false
+              user: true
+          - Connections:
+              package: org.gnome.Connections
+              system: false
+              user: true
+          - Disk Usage Analyzer:
+              package: org.gnome.baobab
+              system: false
+              user: true
+          - Extension Manager:
+              package: com.mattjakeman.ExtensionManager
+              system: false
+              user: true
+          - Flatseal:
+              package: com.github.tchx84.Flatseal
+              system: false
+              user: true
+          - Logs:
+              package: org.gnome.Logs
+              system: false
+              user: true
+  final-screen:
+    source: yafti.screen.title
+    values:
+      title: "All done!"
+      icon: "/path/to/icon"
+      links:
+        - "Install More Apps":
+            run: /usr/bin/gnome-software
+        - "GitHub":
+            run: /usr/bin/xdg-open https://github.com/rsturla/eternal-images
+      description: |
+        Thanks for using Lumina! You can now close this window and start using your new system.
