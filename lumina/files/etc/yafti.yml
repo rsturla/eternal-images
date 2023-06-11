@@ -35,7 +35,6 @@ screens:
           default: true
           packages:
             - Backup: org.gnome.DejaDup
-            - Blackbox Terminal: com.raggesilver.BlackBox
             - Calculator: org.gnome.Calculator
             - Calendar: org.gnome.Calendar
             - Characters: org.gnome.Characters
@@ -49,7 +48,6 @@ screens:
             - Logs: org.gnome.Logs
             - Maps: org.gnome.Maps
             - Nautilus Preview: org.gnome.NautilusPreviewer
-            - Syncthing: com.github.zocker_160.SyncThingy
             - Text Editor: org.gnome.TextEditor
             - Weather: org.gnome.Weather
             - Disk Usage Analyzer: org.gnome.baobab
@@ -65,7 +63,6 @@ screens:
             - GNOME Web: org.gnome.Epiphany
             - Google Chrome: com.google.Chrome
             - Microsoft Edge: com.microsoft.Edge
-            - Opera: com.opera.Opera
         Gaming:
           description: "Rock and Stone!"
           default: false
