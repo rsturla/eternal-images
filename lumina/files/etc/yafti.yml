@@ -22,8 +22,6 @@ screens:
         - run: /usr/bin/fedora-third-party disable
         - run: flatpak remote-delete fedora --force
         - run: flatpak remove --system --noninteractive --all
-        - run: flatpak remote-add --system --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-        - run: flatpak remote-modify --system flathub --no-filter --title="Flathub (System)"
         - run: flatpak remote-add --if-not-exists --user flathub https://flathub.org/repo/flathub.flatpakrepo
   applications:
     source: yafti.screen.package
@@ -33,101 +31,57 @@ screens:
       package_manager: yafti.plugin.flatpak
       groups:
         Core:
-          description: GNOME Apps
+          description: Core Applications
           default: true
           packages:
-          - Calculator:
-              package: org.gnome.Calculator
-              system: true
-              user: false
-          - Calendar:
-              package: org.gnome.Calendar
-              system: true
-              user: false
-          - Characters:
-              package: org.gnome.Characters
-              system: true
-              user: false
-          - Clocks:
-              package: org.gnome.clocks
-              system: true
-              user: false
-          - Contacts:
-              package: org.gnome.Contacts
-              system: true
-              user: false
-          - Document Viewer:
-              package: org.gnome.Evince
-              system: true
-              user: false
-          - Fonts:
-              package: org.gnome.font-viewer
-              system: true
-              user: false
-          - Loupe:
-              package: org.gnome.Loupe
-              system: true
-              user: false
-          - Maps:
-              package: org.gnome.Maps
-              system: true
-              user: false
-          - Music:
-              package: org.gnome.Music
-              system: true
-              user: false
-          - Nautilus Preview:
-              package: org.gnome.NautilusPreviewer
-              system: true
-              user: false
-          - Snapshot:
-              package: org.gnome.Snapshot
-              system: true
-              user: false
-          - Text Editor:
-              package: org.gnome.TextEditor
-              system: true
-              user: false
-          - Videos:
-              package: org.gnome.Totem
-              system: true
-              user: false
-          - Weather:
-              package: org.gnome.Weather
-              system: true
-              user: false
-          - Web:
-              package: org.gnome.Epiphany
-              system: true
-              user: false
-        Utilities:
-          description: Potentially useful apps for advanced users
+            - Backup: org.gnome.DejaDup
+            - Blackbox Terminal: com.raggesilver.BlackBox
+            - Calculator: org.gnome.Calculator
+            - Calendar: org.gnome.Calendar
+            - Characters: org.gnome.Characters
+            - Connections: org.gnome.Connections
+            - Contacts: org.gnome.Contacts
+            - Document Viewer: org.gnome.Evince
+            - Extensions Manager: com.mattjakeman.ExtensionManager
+            - Fedora Media Writer: org.fedoraproject.MediaWriter
+            - Mozilla Firefox: org.mozilla.firefox
+            - Flatseal Permissions Manager: com.github.tchx84.Flatseal
+            - Logs: org.gnome.Logs
+            - Maps: org.gnome.Maps
+            - Nautilus Preview: org.gnome.NautilusPreviewer
+            - Syncthing: com.github.zocker_160.SyncThingy
+            - Text Editor: org.gnome.TextEditor
+            - Weather: org.gnome.Weather
+            - Disk Usage Analyzer: org.gnome.baobab
+            - Clocks: org.gnome.clocks
+            - Picture Viewer: org.gnome.eog
+            - Font Viewer: org.gnome.font-viewer
+            - Font Downloader: org.gustavoperedo.FontDownloader
+        Web Browsers:
+          description: Additional browsers to complement Firefox
           default: false
           packages:
-          - Boxes:
-              package: org.gnome.Boxes
-              system: false
-              user: true
-          - Connections:
-              package: org.gnome.Connections
-              system: false
-              user: true
-          - Disk Usage Analyzer:
-              package: org.gnome.baobab
-              system: false
-              user: true
-          - Extension Manager:
-              package: com.mattjakeman.ExtensionManager
-              system: false
-              user: true
-          - Flatseal:
-              package: com.github.tchx84.Flatseal
-              system: false
-              user: true
-          - Logs:
-              package: org.gnome.Logs
-              system: false
-              user: true
+            - Brave: com.brave.Browser
+            - GNOME Web: org.gnome.Epiphany
+            - Google Chrome: com.google.Chrome
+            - Microsoft Edge: com.microsoft.Edge
+            - Opera: com.opera.Opera
+        Gaming:
+          description: "Rock and Stone!"
+          default: false
+          packages:
+            - Bottles: com.usebottles.bottles
+            - Steam: com.valvesoftware.Steam
+        Office:
+          description: Bow to Capitalism
+          default: false
+          packages:
+            - LibreOffice: org.libreoffice.LibreOffice
+            - Obsidian: md.obsidian.Obsidian
+            - OnlyOffice: org.onlyoffice.desktopeditors
+            - Slack: com.slack.Slack
+            - Standard Notes: org.standardnotes.standardnotes
+            - Thunderbird Email: org.mozilla.Thunderbird
   final-screen:
     source: yafti.screen.title
     values:
