@@ -19,7 +19,14 @@ RUN wget https://copr.fedorainfracloud.org/coprs/ublue-os/gnome-software/repo/fe
 
 RUN rpm-ostree override remove \
     gnome-tour \
+    gnome-terminal \
+    gnome-terminal-nautilus \
   && \
+  rm -rf /tmp/* /var/* && \
+  ostree container commit
+
+RUN rpm-ostree install python3-pip && \
+  pip install --prefix=/usr yafti && \
   rm -rf /tmp/* /var/* && \
   ostree container commit
 
@@ -31,6 +38,7 @@ RUN rpm-ostree install \
     nautilus-gsconnect \
     yaru-theme \
     gnome-tweaks \
+    gnome-console \
   && \
   rm -rf /tmp/* /var/* && \
   ostree container commit
