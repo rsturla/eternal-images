@@ -83,7 +83,7 @@ jobs:
     strategy:
       matrix:
         fedora-version: [38]
-        nvidia-version: [530]
+        nvidia-version: [530, 535]
         include:
           - nvidia-version: 530
             nvidia-is-stable: true
@@ -107,7 +107,7 @@ jobs:
 
           TAGS+=("${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.fedora-version }}-nvidia${{ matrix.nvidia-version }}")
           TAGS+=("${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:$(git rev-parse --short HEAD)-${{ matrix.fedora-version }}-nvidia${{ matrix.nvidia-version }}")
-          if ${{ matrix.nvidia-is-stable }}; then
+          if [[ "${{ matrix.nvidia-is-stable }}" == "true"]]; then
             TAGS+=("${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.fedora-version }}-nvidia")
             TAGS+=("${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:$(git rev-parse --short HEAD)-${{ matrix.fedora-version }}-nvidia")
           fi
@@ -123,7 +123,7 @@ jobs:
 
           TAGS+=("${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:pr${{ github.event.number }}-${{ matrix.fedora-version }}-nvidia${{ matrix.nvidia-version }}")
           TAGS+=("${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:pr${{ github.event.number }}-$(git rev-parse --short HEAD)-${{ matrix.fedora-version }}-nvidia${{ matrix.nvidia-version }}")
-          if ${{ matrix.nvidia-is-stable }}; then
+          if [[ "${{ matrix.nvidia-is-stable }}" == "true"]]; then
             TAGS+=("${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:pr${{ github.event.number }}-${{ matrix.fedora-version }}-nvidia")
             TAGS+=("${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:pr${{ github.event.number }}-$(git rev-parse --short HEAD)-${{ matrix.fedora-version }}-nvidia")
           fi
