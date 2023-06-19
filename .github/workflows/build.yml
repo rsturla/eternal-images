@@ -18,6 +18,7 @@ jobs:
   build-lumina:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         fedora-version: [38]
     permissions:
@@ -81,6 +82,7 @@ jobs:
   build-lumina-nvidia:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         fedora-version: [38]
         nvidia-version: [530, 535]
