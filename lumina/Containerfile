@@ -18,7 +18,8 @@ RUN wget https://copr.fedorainfracloud.org/coprs/ublue-os/gnome-software/repo/fe
   ostree container commit
 
 # Configure Just
-RUN echo "!include /usr/share/eternal/lumina.just" >> /usr/share/eternal/justfile
+RUN echo "!include /usr/share/eternal/lumina.just" >> /usr/share/eternal/justfile && \
+  echo "!include /usr/share/eternal/lumina-setup.just" >> /usr/share/eternal/justfile
 
 RUN rpm-ostree install python3-pip && \
   pip install --prefix=/usr yafti && \
@@ -69,4 +70,19 @@ RUN wget https://github.com/loft-sh/devpod/releases/latest/download/DevPod_linux
   install -c -m 0755 /tmp/devpod /usr/bin \
   && \
   rm -rf /tmp/* /var/* && \
+  ostree container commit
+
+# Install Docker
+RUN rpm-ostree install \
+  docker-ce \
+  docker-ce-cli \
+  containerd.io \
+  docker-buildx-plugin \
+  docker-compose-plugin \
+  && \
+  rm -f /etc/yum.repos.d/docker-ce.repo \
+  && \
+  systemctl enable docker.service \
+  && \
+  rm -rf /var/* /tmp/* && \
   ostree container commit
