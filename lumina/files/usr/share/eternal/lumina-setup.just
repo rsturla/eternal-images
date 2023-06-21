@@ -3,4 +3,4 @@ setup:
 
 setup-docker:
   @echo "Adding user to docker group..."
-  usermod -aG docker $(USER)
+  @bash -c "sudo usermod -aG docker $(whoami)"
