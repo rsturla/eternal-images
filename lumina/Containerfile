@@ -61,3 +61,12 @@ RUN wget https://copr.fedorainfracloud.org/coprs/ganto/lxc4/repo/fedora-${FEDORA
   rm /etc/yum.repos.d/ganto-lxc4.repo && \
   rm -rf /tmp/* /var/* && \
   ostree container commit
+
+# Install DevPod
+RUN wget https://github.com/loft-sh/devpod/releases/latest/download/DevPod_linux_x86_64.rpm -O /tmp/devpod.rpm && \
+  rpm-ostree install /tmp/devpod.rpm && \
+  wget https://github.com/loft-sh/devpod/releases/latest/download/devpod-linux-amd64 -O /tmp/devpod-cli && \
+  install -c -m 0755 /tmp/devpod-cli /usr/bin \
+  && \
+  rm -rf /tmp/* /var/* && \
+  ostree container commit
