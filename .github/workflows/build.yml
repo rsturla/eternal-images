@@ -87,7 +87,7 @@ jobs:
         fedora-version: [38]
         nvidia-version: [530, 535]
         include:
-          - nvidia-version: 530
+          - nvidia-version: 535
             nvidia-is-stable: true
     permissions:
       contents: read
