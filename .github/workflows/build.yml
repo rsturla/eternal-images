@@ -85,7 +85,7 @@ jobs:
       fail-fast: false
       matrix:
         fedora-version: [38]
-        nvidia-version: [530, 535]
+        nvidia-version: [535]
         include:
           - nvidia-version: 535
             nvidia-is-stable: true
