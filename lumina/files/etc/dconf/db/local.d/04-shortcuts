@@ -9,10 +9,10 @@ name='gnome-terminal'
 
 [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1]
 binding='<Control><Alt>u'
-command='gnome-terminal -- distrobox enter ubuntu'
-name='gnome-terminal Distrobox Ubuntu'
+command='flatpak run com.raggesilver.BlackBox --command "distrobox enter ubuntu"'
+name='blackbox ubuntu'
 
 [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2]
 binding='<Control><Alt>f'
-command='gnome-terminal -- distrobox enter fedora'
-name='gnome-terminal Distrobox Fedora'
+command='flatpak run com.raggesilver.BlackBox --command "distrobox enter fedora"'
+name='blackbox fedora'
