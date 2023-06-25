@@ -1,0 +1,4 @@
+[com/raggesilver/BlackBox]
+command-as-login-shell=true
+theme-dark='Dracula'
+style-preference=2
