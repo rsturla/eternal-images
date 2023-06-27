@@ -18,6 +18,8 @@ num-workspaces='10'
 allow-updates=false
 download-updates=false
 download-updates-notify=false
+enable-repos-dialog=false
+prompt-for-nonfree=false
 
 [org/gtk/gtk4/settings/file-chooser]
 sort-directories-first=true
