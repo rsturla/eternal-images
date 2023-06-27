@@ -1,0 +1,4 @@
+[org.gnome.shell.extensions.vertical-workspaces]
+show-ws-preview-bg=true
+show-bg-in-overview=true
+fix-ubuntu-dock=true
