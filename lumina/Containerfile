@@ -101,5 +101,7 @@ RUN sudo wget https://copr.fedorainfracloud.org/coprs/dsommers/openvpn3/repo/fed
   rpm-ostree install \
     openvpn3-client \
   && \
+  mkdir -p /var/lib/openvpn3/configs \
+  && \
   rm -rf /tmp/* /var/* && \
   ostree container commit
