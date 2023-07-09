@@ -86,3 +86,11 @@ RUN rpm-ostree install \
   && \
   rm -rf /var/* /tmp/* && \
   ostree container commit
+
+# Install OpenVPN3
+RUN sudo wget https://copr.fedorainfracloud.org/coprs/dsommers/openvpn3/repo/fedora-$(rpm -E %fedora)/dsommers-openvpn3-fedora-$(rpm -E %fedora).repo -O /etc/yum.repos.d/dsommers-openvpn3-fedora-.repo && \
+  rpm-ostree install \
+    openvpn3-client \
+  && \
+  rm -rf /tmp/* /var/* && \
+  ostree container commit
