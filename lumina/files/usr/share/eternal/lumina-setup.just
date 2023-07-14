@@ -1,11 +1,11 @@
 setup:
-  @just --unstable docker-setup
-  @just --unstable distrobox-setup
+  @just --unstable setup-docker
+  @just --unstable setup-distrobox
 
-docker-setup:
+setup-docker:
   @echo "Adding user to docker group..."
   @bash -c "sudo usermod -aG docker $(whoami)"
 
-distrobox-setup:
+setup-distrobox:
   @echo "Creating default Distrobox containers"
   distrobox assemble create --file /etc/distrobox/distrobox.ini
