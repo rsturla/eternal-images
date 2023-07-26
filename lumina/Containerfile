@@ -53,6 +53,8 @@ RUN systemctl unmask dconf-update.service && \
 RUN rpm-ostree install \
     code \
   && \
+  rm -f /etc/yum.repos.d/vscode.repo \
+  && \
   rm -rf /tmp/* /var/* && \
   ostree container commit
 
