@@ -80,3 +80,13 @@ RUN wget https://github.com/loft-sh/devpod/releases/latest/download/DevPod_linux
   && \
   rm -rf /tmp/* /var/* && \
   ostree container commit
+
+# Install additional CLI apps
+COPY --from=cgr.dev/chainguard/ko:latest /usr/bin/ko /usr/bin/ko
+COPY --from=cgr.dev/chainguard/kubectl:latest /usr/bin/kubectl /usr/bin/kubectl
+RUN curl -Lo ./kind "https://github.com/kubernetes-sigs/kind/releases/latest/download/kind-$(uname)-amd64" && \
+  chmod +x ./kind && \
+  install -c -m 0755 ./kind /usr/bin/kind \
+  && \
+  rm -rf /tmp/* /var/* && \
+  ostree container commit
