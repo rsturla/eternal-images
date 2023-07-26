@@ -49,6 +49,15 @@ RUN systemctl unmask dconf-update.service && \
   rm -rf /tmp/* /var/* && \
   ostree container commit
 
+# Install Visual Studio Code
+RUN rpm-ostree install \
+    code \
+  && \
+  rm -f /etc/yum.repos.d/vscode.repo \
+  && \
+  rm -rf /tmp/* /var/* && \
+  ostree container commit
+
 # Install virt-manager
 RUN rpm-ostree install \
     libvirt \
