@@ -7,18 +7,6 @@ FROM ${BASE_IMAGE}:${BASE_TAG}
 COPY files/etc /etc
 COPY files/usr /usr
 
-# Install Google Chrome to /opt before moving to /usr
-RUN mkdir /var/opt && \
-  rpm-ostree install \
-    google-chrome-stable \
-  && \
-  mv /var/opt/google /usr/lib/google && \
-  # Update /usr/share/gnome-control-center/default-apps/google-chrome.xml to point to /usr/opt/google/chrome/google-chrome
-  sed -i 's|/opt/google/chrome/google-chrome|/usr/opt/google/chrome/google-chrome|g' /usr/share/gnome-control-center/default-apps/google-chrome.xml && \
-  rm -rf /tmp/* /var/* && \
-  ostree container commit
-
-
 # Configure Just
 RUN echo "!include /usr/share/eternal/lumina.just" >> /usr/share/eternal/justfile && \
   echo "!include /usr/share/eternal/lumina-setup.just" >> /usr/share/eternal/justfile
@@ -30,6 +18,19 @@ RUN wget https://copr.fedorainfracloud.org/coprs/ublue-os/gnome-software/repo/fe
     gnome-software-rpm-ostree \
   && \
   rm /etc/yum.repos.d/ublue-os-gnome-software.repo \
+  && \
+  rm -rf /tmp/* /var/* && \
+  ostree container commit
+
+# Install Google Chrome
+RUN mkdir /var/opt && \
+  rpm-ostree install \
+    google-chrome-stable \
+  && \
+  mv /var/opt/google /usr/lib/google && \
+  sed -i 's|/opt/google/chrome/google-chrome|/usr/opt/google/chrome/google-chrome|g' /usr/share/gnome-control-center/default-apps/google-chrome.xml \
+  && \
+  rm -f /etc/yum.repos.d/google-chrome.repo \
   && \
   rm -rf /tmp/* /var/* && \
   ostree container commit
