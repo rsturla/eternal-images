@@ -1,0 +1,9 @@
+[Unit]
+Description=Install System Flatpaks on boot
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/flatpak-system-install
+
+[Install]
+WantedBy=multi-user.target
