@@ -6,9 +6,14 @@ if [ ! -f /etc/flatpak/firstboot-fedora-removal-complete ]; then
   touch /etc/flatpak/firstboot-fedora-removal-complete
 fi
 
+to_install_hash=$(cat /etc/flatpak/install | md5sum | awk '{print $1}')
+installed_hash=$(cat /etc/flatpak/installed | md5sum | awk '{print $1}')
+
 # Compare hashes of /etc/flatpak/install and /etc/flatpak/installed
 # If they are different, then we need to update the installed flatpaks
-if ! cmp -s /etc/flatpak/install /etc/flatpak/installed; then
-  flatpak update --system --noninteractive
+if [ "$to_install_hash" != "$installed_hash" ]; then
+  cat /etc/flatpak/install | while read line; do
+    flatpak install --system --noninteractive --no-pull flathub $line
+  done
   cp /etc/flatpak/install /etc/flatpak/installed
 fi
