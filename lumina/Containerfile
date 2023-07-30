@@ -22,19 +22,6 @@ RUN wget https://copr.fedorainfracloud.org/coprs/ublue-os/gnome-software/repo/fe
   rm -rf /tmp/* /var/* && \
   ostree container commit
 
-# Cache system Flatpaks
-RUN mkdir -p /var/tmp && chmod -R 1777 /var/tmp && \
-  flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo \
-  && \
-  flatpak install --system --noninteractive --no-deploy flathub \
-    $(cat /etc/flatpak/install) \
-  && \
-  systemctl unmask flatpak-system-install.service && \
-  systemctl enable flatpak-system-install.service \
-  && \
-  rm -rf /tmp/* /var/* && \
-  ostree container commit
-
 # Install YAFTI and dependencies
 RUN rpm-ostree install python3-pip && \
   pip install --prefix=/usr yafti \
@@ -111,4 +98,17 @@ RUN curl -Lo ./kind "https://github.com/kubernetes-sigs/kind/releases/latest/dow
   install -c -m 0755 ./kind /usr/bin/kind \
   && \
   rm -rf /tmp/* /var/* && \
+  ostree container commit
+
+# Cache system Flatpaks
+RUN mkdir -p /var/tmp && chmod -R 1777 /var/tmp && \
+  flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo \
+  && \
+  flatpak install --system --noninteractive --no-deploy flathub \
+    $(cat /etc/flatpak/install) \
+  && \
+  systemctl unmask flatpak-system-install.service && \
+  systemctl enable flatpak-system-install.service \
+  && \
+  rm -rf /tmp/* && \
   ostree container commit
