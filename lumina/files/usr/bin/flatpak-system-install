@@ -1,5 +1,14 @@
 #!/bin/bash
 
-cat /etc/flatpaks | while read line; do
-  flatpak install --system --noninteractive --no-pull flathub $line
-done && mv /etc/flatpak/install /etc/flatpak/installed
+# Remove Fedora flatpaks if `/etc/flatpak/firstboot-fedora-removal-complete` does not exist
+if [ ! -f /etc/flatpak/firstboot-fedora-removal-complete ]; then
+  flatpak remove --system --noninteractive --all
+  touch /etc/flatpak/firstboot-fedora-removal-complete
+fi
+
+# Compare hashes of /etc/flatpak/install and /etc/flatpak/installed
+# If they are different, then we need to update the installed flatpaks
+if ! cmp -s /etc/flatpak/install /etc/flatpak/installed; then
+  flatpak update --system --noninteractive
+  cp /etc/flatpak/install /etc/flatpak/installed
+fi
