@@ -7,29 +7,29 @@ FROM ${BASE_IMAGE}:${BASE_TAG}
 COPY files/etc /etc
 COPY files/usr /usr
 
+# Configure Just
+RUN echo "!include /usr/share/eternal/lumina.just" >> /usr/share/eternal/justfile && \
+  echo "!include /usr/share/eternal/lumina-setup.just" >> /usr/share/eternal/justfile
+
 # Install ublue-os GNOME Software
 RUN wget https://copr.fedorainfracloud.org/coprs/ublue-os/gnome-software/repo/fedora-${FEDORA_VERSION}/ublue-os-gnome-software-fedora-${FEDORA_VERSION}.repo -O /etc/yum.repos.d/ublue-os-gnome-software.repo && \
   rpm-ostree override replace --experimental --from repo=copr:copr.fedorainfracloud.org:ublue-os:gnome-software \
     gnome-software \
     gnome-software-rpm-ostree \
   && \
-  rm /etc/yum.repos.d/ublue-os-gnome-software.repo && \
-  rm -rf /tmp/* /var/* && \
-  ostree container commit
-
-RUN rpm-ostree override remove \
-    gnome-tour \
-    gnome-terminal \
-    gnome-terminal-nautilus \
+  rm /etc/yum.repos.d/ublue-os-gnome-software.repo \
   && \
   rm -rf /tmp/* /var/* && \
   ostree container commit
 
+# Install YAFTI and dependencies
 RUN rpm-ostree install python3-pip && \
-  pip install --prefix=/usr yafti && \
+  pip install --prefix=/usr yafti \
+  && \
   rm -rf /tmp/* /var/* && \
   ostree container commit
 
+# Configure Gnome Shell Extensions and themes
 RUN rpm-ostree install \
     gnome-shell-extension-appindicator \
     gnome-shell-extension-dash-to-dock \
@@ -38,14 +38,22 @@ RUN rpm-ostree install \
     nautilus-gsconnect \
     yaru-theme \
     gnome-tweaks \
-    gnome-console \
   && \
   rm -rf /tmp/* /var/* && \
   ostree container commit
 
-# Configure dconf
+# Configure dconf automated updates
 RUN systemctl unmask dconf-update.service && \
   systemctl enable dconf-update.service \
+  && \
+  rm -rf /tmp/* /var/* && \
+  ostree container commit
+
+# Install Visual Studio Code
+RUN rpm-ostree install \
+    code \
+  && \
+  rm -f /etc/yum.repos.d/vscode.repo \
   && \
   rm -rf /tmp/* /var/* && \
   ostree container commit
@@ -58,12 +66,36 @@ RUN rpm-ostree install \
   rm -rf /tmp/* /var/* && \
   ostree container commit
 
-# Install LXC/LXD
-RUN wget https://copr.fedorainfracloud.org/coprs/ganto/lxc4/repo/fedora-${FEDORA_VERSION}/ganto-lxc4-fedora-${FEDORA_VERSION}.repo -O /etc/yum.repos.d/ganto-lxc4.repo && \
-  rpm-ostree install \
-    lxc \
-    lxd \
+# Install Docker
+RUN rpm-ostree install \
+  docker-ce \
+  docker-ce-cli \
+  containerd.io \
+  docker-buildx-plugin \
+  docker-compose-plugin \
   && \
-  rm /etc/yum.repos.d/ganto-lxc4.repo && \
+  rm -f /etc/yum.repos.d/docker-ce.repo \
+  && \
+  systemctl enable docker.service \
+  && \
+  rm -rf /var/* /tmp/* && \
+  ostree container commit
+
+# Install DevPod
+RUN wget https://github.com/loft-sh/devpod/releases/latest/download/DevPod_linux_x86_64.rpm -O /tmp/devpod.rpm && \
+  rpm-ostree install /tmp/devpod.rpm && \
+  wget https://github.com/loft-sh/devpod/releases/latest/download/devpod-linux-amd64 -O /tmp/devpod && \
+  install -c -m 0755 /tmp/devpod /usr/bin \
+  && \
+  rm -rf /tmp/* /var/* && \
+  ostree container commit
+
+# Install additional CLI apps
+COPY --from=cgr.dev/chainguard/ko:latest /usr/bin/ko /usr/bin/ko
+COPY --from=cgr.dev/chainguard/kubectl:latest /usr/bin/kubectl /usr/bin/kubectl
+RUN curl -Lo ./kind "https://github.com/kubernetes-sigs/kind/releases/latest/download/kind-$(uname)-amd64" && \
+  chmod +x ./kind && \
+  install -c -m 0755 ./kind /usr/bin/kind \
+  && \
   rm -rf /tmp/* /var/* && \
   ostree container commit

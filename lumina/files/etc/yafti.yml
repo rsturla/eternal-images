@@ -48,6 +48,7 @@ screens:
             - Logs: org.gnome.Logs
             - Maps: org.gnome.Maps
             - Nautilus Preview: org.gnome.NautilusPreviewer
+            - Terminal: com.raggesilver.BlackBox
             - Text Editor: org.gnome.TextEditor
             - Weather: org.gnome.Weather
             - Disk Usage Analyzer: org.gnome.baobab
