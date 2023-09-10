@@ -4,6 +4,8 @@ on:
   schedule:
     # Run every day at 12:00 UTC
     - cron: 0 12 * * *
+  pull_request:
+    branches: main
 
 jobs:
   pull_request:
