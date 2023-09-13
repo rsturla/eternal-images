@@ -42,13 +42,6 @@ RUN rpm-ostree install \
   rm -rf /tmp/* /var/* && \
   ostree container commit
 
-# Configure dconf automated updates
-RUN systemctl unmask dconf-update.service && \
-  systemctl enable dconf-update.service \
-  && \
-  rm -rf /tmp/* /var/* && \
-  ostree container commit
-
 # Install Visual Studio Code
 RUN rpm-ostree install \
     code \
