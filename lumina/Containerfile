@@ -99,3 +99,14 @@ RUN curl -Lo ./kind "https://github.com/kubernetes-sigs/kind/releases/latest/dow
   && \
   rm -rf /tmp/* /var/* && \
   ostree container commit
+
+# Install JetBrains Toolbox
+RUN mkdir /tmp/jetbrains && \
+  curl -Lo /tmp/jetbrains/releases.json "https://data.services.jetbrains.com/products/releases?code=TBA&latest=true&type=release" && \
+  DOWNLOAD_LINK=$(jq -r '.TBA[0].downloads.linux.link' /tmp/jetbrains/releases.json) && \
+  curl -Lo /tmp/jetbrains-toolbox.tar.gz "${DOWNLOAD_LINK}" && \
+  tar -xzf /tmp/jetbrains-toolbox.tar.gz -C /tmp && \
+  install -c -m 0755 /tmp/jetbrains-toolbox-*/jetbrains-toolbox /usr/bin/jetbrains-toolbox \
+  && \
+  rm -rf /tmp/* /var/* && \
+  ostree container commit
