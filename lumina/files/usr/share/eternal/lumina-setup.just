@@ -24,8 +24,6 @@ setup-vscode:
   @echo "Installing VSCode Extensions..."
   @code --install-extension ms-vscode-remote.vscode-remote-extensionpack
 
-# Disabled by default, but easily configured by running
-# $ eternal setup-jetbrains
 setup-jetbrains:
   #!/usr/bin/env bash
   pushd "$(mktemp -d)"
