@@ -38,6 +38,15 @@ RUN systemctl unmask dconf-update.service && \
   rm -rf /tmp/* /var/* && \
   ostree container commit
 
+# Install Starship Shell Prompt
+RUN curl -Lo /tmp/starship.tar.gz "https://github.com/starship/starship/releases/latest/download/starship-x86_64-unknown-linux-gnu.tar.gz" && \
+  tar -xzf /tmp/starship.tar.gz -C /tmp && \
+  install -c -m 0755 /tmp/starship /usr/bin && \
+  echo 'eval "$(starship init bash)"' >> /usr/etc/bashrc \
+  && \
+  rm -rf /tmp/* /var/* && \
+  ostree container commit
+
 # Install Visual Studio Code
 RUN rpm-ostree install \
     code \
@@ -85,15 +94,6 @@ COPY --from=cgr.dev/chainguard/kubectl:latest /usr/bin/kubectl /usr/bin/kubectl
 RUN curl -Lo ./kind "https://github.com/kubernetes-sigs/kind/releases/latest/download/kind-$(uname)-amd64" && \
   chmod +x ./kind && \
   install -c -m 0755 ./kind /usr/bin/kind \
-  && \
-  rm -rf /tmp/* /var/* && \
-  ostree container commit
-
-# Install Starship Terminal
-RUN curl -Lo /tmp/starship.tar.gz "https://github.com/starship/starship/releases/latest/download/starship-x86_64-unknown-linux-gnu.tar.gz" && \
-  tar -xzf /tmp/starship.tar.gz -C /tmp && \
-  install -c -m 0755 /tmp/starship /usr/bin && \
-  echo 'eval "$(starship init bash)"' >> /usr/etc/bashrc \
   && \
   rm -rf /tmp/* /var/* && \
   ostree container commit
