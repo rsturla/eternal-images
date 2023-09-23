@@ -26,7 +26,7 @@ screens:
   applications:
     source: yafti.screen.package
     values:
-      title: Install Apps
+      title: Install Flatpak Apps
       show_terminal: true
       package_manager: yafti.plugin.flatpak
       groups:
@@ -34,7 +34,6 @@ screens:
           description: Core Applications
           default: true
           packages:
-            - Backup: org.gnome.DejaDup
             - Calculator: org.gnome.Calculator
             - Calendar: org.gnome.Calendar
             - Characters: org.gnome.Characters
@@ -42,7 +41,6 @@ screens:
             - Contacts: org.gnome.Contacts
             - Document Viewer: org.gnome.Evince
             - Extensions Manager: com.mattjakeman.ExtensionManager
-            - Fedora Media Writer: org.fedoraproject.MediaWriter
             - Mozilla Firefox: org.mozilla.firefox
             - Flatseal Permissions Manager: com.github.tchx84.Flatseal
             - Logs: org.gnome.Logs
@@ -64,12 +62,6 @@ screens:
             - GNOME Web: org.gnome.Epiphany
             - Google Chrome: com.google.Chrome
             - Microsoft Edge: com.microsoft.Edge
-        Gaming:
-          description: "Rock and Stone!"
-          default: false
-          packages:
-            - Bottles: com.usebottles.bottles
-            - Steam: com.valvesoftware.Steam
         Office:
           description: Bow to Capitalism
           default: false
@@ -77,9 +69,23 @@ screens:
             - LibreOffice: org.libreoffice.LibreOffice
             - Obsidian: md.obsidian.Obsidian
             - OnlyOffice: org.onlyoffice.desktopeditors
+            - Remmina: org.remmina.Remmina
             - Slack: com.slack.Slack
             - Standard Notes: org.standardnotes.standardnotes
             - Thunderbird Email: org.mozilla.Thunderbird
+            - Zoom: us.zoom.Zoom
+        Development:
+          description: For the developers
+          default: false
+          packages:
+            - Postman: com.getpostman.Postman
+        Utilities:
+          description: Useful utilities
+          default: false
+          packages:
+            - Backup: org.gnome.DejaDup
+            - Fedora Media Writer: org.fedoraproject.MediaWriter
+            - VLC Media Player: org.videolan.VLC
   final-screen:
     source: yafti.screen.title
     values:
