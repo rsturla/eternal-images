@@ -13,7 +13,7 @@ RUN echo "!include /usr/share/eternal/lumina.just" >> /usr/share/eternal/justfil
 
 # Remove unwanted packages
 RUN rpm-ostree override remove \
-    gnome-extension-app \
+    gnome-extensions-app \
     gnome-tour \
   && \
   rm -rf /tmp/* /var/* && \
