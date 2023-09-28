@@ -1,0 +1,6 @@
+[fig]
+name=Fig
+baseurl=https://repo.fig.io/yum/stable
+enabled=1
+repo_gpgcheck=0
+gpgcheck=0

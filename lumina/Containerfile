@@ -94,5 +94,8 @@ RUN curl -Lo ./kind "https://github.com/kubernetes-sigs/kind/releases/latest/dow
   chmod +x ./kind && \
   install -c -m 0755 ./kind /usr/bin/kind \
   && \
+  rpm-ostree install \
+    fig \
+  && \
   rm -rf /tmp/* /var/* && \
   ostree container commit
