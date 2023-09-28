@@ -95,6 +95,7 @@ RUN curl -Lo ./kind "https://github.com/kubernetes-sigs/kind/releases/latest/dow
   install -c -m 0755 ./kind /usr/bin/kind \
   && \
   rpm-ostree install \
+    libappindicator-devel \
     fig \
   && \
   rm -rf /tmp/* /var/* && \
