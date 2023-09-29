@@ -1,6 +1,3 @@
-[org/gnome/desktop/app-folders]
-folder-children=['Utilities', 'Distrobox']
-
 [org/gnome/desktop/app-folders/folders/Distrobox]
 name='Distrobox'
 categories=['Distrobox']

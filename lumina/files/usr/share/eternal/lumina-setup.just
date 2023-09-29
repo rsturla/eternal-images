@@ -13,6 +13,7 @@ setup-docker:
 setup-distrobox:
   @echo "Creating default Distrobox containers"
   @distrobox assemble create --file /etc/distrobox/distrobox.ini
+  @gsettings set org.gnome.desktop.app-folders folder-children "[..., 'Distrobox']"
 
 setup-rpms:
   @echo "Installing layered RPMs..."
