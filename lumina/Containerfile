@@ -31,6 +31,14 @@ RUN rpm-ostree install \
   rm -rf /tmp/* /var/* && \
   ostree container commit
 
+# Remove unwanted packages
+RUN rpm-ostree override remove \
+    gnome-tour \
+    gnome-extensions-app \
+  && \
+  rm -rf /tmp/* /var/* && \
+  ostree container commit
+
 # Configure dconf automated updates
 RUN systemctl unmask dconf-update.service && \
   systemctl enable dconf-update.service \
