@@ -11,14 +11,6 @@ COPY files/usr /usr
 RUN echo "!include /usr/share/eternal/lumina.just" >> /usr/share/eternal/justfile && \
   echo "!include /usr/share/eternal/lumina-setup.just" >> /usr/share/eternal/justfile
 
-# Remove unwanted packages
-RUN rpm-ostree override remove \
-    gnome-extensions-app \
-    gnome-tour \
-  && \
-  rm -rf /tmp/* /var/* && \
-  ostree container commit
-
 # Install YAFTI and dependencies
 RUN rpm-ostree install python3-pip && \
   pip install --prefix=/usr yafti \
@@ -35,6 +27,14 @@ RUN rpm-ostree install \
     nautilus-gsconnect \
     yaru-theme \
     gnome-tweaks \
+  && \
+  rm -rf /tmp/* /var/* && \
+  ostree container commit
+
+# Remove unwanted packages
+RUN rpm-ostree override remove \
+    gnome-tour \
+    gnome-extensions-app \
   && \
   rm -rf /tmp/* /var/* && \
   ostree container commit
