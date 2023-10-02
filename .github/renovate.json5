@@ -17,7 +17,7 @@
     }
   ],
 
-  "docker": {
+  "dockerfile": {
     "enabled": false
   }
 }
