@@ -29,6 +29,7 @@ RUN rpm-ostree override remove \
     gnome-tour \
     gnome-extensions-app \
     gnome-system-monitor \
+    yelp \
   && \
   rm -rf /tmp/* /var/* && \
   ostree container commit
@@ -81,9 +82,9 @@ RUN rpm-ostree install \
   ostree container commit
 
 # Install DevPod
-RUN wget https://github.com/loft-sh/devpod/releases/latest/download/DevPod_linux_x86_64.rpm -O /tmp/devpod.rpm && \
+RUN curl -Lo /tmp/devpod.rpm https://github.com/loft-sh/devpod/releases/latest/download/DevPod_linux_x86_64.rpm && \
   rpm-ostree install /tmp/devpod.rpm && \
-  wget https://github.com/loft-sh/devpod/releases/latest/download/devpod-linux-amd64 -O /tmp/devpod && \
+  curl -Lo /tmp/devpod https://github.com/loft-sh/devpod/releases/latest/download/devpod-linux-amd64 && \
   install -c -m 0755 /tmp/devpod /usr/bin \
   && \
   rm -rf /tmp/* /var/* && \
