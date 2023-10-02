@@ -29,6 +29,7 @@ RUN rpm-ostree override remove \
     gnome-tour \
     gnome-extensions-app \
     gnome-system-monitor \
+    yelp \
   && \
   rm -rf /tmp/* /var/* && \
   ostree container commit
