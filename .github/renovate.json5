@@ -1,6 +1,19 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+
+  // Use the basic Renovate preset, and allow settings to be overridden
   "extends": [
-    "config:base"
+    "config:best-practices"
+  ],
+
+  "packageRules": [
+    {
+      // Automatically update any GitHub Actions packages through minor and patch upgrades
+      "automerge": true,
+      "matchUpdateTypes": ["minor", "patch", "pin", "digest", "pinDigest"],
+      "matchManagers": [
+        "github-actions"
+      ]
+    }
   ]
 }
