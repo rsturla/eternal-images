@@ -11,13 +11,6 @@ COPY files/usr /usr
 RUN echo "!include /usr/share/eternal/lumina.just" >> /usr/share/eternal/justfile && \
   echo "!include /usr/share/eternal/lumina-setup.just" >> /usr/share/eternal/justfile
 
-# Install YAFTI and dependencies
-RUN rpm-ostree install python3-pip && \
-  pip install --prefix=/usr yafti \
-  && \
-  rm -rf /tmp/* /var/* && \
-  ostree container commit
-
 # Configure Gnome Shell Extensions and themes
 RUN rpm-ostree install \
     gnome-shell-extension-appindicator \
@@ -35,6 +28,8 @@ RUN rpm-ostree install \
 RUN rpm-ostree override remove \
     gnome-tour \
     gnome-extensions-app \
+    gnome-system-monitor \
+    yelp \
   && \
   rm -rf /tmp/* /var/* && \
   ostree container commit
@@ -98,9 +93,9 @@ RUN rpm-ostree install \
   ostree container commit
 
 # Install DevPod
-RUN wget https://github.com/loft-sh/devpod/releases/latest/download/DevPod_linux_x86_64.rpm -O /tmp/devpod.rpm && \
+RUN curl -Lo /tmp/devpod.rpm https://github.com/loft-sh/devpod/releases/latest/download/DevPod_linux_x86_64.rpm && \
   rpm-ostree install /tmp/devpod.rpm && \
-  wget https://github.com/loft-sh/devpod/releases/latest/download/devpod-linux-amd64 -O /tmp/devpod && \
+  curl -Lo /tmp/devpod https://github.com/loft-sh/devpod/releases/latest/download/devpod-linux-amd64 && \
   install -c -m 0755 /tmp/devpod /usr/bin \
   && \
   rm -rf /tmp/* /var/* && \
