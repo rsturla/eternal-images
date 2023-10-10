@@ -40,3 +40,7 @@ setup-jetbrains:
   tar zxf jetbrains-toolbox-"${BUILD_VERSION}".tar.gz
   echo "Launching JetBrains Toolbox"
   ./jetbrains-toolbox-"${BUILD_VERSION}"/jetbrains-toolbox
+
+setup-homebrew:
+  @echo 'Installing homebrew ..."
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
