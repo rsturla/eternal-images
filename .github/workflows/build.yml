@@ -78,6 +78,14 @@ jobs:
           build-args: |
             BASE_TAG=${{ matrix.fedora-version }}
 
+      - name: Sign Image
+        uses: rsturla/eternal-main/.github/actions/sign-image@main
+        with:
+          registry: ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}
+          digest: ${{ steps.build.outputs.digest }}
+          private-key: ${{ secrets.ETERNAL_LINUX_SIGNING_KEY }}
+          private-key-passphrase: ${{ secrets.ETERNAL_LINUX_SIGNING_KEY_PASSPHRASE }}
+
 
   build-lumina-nvidia:
     runs-on: ubuntu-latest
@@ -153,3 +161,11 @@ jobs:
           tags: ${{ env.TAGS_CONCAT }}
           build-args: |
             BASE_TAG=${{ matrix.fedora-version }}-nvidia${{ matrix.nvidia-version }}
+
+      - name: Sign Image
+        uses: rsturla/eternal-main/.github/actions/sign-image@main
+        with:
+          registry: ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}
+          digest: ${{ steps.build.outputs.digest }}
+          private-key: ${{ secrets.ETERNAL_LINUX_SIGNING_KEY }}
+          private-key-passphrase: ${{ secrets.ETERNAL_LINUX_SIGNING_KEY_PASSPHRASE }}
