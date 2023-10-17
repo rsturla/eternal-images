@@ -80,6 +80,7 @@ jobs:
 
       - name: Sign Image
         uses: rsturla/eternal-main/.github/actions/sign-image@main
+        if: github.event_name != 'pull_request'
         with:
           registry: ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}
           digest: ${{ steps.build.outputs.digest }}
@@ -164,6 +165,7 @@ jobs:
 
       - name: Sign Image
         uses: rsturla/eternal-main/.github/actions/sign-image@main
+        if: github.event_name != 'pull_request'
         with:
           registry: ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}
           digest: ${{ steps.build.outputs.digest }}
