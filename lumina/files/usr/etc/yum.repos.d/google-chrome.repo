@@ -1,0 +1,6 @@
+[google-chrome]
+name=google-chrome
+baseurl=https://dl.google.com/linux/chrome/rpm/stable/$basearch
+enabled=1
+gpgcheck=0
+gpgkey=https://dl.google.com/linux/linux_signing_key.pub
