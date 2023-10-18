@@ -17,8 +17,8 @@ setup-distrobox:
 setup-rpms:
   @echo "Installing layered RPMs..."
   @rpm-ostree install --idempotent \
-    https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm \
-    https://downloads.1password.com/linux/rpm/stable/x86_64/1password-latest.rpm
+    google-chrome-stable \
+    1password
 
 setup-vscode:
   @echo "Installing VSCode Extensions..."
