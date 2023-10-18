@@ -16,6 +16,7 @@ setup-distrobox:
 
 setup-rpms:
   @echo "Installing layered RPMs..."
+  @bash -c "sudo sed -i --follow-symlinks 's/enabled=0/enabled=1/g' /etc/yum.repos.d/google-chrome.repo"
   @rpm-ostree install --idempotent \
     google-chrome-stable \
     1password
