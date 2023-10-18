@@ -82,10 +82,9 @@ RUN rpm-ostree install \
   ostree container commit
 
 # Install DevPod
-RUN curl -Lo /tmp/devpod.rpm https://github.com/loft-sh/devpod/releases/latest/download/DevPod_linux_x86_64.rpm && \
-  rpm-ostree install /tmp/devpod.rpm && \
+RUN rpm-ostree install https://github.com/loft-sh/devpod/releases/latest/download/DevPod_linux_x86_64.rpm && \
   curl -Lo /tmp/devpod https://github.com/loft-sh/devpod/releases/latest/download/devpod-linux-amd64 && \
-  install -c -m 0755 /tmp/devpod /usr/bin \
+  install -c -m 0755 /tmp/devpod /usr/bin/devpod \
   && \
   rm -rf /tmp/* /var/* && \
   ostree container commit
@@ -93,9 +92,12 @@ RUN curl -Lo /tmp/devpod.rpm https://github.com/loft-sh/devpod/releases/latest/d
 # Install additional CLI apps
 COPY --from=cgr.dev/chainguard/ko:latest /usr/bin/ko /usr/bin/ko
 COPY --from=cgr.dev/chainguard/kubectl:latest /usr/bin/kubectl /usr/bin/kubectl
-RUN curl -Lo ./kind "https://github.com/kubernetes-sigs/kind/releases/latest/download/kind-$(uname)-amd64" && \
-  chmod +x ./kind && \
-  install -c -m 0755 ./kind /usr/bin/kind \
+RUN curl -Lo /tmp/kind "https://github.com/kubernetes-sigs/kind/releases/latest/download/kind-$(uname)-amd64" && \
+  install -c -m 0755 /tmp/kind /usr/bin/kind \
+  && \
+  rpm-ostree install $(curl https://api.github.com/repos/charmbracelet/vhs/releases/latest | jq -r '.assets[] | select(.name| test(".*.x86_64.rpm$")).browser_download_url') && \
+  curl -Lo /tmp/ttyd https://github.com/tsl0922/ttyd/releases/latest/download/ttyd.x86_64 && \
+  install -c -m 0755 /tmp/ttyd /usr/bin/ttyd \
   && \
   rm -rf /tmp/* /var/* && \
   ostree container commit
