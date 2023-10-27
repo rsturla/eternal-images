@@ -99,7 +99,7 @@ RUN rpm-ostree install https://github.com/loft-sh/devpod/releases/latest/downloa
 
 # Install Firecracker and CNI plugins
 RUN release_url="https://github.com/firecracker-microvm/firecracker/releases" && \
-  LATEST=$(basename $(curl -fsSLI -o /dev/null -w  %{url_effective} ${release_url}/latest)) && \
+  LATEST=$(basename $(curl -fsSLI -o /dev/null -w %{url_effective} ${release_url}/latest)) && \
   curl -L ${release_url}/download/${LATEST}/firecracker-${LATEST}-$(uname -m).tgz | tar -xz -C /tmp && \
   install -c -m 0755 /tmp/release-${LATEST}-$(uname -m)/firecracker-${LATEST}-$(uname -m) /usr/bin/firecracker && \
   install -c -m 0755 /tmp/release-${LATEST}-$(uname -m)/jailer-${LATEST}-$(uname -m) /usr/bin/jailer \
