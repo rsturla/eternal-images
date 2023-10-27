@@ -89,6 +89,21 @@ RUN rpm-ostree install https://github.com/loft-sh/devpod/releases/latest/downloa
   rm -rf /tmp/* /var/* && \
   ostree container commit
 
+# Install Firecracker and CNI plugins
+RUN curl -Lo /tmp/firecracker.tgz $(curl https://api.github.com/repos/firecracker-microvm/firecracker/releases/latest | jq -r '.assets[] | select(.name| test("firecracker-v.*-x86_64.tgz$")).browser_download_url') && \
+  tar -xzf /tmp/firecracker.tgz -C /tmp && \
+  mv /tmp/release-v* /tmp/firecracker && \
+  install -c -m 0755 /tmp/firecracker/* /usr/bin \
+  && \
+  curl -Lo /tmp/cni-plugins.tgz $(curl https://api.github.com/repos/containernetworking/plugins/releases/latest | jq -r '.assets[] | select(.name| test("cni-plugins-linux-amd64-v.*.tgz$")).browser_download_url') && \
+  mkdir -p /tmp/cni-plugins && \
+  tar -xzf /tmp/cni-plugins.tgz -C /tmp/cni-plugins && \
+  mkdir -p /usr/cni/bin && \
+  mv /tmp/cni-plugins/* /usr/cni/bin \
+  && \
+  rm -rf /tmp/* /var/* && \
+  ostree container commit
+
 # Install additional CLI apps
 COPY --from=cgr.dev/chainguard/ko:latest /usr/bin/ko /usr/bin/ko
 COPY --from=cgr.dev/chainguard/kubectl:latest /usr/bin/kubectl /usr/bin/kubectl
