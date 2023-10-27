@@ -98,12 +98,11 @@ RUN rpm-ostree install https://github.com/loft-sh/devpod/releases/latest/downloa
   ostree container commit
 
 # Install Firecracker and CNI plugins
-RUN ARCH="$(uname -m)" && \
-  release_url="https://github.com/firecracker-microvm/firecracker/releases" && \
+RUN release_url="https://github.com/firecracker-microvm/firecracker/releases" && \
   latest=$(basename $(curl -fsSLI -o /dev/null -w  %{url_effective} ${release_url}/latest)) && \
-  curl -L ${release_url}/download/${latest}/firecracker-${latest}-${ARCH}.tgz | tar -xz -C /tmp && \
-  install -c -m 0755 /tmp/release-${latest}-$(uname -m)/firecracker-${latest}-${ARCH} /usr/bin/firecracker && \
-  install -c -m 0755 /tmp/release-${latest}-$(uname -m)/jailer-${latest}-${ARCH} /usr/bin/jailer \
+  curl -L ${release_url}/download/${latest}/firecracker-${latest}-$(uname -m).tgz | tar -xz -C /tmp && \
+  install -c -m 0755 /tmp/release-${latest}-$(uname -m)/firecracker-${latest}-$(uname -m) /usr/bin/firecracker && \
+  install -c -m 0755 /tmp/release-${latest}-$(uname -m)/jailer-${latest}-$(uname -m) /usr/bin/jailer \
   && \
   curl -Lo /tmp/cni-plugins.tgz $(curl https://api.github.com/repos/containernetworking/plugins/releases/latest | jq -r '.assets[] | select(.name| test("cni-plugins-linux-amd64-v.*.tgz$")).browser_download_url') && \
   mkdir -p /tmp/cni-plugins && \
