@@ -32,5 +32,13 @@ setup-jetbrains:
   ./jetbrains-toolbox-"${BUILD_VERSION}"/jetbrains-toolbox
 
 setup-homebrew:
-  @echo 'Installing homebrew ..."
+  @echo 'Installing Homebrew..."
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+setup-devbox:
+  @echo 'Installing Nix..."
+  curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install --no-confirm
+  @echo 'Installing Devbox'
+  curl -fsSL https://get.jetpack.io/devbox | bash
+  @echo 'Installing Devbox VSCode extensions'
+  code --install-extension jetpack-io.devbox
