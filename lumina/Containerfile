@@ -128,8 +128,5 @@ RUN curl -Lo /tmp/kind "https://github.com/kubernetes-sigs/kind/releases/latest/
   curl -Lo /tmp/ttyd https://github.com/tsl0922/ttyd/releases/latest/download/ttyd.x86_64 && \
   install -c -m 0755 /tmp/ttyd /usr/bin/ttyd \
   && \
-  curl -Lo /tmp/devbox https://releases.jetpack.io/devbox && \
-  install -c -m 0755 /tmp/devbox /usr/bin/devbox \
-  && \
   rm -rf /tmp/* /var/* && \
   ostree container commit
