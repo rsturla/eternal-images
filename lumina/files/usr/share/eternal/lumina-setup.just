@@ -1,8 +1,6 @@
 setup:
   @just --unstable setup-docker
-  @just --unstable setup-distrobox
   @just --unstable setup-rpms
-  @just --unstable setup-vscode
   @echo "Setup complete!"
   @echo "Please reboot to complete the setup process."
 
@@ -10,20 +8,11 @@ setup-docker:
   @echo "Adding user to docker group..."
   @bash -c "sudo usermod -aG docker $(whoami)"
 
-setup-distrobox:
-  @echo "Creating default Distrobox containers"
-  @distrobox assemble create --file /etc/distrobox/distrobox.ini
-
 setup-rpms:
   @echo "Installing layered RPMs..."
-  @bash -c "sudo sed -i --follow-symlinks 's/enabled=0/enabled=1/g' /etc/yum.repos.d/google-chrome.repo"
   @rpm-ostree install --idempotent \
     google-chrome-stable \
     1password
-
-setup-vscode:
-  @echo "Installing VSCode Extensions..."
-  @code --install-extension ms-vscode-remote.vscode-remote-extensionpack
 
 setup-jetbrains:
   #!/usr/bin/env bash
