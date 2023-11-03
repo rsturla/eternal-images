@@ -61,6 +61,19 @@ RUN curl -Lo /tmp/starship.tar.gz "https://github.com/starship/starship/releases
   rm -rf /tmp/* /var/* && \
   ostree container commit
 
+# Install Atuin Shell
+RUN curl -Lo /tmp/atuin.tgz $(curl https://api.github.com/repos/atuinsh/atuin/releases/latest | jq -r '.assets[] | select(.name| test("atuin-v.*-x86_64-unknown-linux-gnu.tar.gz$")).browser_download_url') && \
+  tar -xzf /tmp/atuin.tgz -C /tmp && \
+  mv /tmp/atuin-v* /tmp/atuin && \
+  install -c -m 0755 /tmp/atuin/atuin /usr/bin && \
+  cp /tmp/atuin/completions/atuin.bash /usr/share/bash-completion/completions/atuin \
+  && \
+  curl -Lo /tmp/bash-preexec.sh https://raw.githubusercontent.com/rcaloras/bash-preexec/master/bash-preexec.sh && \
+  cp /tmp/bash-preexec.sh /usr/etc/bashrc.d/bash-preexec.sh \
+  && \
+  rm -rf /tmp/* /var/* && \
+  ostree container commit
+
 # Install Visual Studio Code
 RUN rpm-ostree install \
     code \
