@@ -1,0 +1,13 @@
+auto_sync = false
+dialect = "uk"
+filter_mode = "global"
+filter_mode_shell_up_key_binding = "global"
+inline_height = 0
+invert = false
+search_mode = "fuzzy"
+search_mode_shell_up_key_binding = "fuzzy"
+show_help = true
+show_preview = false
+style = "auto"
+update_check = false
+workspaces = false
