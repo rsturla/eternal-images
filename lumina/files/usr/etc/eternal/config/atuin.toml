@@ -1,5 +1,6 @@
 auto_sync = false
 dialect = "uk"
+enter_accept = true
 filter_mode = "global"
 filter_mode_shell_up_key_binding = "global"
 inline_height = 0
