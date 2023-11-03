@@ -1,2 +1,3 @@
-# Enable starship prompt
+#!/usr/bin/env bash
+
 eval "$(starship init bash)"
