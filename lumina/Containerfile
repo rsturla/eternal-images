@@ -69,7 +69,7 @@ RUN curl -Lo /tmp/atuin.tgz $(curl https://api.github.com/repos/atuinsh/atuin/re
   cp /tmp/atuin/completions/atuin.bash /usr/share/bash-completion/completions/atuin \
   && \
   curl -Lo /tmp/bash-preexec.sh https://raw.githubusercontent.com/rcaloras/bash-preexec/master/bash-preexec.sh && \
-  cp /tmp/bash-preexec.sh /etc/bashrc.d/bash-preexec.sh \
+  cp /tmp/bash-preexec.sh /usr/etc/bashrc.d/bash-preexec.sh \
   && \
   rm -rf /tmp/* /var/* && \
   ostree container commit
