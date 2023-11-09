@@ -32,5 +32,5 @@ setup-jetbrains:
   ./jetbrains-toolbox-"${BUILD_VERSION}"/jetbrains-toolbox
 
 setup-homebrew:
-  @echo 'Installing Homebrew..."
+  @echo "Installing Homebrew..."
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
