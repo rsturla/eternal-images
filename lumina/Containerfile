@@ -78,8 +78,7 @@ RUN curl -Lo /tmp/atuin.tgz $(curl https://api.github.com/repos/atuinsh/atuin/re
 RUN rpm-ostree install \
     bison byacc cscope ctags curl cvs diffstat doxygen \
     file flex gcc gcc-c++ gcc-fortran gettext git \
-    indent intltool libtool \
-    patch patchutils procps-ng \
+    indent intltool libtool patch patchutils procps-ng \
     rcs redhat-rpm-config subversion swig systemtap \
   && \
   rm -rf /tmp/* /var/* && \
