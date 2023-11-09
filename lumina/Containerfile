@@ -32,6 +32,7 @@ RUN rpm-ostree install \
     nautilus-gsconnect \
     yaru-theme \
     gnome-tweaks \
+    libcanberra-gtk3 \
   && \
   rm -rf /tmp/* /var/* && \
   ostree container commit
