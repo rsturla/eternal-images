@@ -1,12 +1,5 @@
 #!/usr/bin/env bash
 
-# Search HaveIBeenPwned
-function @pwned {
-    [ $# -eq 0 ] && xdg-open "https://haveibeenpwned.com/" && return
-    curl "https://haveibeenpwned.com/api/v2/breachedaccount/$*?truncateResponse=true"
-    echo ""
-}
-
 # Search Youtube
 function @yt {
     [ $# -eq 0 ] && xdg-open "https://youtube.com/" && return
