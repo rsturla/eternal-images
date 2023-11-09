@@ -8,7 +8,7 @@ function @pwned {
 }
 
 # Search Youtube
-function @yt {
+function @youtube {
     [ $# -eq 0 ] && xdg-open "https://youtube.com/" && return
     xdg-open "https://youtube.com/results?search_query=$*"
 }
