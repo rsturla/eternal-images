@@ -2,6 +2,14 @@ ARG BASE_IMAGE=ghcr.io/rsturla/eternal-linux/main/silverblue
 ARG BASE_TAG=38
 ARG FEDORA_VERSION=${BASE_TAG}
 
+
+FROM golang:1.21 AS tc-redirect-tap-build
+
+RUN git clone https://github.com/awslabs/tc-redirect-tap.git --depth 1 /tmp/tc-redirect-tap && \
+  cd /tmp/tc-redirect-tap && \
+  GOOS=linux GOARCH=amd64 go build -o bin/tc-redirect-tap-amd64 ./cmd/tc-redirect-tap
+
+
 FROM ${BASE_IMAGE}:${BASE_TAG}
 
 COPY files/etc/yum.repos.d /etc/yum.repos.d
@@ -10,6 +18,10 @@ COPY files/usr /usr
 # Configure Just
 RUN echo "!include /usr/share/eternal/lumina.just" >> /usr/share/eternal/justfile && \
   echo "!include /usr/share/eternal/lumina-setup.just" >> /usr/share/eternal/justfile
+
+# Configure file permissions
+RUN chmod +x /usr/etc/eternal/setup-manager/system.d/* && \
+  chmod +x /usr/etc/eternal/setup-manager/user.d/*
 
 # Configure Gnome Shell Extensions and themes
 RUN rpm-ostree install \
@@ -60,6 +72,19 @@ RUN curl -Lo /tmp/starship.tar.gz "https://github.com/starship/starship/releases
   rm -rf /tmp/* /var/* && \
   ostree container commit
 
+# Install Atuin Shell
+RUN curl -Lo /tmp/atuin.tgz $(curl https://api.github.com/repos/atuinsh/atuin/releases/latest | jq -r '.assets[] | select(.name| test("atuin-v.*-x86_64-unknown-linux-gnu.tar.gz$")).browser_download_url') && \
+  tar -xzf /tmp/atuin.tgz -C /tmp && \
+  mv /tmp/atuin-v* /tmp/atuin && \
+  install -c -m 0755 /tmp/atuin/atuin /usr/bin && \
+  cp /tmp/atuin/completions/atuin.bash /usr/share/bash-completion/completions/atuin \
+  && \
+  curl -Lo /tmp/bash-preexec.sh https://raw.githubusercontent.com/rcaloras/bash-preexec/master/bash-preexec.sh && \
+  cp /tmp/bash-preexec.sh /usr/etc/bashrc.d/bash-preexec.sh \
+  && \
+  rm -rf /tmp/* /var/* && \
+  ostree container commit
+
 # Install Visual Studio Code
 RUN rpm-ostree install \
     code \
@@ -93,20 +118,39 @@ RUN rpm-ostree install \
   ostree container commit
 
 # Install DevPod
-RUN curl -Lo /tmp/devpod.rpm https://github.com/loft-sh/devpod/releases/latest/download/DevPod_linux_x86_64.rpm && \
-  rpm-ostree install /tmp/devpod.rpm && \
-  curl -Lo /tmp/devpod https://github.com/loft-sh/devpod/releases/latest/download/devpod-linux-amd64 && \
-  install -c -m 0755 /tmp/devpod /usr/bin \
+RUN rpm-ostree install https://github.com/loft-sh/devpod/releases/download/v0.3.7/DevPod_linux_x86_64.rpm && \
+  curl -Lo /tmp/devpod https://github.com/loft-sh/devpod/releases/download/v0.3.7/devpod-linux-amd64 && \
+  install -c -m 0755 /tmp/devpod /usr/bin/devpod \
+  && \
+  rm -rf /tmp/* /var/* && \
+  ostree container commit
+
+# Install Firecracker and CNI plugins
+RUN release_url="https://github.com/firecracker-microvm/firecracker/releases" && \
+  LATEST=$(basename $(curl -fsSLI -o /dev/null -w %{url_effective} ${release_url}/latest)) && \
+  curl -L ${release_url}/download/${LATEST}/firecracker-${LATEST}-$(uname -m).tgz | tar -xz -C /tmp && \
+  install -c -m 0755 /tmp/release-${LATEST}-$(uname -m)/firecracker-${LATEST}-$(uname -m) /usr/bin/firecracker && \
+  install -c -m 0755 /tmp/release-${LATEST}-$(uname -m)/jailer-${LATEST}-$(uname -m) /usr/bin/jailer \
+  && \
+  curl -Lo /tmp/cni-plugins.tgz $(curl https://api.github.com/repos/containernetworking/plugins/releases/latest | jq -r '.assets[] | select(.name| test("cni-plugins-linux-amd64-v.*.tgz$")).browser_download_url') && \
+  mkdir -p /tmp/cni-plugins && \
+  tar -xzf /tmp/cni-plugins.tgz -C /tmp/cni-plugins && \
+  mkdir -p /usr/cni/bin && \
+  mv /tmp/cni-plugins/* /usr/cni/bin \
   && \
   rm -rf /tmp/* /var/* && \
   ostree container commit
 
 # Install additional CLI apps
+COPY --from=tc-redirect-tap-build /tmp/tc-redirect-tap/bin/tc-redirect-tap-amd64 /usr/cni/bin/tc-redirect-tap
 COPY --from=cgr.dev/chainguard/ko:latest /usr/bin/ko /usr/bin/ko
 COPY --from=cgr.dev/chainguard/kubectl:latest /usr/bin/kubectl /usr/bin/kubectl
-RUN curl -Lo ./kind "https://github.com/kubernetes-sigs/kind/releases/latest/download/kind-$(uname)-amd64" && \
-  chmod +x ./kind && \
-  install -c -m 0755 ./kind /usr/bin/kind \
+RUN curl -Lo /tmp/kind "https://github.com/kubernetes-sigs/kind/releases/latest/download/kind-$(uname)-amd64" && \
+  install -c -m 0755 /tmp/kind /usr/bin/kind \
+  && \
+  rpm-ostree install $(curl https://api.github.com/repos/charmbracelet/vhs/releases/latest | jq -r '.assets[] | select(.name| test(".*.x86_64.rpm$")).browser_download_url') && \
+  curl -Lo /tmp/ttyd https://github.com/tsl0922/ttyd/releases/latest/download/ttyd.x86_64 && \
+  install -c -m 0755 /tmp/ttyd /usr/bin/ttyd \
   && \
   rm -rf /tmp/* /var/* && \
   ostree container commit
