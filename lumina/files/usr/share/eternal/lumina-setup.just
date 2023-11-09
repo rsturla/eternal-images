@@ -38,5 +38,3 @@ setup-homebrew:
   echo "Adding Homebrew to PATH..."
   echo 'eval "$$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> ~/.bashrc
   eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-  echo "Installing Homebrew packages..."
-  brew install gcc
