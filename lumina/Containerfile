@@ -75,49 +75,11 @@ RUN curl -Lo /tmp/atuin.tgz $(curl https://api.github.com/repos/atuinsh/atuin/re
   ostree container commit
 
 # Install "Development Tools" group
-# Install "Development Tools" group
 RUN rpm-ostree install \
-    gettext \
-    diffstat \
-    doxygen \
-    git \
-    patch \
-    patchutils \
-    subversion \
-    systemtap \
-    buildbot \
-    colordiff \
-    cvs \
-    cvs2cl \
-    cvsps \
-    darcs \
-    dejagnu \
-    expect \
-    gambas3-ide \
-    git-annex \
-    git-cola \
-    git2cl \
-    gitg \
-    gtranslator \
-    highlight \
-    lcov \
-    manedit \
-    meld \
-    monotone \
-    myrepos \
-    nemiver \
-    qgit \
-    quilt \
-    rapidsvn \
-    rcs \
-    robodoc \
-    scanmem \
-    subunit \
-    svn2cl \
-    tig \
-    tortoisehg \
-    translate-toolkit \
-    utrac \
+    buildbot colordiff cvs cvs2cl cvsps darcs dejagnu diffstat doxygen expect \
+    gambas3-ide gettext git git-annex git-cola git2cl gitg gtranslator highlight lcov \
+    manedit meld monotone myrepos nemiver patch patchutils qgit quilt rapidsvn rcs robodoc \
+    scanmem subunit subversion svn2cl systemtap tig tortoisehg translate-toolkit utrac \
   && \
   rm -rf /tmp/* /var/* && \
   ostree container commit
