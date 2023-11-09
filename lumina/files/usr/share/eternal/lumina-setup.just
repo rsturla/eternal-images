@@ -1,6 +1,7 @@
 setup:
   @just --unstable setup-docker
   @just --unstable setup-rpms
+  @just --unstable setup-homebrew
   @echo "Setup complete!"
   @echo "Please reboot to complete the setup process."
 
@@ -34,3 +35,8 @@ setup-jetbrains:
 setup-homebrew:
   @echo "Installing Homebrew..."
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  echo "Adding Homebrew to PATH..."
+  echo 'eval "$$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> ~/.bashrc
+  eval "$$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+  echo "Installing Homebrew packages..."
+  brew install gcc
