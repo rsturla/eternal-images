@@ -76,10 +76,10 @@ RUN curl -Lo /tmp/atuin.tgz $(curl https://api.github.com/repos/atuinsh/atuin/re
 
 # Install "Development Tools" group
 RUN rpm-ostree install \
-    buildbot colordiff cvs cvs2cl cvsps darcs dejagnu diffstat doxygen expect \
-    gambas3-ide gettext git git-annex git-cola git2cl gitg gtranslator highlight lcov \
-    manedit meld monotone myrepos nemiver patch patchutils qgit quilt rapidsvn rcs robodoc \
-    scanmem subunit subversion svn2cl systemtap tig tortoisehg translate-toolkit utrac \
+    bison byacc cscope ctags curl cvs diffstat doxygen \
+    file flex gcc gcc-c++ gcc-fortran gettext git \
+    indent intltool libtool patch patchutils procps-ng \
+    rcs redhat-rpm-config subversion swig systemtap \
   && \
   rm -rf /tmp/* /var/* && \
   ostree container commit
