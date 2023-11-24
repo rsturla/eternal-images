@@ -32,6 +32,7 @@ RUN rpm-ostree install \
     nautilus-gsconnect \
     yaru-theme \
     gnome-tweaks \
+    libcanberra-gtk3 \
   && \
   rm -rf /tmp/* /var/* && \
   ostree container commit
@@ -85,6 +86,16 @@ RUN curl -Lo /tmp/atuin.tgz $(curl https://api.github.com/repos/atuinsh/atuin/re
   rm -rf /tmp/* /var/* && \
   ostree container commit
 
+# Install "Development Tools" group
+RUN rpm-ostree install \
+    bison byacc cscope ctags curl cvs diffstat doxygen \
+    file flex gcc gcc-c++ gcc-fortran gettext git \
+    indent intltool libtool patch patchutils procps-ng \
+    rcs redhat-rpm-config subversion swig systemtap \
+  && \
+  rm -rf /tmp/* /var/* && \
+  ostree container commit
+
 # Install Visual Studio Code
 RUN rpm-ostree install \
     code \
@@ -117,14 +128,6 @@ RUN rpm-ostree install \
   rm -rf /var/* /tmp/* && \
   ostree container commit
 
-# Install DevPod
-RUN rpm-ostree install https://github.com/loft-sh/devpod/releases/download/v0.3.7/DevPod_linux_x86_64.rpm && \
-  curl -Lo /tmp/devpod https://github.com/loft-sh/devpod/releases/download/v0.3.7/devpod-linux-amd64 && \
-  install -c -m 0755 /tmp/devpod /usr/bin/devpod \
-  && \
-  rm -rf /tmp/* /var/* && \
-  ostree container commit
-
 # Install Firecracker and CNI plugins
 RUN release_url="https://github.com/firecracker-microvm/firecracker/releases" && \
   LATEST=$(basename $(curl -fsSLI -o /dev/null -w %{url_effective} ${release_url}/latest)) && \
@@ -151,6 +154,9 @@ RUN curl -Lo /tmp/kind "https://github.com/kubernetes-sigs/kind/releases/latest/
   rpm-ostree install $(curl https://api.github.com/repos/charmbracelet/vhs/releases/latest | jq -r '.assets[] | select(.name| test(".*.x86_64.rpm$")).browser_download_url') && \
   curl -Lo /tmp/ttyd https://github.com/tsl0922/ttyd/releases/latest/download/ttyd.x86_64 && \
   install -c -m 0755 /tmp/ttyd /usr/bin/ttyd \
+  && \
+  curl -Lo /tmp/devbox https://releases.jetpack.io/devbox && \
+  install -c -m 0755 /tmp/devbox /usr/bin/devbox \
   && \
   rm -rf /tmp/* /var/* && \
   ostree container commit

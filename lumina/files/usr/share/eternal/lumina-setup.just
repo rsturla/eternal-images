@@ -1,6 +1,7 @@
 setup:
   @just --unstable setup-docker
   @just --unstable setup-rpms
+  @just --unstable setup-homebrew
   @echo "Setup complete!"
   @echo "Please reboot to complete the setup process."
 
@@ -32,13 +33,8 @@ setup-jetbrains:
   ./jetbrains-toolbox-"${BUILD_VERSION}"/jetbrains-toolbox
 
 setup-homebrew:
-  @echo 'Installing Homebrew..."
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
-setup-devbox:
-  @echo 'Installing Nix..."
-  curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install --no-confirm
-  @echo 'Installing Devbox'
-  curl -fsSL https://get.jetpack.io/devbox | bash
-  @echo 'Installing Devbox VSCode extensions'
-  code --install-extension jetpack-io.devbox
+  @echo "Installing Homebrew..."
+  NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  echo "Adding Homebrew to PATH..."
+  echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> ~/.bashrc
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
