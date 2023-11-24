@@ -117,14 +117,6 @@ RUN rpm-ostree install \
   rm -rf /var/* /tmp/* && \
   ostree container commit
 
-# Install DevPod
-RUN rpm-ostree install https://github.com/loft-sh/devpod/releases/download/v0.3.7/DevPod_linux_x86_64.rpm && \
-  curl -Lo /tmp/devpod https://github.com/loft-sh/devpod/releases/download/v0.3.7/devpod-linux-amd64 && \
-  install -c -m 0755 /tmp/devpod /usr/bin/devpod \
-  && \
-  rm -rf /tmp/* /var/* && \
-  ostree container commit
-
 # Install Firecracker and CNI plugins
 RUN release_url="https://github.com/firecracker-microvm/firecracker/releases" && \
   LATEST=$(basename $(curl -fsSLI -o /dev/null -w %{url_effective} ${release_url}/latest)) && \
