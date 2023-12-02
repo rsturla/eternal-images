@@ -94,9 +94,9 @@ jobs:
       fail-fast: false
       matrix:
         fedora-version: [38, 39]
-        nvidia-version: [535, 545]
+        nvidia-version: [545]
         include:
-          - nvidia-version: 535
+          - nvidia-version: 545
             nvidia-is-stable: true
     permissions:
       contents: read
