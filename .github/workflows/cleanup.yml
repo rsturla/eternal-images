@@ -31,8 +31,8 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const core = github.getOctokit(context.token).rest.rateLimit.get().then(result => result.data.resources.core);
-            const resetTimestamp = new Date(core.reset * 1000);
+            const rateLimitInfo = github.getOctokit(context.token).rest.rateLimit.get().then(result => result.data.resources.core);
+            const resetTimestamp = new Date(rateLimitInfo.reset * 1000);
             const sleepTime = resetTimestamp - new Date() + 5000; // add 5 seconds to be sure the rate limit has been reset
             console.log(`Rate limit reset at ${resetTimestamp}`);
             console.log(`Sleeping for ${sleepTime}ms`);
