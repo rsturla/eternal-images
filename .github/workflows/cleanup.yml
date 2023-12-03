@@ -3,7 +3,7 @@ name: Cleanup old images
 on:
   schedule:
     # Every 5 minutes
-    - cron: '*/5 * * * *'
+    - cron: '*/15 * * * *'
   workflow_dispatch:
 
 permissions:
