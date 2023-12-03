@@ -26,6 +26,16 @@ jobs:
           delete-only-untagged-versions: 'true'
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Wait for rate limit reset
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { data: { rateLimit: { resetAt } } } = await github.rest.rateLimit.get();
+            const waitTime = resetAt - new Date();
+            core.info(`Waiting ${waitTime}ms for rate limit reset`);
+            await new Promise(resolve => setTimeout(resolve, waitTime));
+
       - name: Delete PR images
         uses: actions/delete-package-versions@0d39a63126868f5eefaa47169615edd3c0f61e20 # v4
         with:
