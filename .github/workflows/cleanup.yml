@@ -5,7 +5,6 @@ on:
     # Every 6 hours
     - cron: '0 */6 * * *'
   workflow_dispatch:
-  pull_request:
 
 permissions:
   packages: write
@@ -25,14 +24,4 @@ jobs:
           package-type: container
           min-versions-to-keep: 0
           delete-only-untagged-versions: 'true'
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Delete PR images
-        uses: actions/delete-package-versions@0d39a63126868f5eefaa47169615edd3c0f61e20 # v4
-        with:
-          package-name: eternal-linux/${{ matrix.image }}
-          package-type: container
-          min-versions-to-keep: 0
-          # Ignore everything that does not match pr<n><n>-*
-          ignore-versions: '^(?!pr[0-9]{2}-).*$'
           token: ${{ secrets.GITHUB_TOKEN }}
