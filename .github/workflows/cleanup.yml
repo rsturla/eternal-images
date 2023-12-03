@@ -25,3 +25,12 @@ jobs:
           min-versions-to-keep: 10
           delete-only-untagged-versions: 'true'
           token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Delete PR images
+        uses: actions/delete-package-versions@0d39a63126868f5eefaa47169615edd3c0f61e20 # v4
+        with:
+          package-name: eternal-linux/${{ matrix.image }}
+          package-type: container
+          min-versions-to-keep: 50
+          ignore-versions: '^(?!pr[0-9]{2}-).+$'
+          token: ${{ secrets.GITHUB_TOKEN }}
