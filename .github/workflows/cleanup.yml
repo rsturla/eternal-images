@@ -17,26 +17,14 @@ jobs:
       matrix:
         image: [lumina]
     steps:
-      - name: Delete untagged images
-        uses: actions/delete-package-versions@0d39a63126868f5eefaa47169615edd3c0f61e20 # v4
-        with:
-          package-name: eternal-linux/${{ matrix.image }}
-          package-type: container
-          min-versions-to-keep: 10
-          delete-only-untagged-versions: 'true'
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Wait for rate limit reset
-        uses: actions/github-script@v3
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const rateLimitInfo = github.getOctokit(context.token).rest.rateLimit.get().then(result => result.data.resources.core);
-            const resetTimestamp = new Date(rateLimitInfo.reset * 1000);
-            const sleepTime = resetTimestamp - new Date() + 5000; // add 5 seconds to be sure the rate limit has been reset
-            console.log(`Rate limit reset at ${resetTimestamp}`);
-            console.log(`Sleeping for ${sleepTime}ms`);
-            await new Promise(resolve => setTimeout(resolve, sleepTime));
+      # - name: Delete untagged images
+      #   uses: actions/delete-package-versions@0d39a63126868f5eefaa47169615edd3c0f61e20 # v4
+      #   with:
+      #     package-name: eternal-linux/${{ matrix.image }}
+      #     package-type: container
+      #     min-versions-to-keep: 10
+      #     delete-only-untagged-versions: 'true'
+      #     token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Delete PR images
         uses: actions/delete-package-versions@0d39a63126868f5eefaa47169615edd3c0f61e20 # v4
