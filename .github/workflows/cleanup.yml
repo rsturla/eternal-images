@@ -5,6 +5,7 @@ on:
     # Every 6 hours
     - cron: '0 */6 * * *'
   workflow_dispatch:
+  pull_request:
 
 permissions:
   packages: write
