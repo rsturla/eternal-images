@@ -75,7 +75,7 @@ RUN curl -Lo /tmp/atuin.tgz $(curl https://api.github.com/repos/atuinsh/atuin/re
   rm -rf /tmp/* /var/* && \
   ostree container commit
 
-# Install "Development Tools" group
+# Install "Development Tools" group for Homebrew
 RUN rpm-ostree install \
     bison byacc cscope ctags curl cvs diffstat doxygen \
     file flex gcc gcc-c++ gcc-fortran gettext git \
@@ -146,6 +146,9 @@ RUN curl -Lo /tmp/kind "https://github.com/kubernetes-sigs/kind/releases/latest/
   && \
   curl -Lo /tmp/devbox https://releases.jetpack.io/devbox && \
   install -c -m 0755 /tmp/devbox /usr/bin/devbox \
+  && \
+  rpm-ostree install gh && \
+  rm -f /etc/yum.repos.d/github.repo \
   && \
   rm -rf /tmp/* /var/* && \
   ostree container commit
