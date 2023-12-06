@@ -75,6 +75,16 @@ RUN curl -Lo /tmp/atuin.tgz $(curl https://api.github.com/repos/atuinsh/atuin/re
   rm -rf /tmp/* /var/* && \
   ostree container commit
 
+# Install "Development Tools" group for Homebrew
+RUN rpm-ostree install \
+    bison byacc cscope ctags curl cvs diffstat doxygen \
+    file flex gcc gcc-c++ gcc-fortran gettext git \
+    indent intltool libtool patch patchutils procps-ng \
+    rcs redhat-rpm-config subversion swig systemtap \
+  && \
+  rm -rf /tmp/* /var/* && \
+  ostree container commit
+
 # Install Visual Studio Code
 RUN rpm-ostree install \
     code \
