@@ -8,7 +8,7 @@ on:
     branches:
       - main
   schedule:
-    - cron: "0 6/12 * * *" # 6am & 6pm every day
+    - cron: "0 1,13 * * *" # 1am & 1pm every day
   workflow_dispatch:
 
 env:
@@ -20,7 +20,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        fedora-version: [38, 39]
+        fedora-version: [39]
     permissions:
       contents: read
       packages: write
@@ -93,7 +93,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        fedora-version: [38, 39]
+        fedora-version: [39]
         nvidia-version: [545]
         include:
           - nvidia-version: 545
