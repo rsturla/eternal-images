@@ -35,7 +35,7 @@ jobs:
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
 
       - name: Verify Base Image
-        uses: rsturla/eternal-main/.github/actions/verify-image@cosign-validate-action
+        uses: rsturla/eternal-main/.github/actions/verify-image@main
         with:
           image: '${{ env.IMAGE_REGISTRY }}/${{ env.BASE_IMAGE_NAME}}:${{ matrix.fedora-version }}-nvidia${{ matrix.nvidia-version }}'
 
@@ -118,7 +118,7 @@ jobs:
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
 
       - name: Verify Base Image
-        uses: rsturla/eternal-main/.github/actions/verify-image@cosign-validate-action
+        uses: rsturla/eternal-main/.github/actions/verify-image@main
         with:
           image: '${{ env.IMAGE_REGISTRY }}/${{ env.BASE_IMAGE_NAME}}:${{ matrix.fedora-version }}-nvidia${{ matrix.nvidia-version }}'
 
