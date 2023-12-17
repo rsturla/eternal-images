@@ -1,17 +1,20 @@
 [Unit]
-Description=A container running minio for S3-compatible filesystems
-After=local-fs.target
+Description=A minio server contaienr for local S3 compatible storage
+After=local-fs.target network-online.target
 
 [Container]
-Image=minio/minio:latest
+Image=docker.io/minio/minio:latest
 Exec=server --console-address ":9001"
 Environment=MINIO_ROOT_USER=admin
-Environment=MINIO_ROOT_PASSWORD=admin
+Environment=MINIO_ROOT_PASSWORD=password
 Environment=MINIO_VOLUMES=/data
-Volume=%h/.var/minio:/data:Z
+PublishPort=9000:9000
+PublishPort=9001:9001
+Volume=%h/.local/share/minio-data:/data:Z
 
 [Service]
 TimeoutStartSec=900
+ExecStartPre=-mkdir -p %h/.local/share/minio-data
 
 [Install]
 WantedBy=multi-user.target default.target
