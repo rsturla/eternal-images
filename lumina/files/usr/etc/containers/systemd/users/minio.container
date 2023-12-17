@@ -1,0 +1,17 @@
+[Unit]
+Description=A container running minio for S3-compatible filesystems
+After=local-fs.target
+
+[Container]
+Image=minio/minio:latest
+Exec=server --console-address ":9001"
+Environment=MINIO_ROOT_USER=admin
+Environment=MINIO_ROOT_PASSWORD=admin
+Environment=MINIO_VOLUMES=/data
+Volume=%h/.var/minio:/data:Z
+
+[Service]
+TimeoutStartSec=900
+
+[Install]
+WantedBy=multi-user.target default.target
