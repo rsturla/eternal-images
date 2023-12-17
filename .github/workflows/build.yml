@@ -29,9 +29,15 @@ jobs:
       TAGS: ""
       TAGS_CONCAT: ""
       IMAGE_NAME: eternal-linux/lumina
+      BASE_IMAGE_NAME: eternal-linux/main/silverblue
     steps:
       - name: Checkout
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+
+      - name: Verify Base Image
+        uses: rsturla/eternal-main/.github/actions/verify-image@main
+        with:
+          image: '${{ env.IMAGE_REGISTRY }}/${{ env.BASE_IMAGE_NAME}}:${{ matrix.fedora-version }}-nvidia${{ matrix.nvidia-version }}'
 
       - name: Generate Image Metadata
         if: github.event_name != 'pull_request'
@@ -106,9 +112,15 @@ jobs:
       TAGS: ""
       TAGS_CONCAT: ""
       IMAGE_NAME: eternal-linux/lumina
+      BASE_IMAGE_NAME: eternal-linux/main/silverblue
     steps:
       - name: Checkout
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+
+      - name: Verify Base Image
+        uses: rsturla/eternal-main/.github/actions/verify-image@main
+        with:
+          image: '${{ env.IMAGE_REGISTRY }}/${{ env.BASE_IMAGE_NAME}}:${{ matrix.fedora-version }}-nvidia${{ matrix.nvidia-version }}'
 
       - name: Generate Image Metadata
         if: github.event_name != 'pull_request'
