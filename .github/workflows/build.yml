@@ -38,7 +38,7 @@ jobs:
 
       - name: Verify Image
         run:
-          cosign verify --key https://raw.githubusercontent.com/rsturla/eternal-main/main/files/usr/etc/pki/containers/eternal-linux.pub ${{ env.IMAGE_REGISTRY }}/eternal-linux/main:${{ matrix.fedora-version }}
+          cosign verify --key https://raw.githubusercontent.com/rsturla/eternal-main/main/files/usr/etc/pki/containers/eternal-linux.pub ${{ env.IMAGE_REGISTRY }}/eternal-linux/main/silverblue:${{ matrix.fedora-version }}
         env:
           COSIGN_EXPERIMENTAL: false
 
