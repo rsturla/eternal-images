@@ -34,12 +34,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
 
-      - name: Setup Cosign
-        uses: sigstore/cosign-installer@v3.2.0
-
-      - name: Verify Image
-        run: |
-          cosign verify --key https://raw.githubusercontent.com/rsturla/eternal-main/main/files/usr/etc/pki/containers/eternal-linux.pub ${{ env.IMAGE_REGISTRY }}/${{ env.BASE_IMAGE_NAME}}:${{ matrix.fedora-version }}
+      - name: Verify Base Image
+        uses: rsturla/eternal-main/.github/actions/verify-image@cosign-validate-action
+        with:
+          image: '${{ env.IMAGE_REGISTRY }}/${{ env.BASE_IMAGE_NAME}}:${{ matrix.fedora-version }}-nvidia${{ matrix.nvidia-version }}'
 
       - name: Generate Image Metadata
         if: github.event_name != 'pull_request'
@@ -119,12 +117,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
 
-      - name: Setup Cosign
-        uses: sigstore/cosign-installer@v3.2.0
-
-      - name: Verify Image
-        run: |
-          cosign verify --key https://raw.githubusercontent.com/rsturla/eternal-main/main/files/usr/etc/pki/containers/eternal-linux.pub ${{ env.IMAGE_REGISTRY }}/${{ env.BASE_IMAGE_NAME}}:${{ matrix.fedora-version }}-nvidia${{ matrix.nvidia-version }}
+      - name: Verify Base Image
+        uses: rsturla/eternal-main/.github/actions/verify-image@cosign-validate-action
+        with:
+          image: '${{ env.IMAGE_REGISTRY }}/${{ env.BASE_IMAGE_NAME}}:${{ matrix.fedora-version }}-nvidia${{ matrix.nvidia-version }}'
 
       - name: Generate Image Metadata
         if: github.event_name != 'pull_request'
