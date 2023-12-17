@@ -33,6 +33,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
 
+      - name: Setup Cosign
+        uses: sigstore/cosign-installer@v3.2.0
+
+      - name: Verify Image
+        run:
+          cosign verify --key https://raw.githubusercontent.com/rsturla/eternal-main/main/files/usr/etc/pki/containers/eternal-linux.pub ${{ env.IMAGE_REGISTRY }}/eternal-linux/main:${{ matrix.fedora_version }}
+        env:
+          COSIGN_EXPERIMENTAL: false
+
       - name: Generate Image Metadata
         if: github.event_name != 'pull_request'
         shell: bash
