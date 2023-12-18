@@ -1,0 +1,17 @@
+[Unit]
+Description=A RedPanda console container
+After=network-online.target redpanda.service
+Requires=redpanda-server.service
+
+[Container]
+Image=docker.redpanda.com/redpandadata/console:latest
+Network=host
+PublishPort=8080:8080
+Environment=CONFIG_FILEPATH=/tmp/redpanda-console.yml
+Volume=./_config/redpanda-console.yml:/tmp/redpanda-console.yml:Z
+
+[Service]
+TimeoutStartSec=900
+
+[Install]
+WantedBy=multi-user.target

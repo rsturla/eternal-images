@@ -1,0 +1,22 @@
+[Unit]
+Description=A RedPanda (Kafka) single node cluster
+After=network-online.target
+
+[Container]
+Image=docker.redpanda.com/redpandadata/redpanda:latest
+ContainerName=redpanda-server
+Exec=redpanda start --overprovisioned --smp 1 --memory 1G --reserve-memory 0M --node-id 0 --check=false
+Network=bridge
+PublishPort=8081:8081
+PublishPort=8082:8082
+PublishPort=9092:9092
+PublishPort=9644:9644
+# Due to file permissions, I could not get RedPanda container to write to a volume
+#Volume=%h/.local/share/redpanda-data:/var/lib/redpanda/data:Z
+
+[Service]
+TimeoutStartSec=900
+#ExecStartPre=-mkdir -p %h/.local/share/redpanda-data
+
+[Install]
+WantedBy=multi-user.target
