@@ -1,11 +1,13 @@
 [Unit]
 Description=A RedPanda (Kafka) single node cluster
-After=local-fs.target network-online.target
+After=network-online.target redpanda-network.service
+Requires=redpanda-network.service
 
 [Container]
 Image=docker.redpanda.com/redpandadata/redpanda:latest
 Exec=redpanda start --overprovisioned --smp 1 --memory 1G --reserve-memory 0M --node-id 0 --check=false
 Network=bridge
+Network=redpanda
 PublishPort=8081:8081
 PublishPort=8082:8082
 PublishPort=9092:9092
