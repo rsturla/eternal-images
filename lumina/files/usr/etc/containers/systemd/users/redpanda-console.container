@@ -5,10 +5,11 @@ Requires=redpanda-server.service
 
 [Container]
 Image=docker.redpanda.com/redpandadata/console:latest
+ContainerName=redpanda-console
 Network=host
 PublishPort=8080:8080
 Environment=CONFIG_FILEPATH=/tmp/redpanda-console.yml
-Volume=./_config/redpanda-console.yml:/tmp/redpanda-console.yml:Z
+Volume=./_config/redpanda-console.yml:/tmp/redpanda-console.yml:ro
 
 [Service]
 TimeoutStartSec=900
