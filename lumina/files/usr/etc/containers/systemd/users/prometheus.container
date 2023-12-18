@@ -1,6 +1,7 @@
 [Unit]
 Description=A Prometheus container for collecting metrics
-After=network-online.target
+After=local-fs.target network-online.target prometheus-network.service
+Requires=prometheus-network.service
 
 [Container]
 Image=docker.io/prom/prometheus:latest
