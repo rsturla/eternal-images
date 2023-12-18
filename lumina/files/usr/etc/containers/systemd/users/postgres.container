@@ -1,0 +1,18 @@
+[Unit]
+Description=A Postgres container
+After=local-fs.target network-online.target
+
+[Container]
+Image=docker.io/library/postgres:16
+Environment=POSTGRES_USER=admin
+Environment=POSTGRES_PASSWORD=password
+Network=bridge
+PublishPort=5432:5432
+Volume=%h/.local/share/postgres-data:/var/lib/postgresql/data:Z
+
+[Service]
+TimeoutStartSec=900
+ExecStartPre=-mkdir -p %h/.local/share/postgres-data
+
+[Install]
+WantedBy=multi-user.target
