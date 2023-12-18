@@ -5,6 +5,7 @@ Requires=redpanda-server.service
 
 [Container]
 Image=docker.redpanda.com/redpandadata/console:latest
+ContainerName=redpanda-console
 Network=host
 PublishPort=8080:8080
 Environment=CONFIG_FILEPATH=/tmp/redpanda-console.yml
