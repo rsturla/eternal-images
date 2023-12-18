@@ -23,4 +23,4 @@ TimeoutStartSec=900
 ExecStartPre=-mkdir -p %h/.local/share/minio-data
 
 [Install]
-WantedBy=multi-user.target default.target
+WantedBy=multi-user.target
