@@ -1,7 +1,7 @@
 [Unit]
 Description=A RedPanda console container
 After=network-online.target redpanda.service
-Requires=redpanda-server.service
+Requires=redpanda.service
 
 [Container]
 Image=docker.redpanda.com/redpandadata/console:latest
