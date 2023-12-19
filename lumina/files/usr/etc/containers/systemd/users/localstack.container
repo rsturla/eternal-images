@@ -1,0 +1,18 @@
+[Unit]
+Description=A Localstack container for local development of AWS services
+After=local-fs.target network-online.target
+
+[Container]
+Image=docker.io/localstack/localstack:latest
+ContainerName=localstack
+Network=host
+PublishPort=4566:4566
+PublishPort=4510-4559:4510-4559
+Volume=%h/.local/share/localstack-data:/var/lib/localstack:Z
+
+[Service]
+TimeoutStartSec=900
+ExecStartPre=-mkdir -p %h/.local/share/localstack-data
+
+[Install]
+WantedBy=multi-user.target
