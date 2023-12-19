@@ -1,0 +1,18 @@
+[Unit]
+Description=A Keycloak container for identity and access management
+After=local-fs.target network-online.target
+
+[Container]
+Image=quay.io/keycloak/keycloak:latest
+ContainerName=keycloak
+Exec=start-dev
+Environment=KEYCLOAK_ADMIN=admin
+Environment=KEYCLOAK_ADMIN_PASSWORD=password
+Network=host
+PublishPort=8080:8080
+
+[Service]
+TimeoutStartSec=900
+
+[Install]
+WantedBy=multi-user.target
