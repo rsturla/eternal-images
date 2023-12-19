@@ -5,7 +5,7 @@ After=local-fs.target network-online.target
 [Container]
 Image=docker.io/localstack/localstack:latest
 ContainerName=localstack
-Network=bridge
+Network=host
 PublishPort=4566:4566
 PublishPort=4510-4559:4510-4559
 Volume=%h/.local/share/localstack-data:/var/lib/localstack:Z
