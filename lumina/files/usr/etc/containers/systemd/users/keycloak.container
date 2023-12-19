@@ -1,6 +1,6 @@
 [Unit]
 Description=A Keycloak container for identity and access management
-After=local-fs.target network-online.target
+After=network-online.target
 
 [Container]
 Image=quay.io/keycloak/keycloak:latest
