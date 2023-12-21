@@ -9,7 +9,7 @@ ContainerName=redpanda-console
 Environment=CONFIG_FILEPATH=/tmp/redpanda-console.yml
 Network=eternal.network
 PublishPort=8080:8080
-Volume=./_config/redpanda-console.yml:/tmp/redpanda-console.yml:ro
+Volume=./_config/redpanda-console.yml:/tmp/redpanda-console.yml:ro,Z
 
 [Service]
 TimeoutStartSec=900
