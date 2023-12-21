@@ -7,13 +7,12 @@ Image=docker.io/library/postgres:16
 ContainerName=postgres
 Environment=POSTGRES_USER=admin
 Environment=POSTGRES_PASSWORD=password
-Network=bridge
+Network=eternal.network
 PublishPort=5432:5432
-Volume=%h/.local/share/postgres-data:/var/lib/postgresql/data:Z
+Volume=postgres.volume:/var/lib/postgresql/data
 
 [Service]
 TimeoutStartSec=900
-ExecStartPre=-mkdir -p %h/.local/share/postgres-data
 
 [Install]
 WantedBy=multi-user.target

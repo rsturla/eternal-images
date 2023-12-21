@@ -8,7 +8,7 @@ ContainerName=keycloak
 Exec=start-dev
 Environment=KEYCLOAK_ADMIN=admin
 Environment=KEYCLOAK_ADMIN_PASSWORD=password
-Network=host
+Network=eternal.network
 PublishPort=8080:8080
 
 [Service]
