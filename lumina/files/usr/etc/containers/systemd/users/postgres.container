@@ -9,7 +9,7 @@ Environment=POSTGRES_USER=admin
 Environment=POSTGRES_PASSWORD=password
 Network=eternal.network
 PublishPort=5432:5432
-Volume=postgres.volume:/var/lib/postgresql/data
+Volume=postgres.volume:/var/lib/postgresql/data:Z
 
 [Service]
 TimeoutStartSec=900

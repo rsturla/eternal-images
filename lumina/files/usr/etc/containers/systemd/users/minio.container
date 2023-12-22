@@ -16,7 +16,7 @@ Environment=MINIO_PROMETHEUS_JOB_ID='minio-job'
 Network=eternal.network
 PublishPort=9000:9000
 PublishPort=9001:9001
-Volume=minio.volume:/data
+Volume=minio.volume:/data:Z
 
 [Service]
 TimeoutStartSec=900
