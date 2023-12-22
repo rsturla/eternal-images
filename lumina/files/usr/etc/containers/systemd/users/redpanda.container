@@ -5,7 +5,7 @@ After=network-online.target
 [Container]
 Image=docker.redpanda.com/redpandadata/redpanda:latest
 ContainerName=redpanda-server
-Exec=redpanda start --overprovisioned --smp 1 --memory 1G --reserve-memory 0M --node-id 0 --check=false
+Exec=redpanda start --overprovisioned --smp 1 --kafka-addr internal://redpanda-server:9092 --advertise-kafka-addr internal://redpanda-server:9092
 Network=eternal.network
 PublishPort=8081:8081
 PublishPort=8082:8082
