@@ -11,7 +11,7 @@ PublishPort=8081:8081
 PublishPort=8082:8082
 PublishPort=9092:9092
 PublishPort=9644:9644
-Volume=redpanda.volume:/var/lib/redpanda/data
+Volume=redpanda.volume:/var/lib/redpanda/data:Z
 
 [Service]
 TimeoutStartSec=900
