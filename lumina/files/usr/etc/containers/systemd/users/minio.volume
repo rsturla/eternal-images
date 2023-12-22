@@ -1,2 +1,2 @@
 [Volume]
-VolumeName=postgres-data
+VolumeName=minio-data
