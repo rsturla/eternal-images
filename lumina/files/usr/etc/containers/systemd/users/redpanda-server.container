@@ -1,0 +1,23 @@
+[Unit]
+Description=A RedPanda (Kafka) single node cluster
+After=network-online.target
+
+[Container]
+Image=docker.redpanda.com/redpandadata/redpanda:latest
+ContainerName=redpanda-server
+#Exec=redpanda start --overprovisioned --smp 1 --kafka-addr internal://0.0.0.0:9092,external://0.0.0.0:19092 --advertise-kafka-addr internal://redpanda-server:9092,external://localhost:9092 --pandaproxy-addr internal://0.0.0.0:8082,external://0.0.0.0:18082 --advertise-pandaproxy-addr internal://redpanda-server:8082,external://localhost:18082 --schema-registry-addr internal://0.0.0.0:8081,external://0.0.0.0:18081 --rpc-addr redpanda-server:33145 --advertise-rpc-addr redpanda-server:33145
+Exec=redpanda start --overprovisioned --smp 1 --config /etc/redpanda/redpanda.yaml
+Network=eternal.network
+PublishPort=8081:18081
+PublishPort=8082:18082
+PublishPort=9092:19092
+PublishPort=9644:9644
+Volume=redpanda.volume:/var/lib/redpanda/data:Z
+Volume=./_config/redpanda-server.yml:/etc/redpanda/redpanda.yaml:Z
+
+[Service]
+TimeoutStartSec=900
+
+[Install]
+WantedBy=multi-user.target
+Alias=redpanda.service
