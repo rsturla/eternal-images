@@ -18,3 +18,4 @@ TimeoutStartSec=900
 
 [Install]
 WantedBy=multi-user.target
+Alias=redpanda.service
