@@ -1,6 +1,6 @@
 [Unit]
 Description=A Localstack container for local development of AWS services
-After=local-fs.target network-online.target
+After=network-online.target
 
 [Container]
 Image=docker.io/localstack/localstack:latest
