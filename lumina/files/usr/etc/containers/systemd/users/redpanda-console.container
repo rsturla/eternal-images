@@ -1,6 +1,6 @@
 [Unit]
 Description=A RedPanda console container
-After=network-online.target redpanda-server.service
+After=local-fs.target network-online.target redpanda-server.service
 Requires=redpanda-server.service
 
 [Container]
