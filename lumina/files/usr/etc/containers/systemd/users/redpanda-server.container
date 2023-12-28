@@ -5,7 +5,7 @@ After=network-online.target
 [Container]
 Image=docker.redpanda.com/redpandadata/redpanda:latest
 ContainerName=redpanda-server
-Exec=start --config /etc/redpanda/config/redpanda-server.yml --mode dev-container
+Exec=start --config /etc/redpanda/config/redpanda-server.yml
 Network=eternal.network
 PublishPort=8081:18081
 PublishPort=8082:18082
