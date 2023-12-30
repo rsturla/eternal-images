@@ -5,7 +5,7 @@ ARG FEDORA_VERSION=${BASE_TAG}
 
 FROM golang:1.21 AS tc-redirect-tap-build
 
-RUN git clone https://github.com/awslabs/tc-redirect-tap.git --depth 1 /tmp/tc-redirect-tap && \
+RUN git clone "https://github.com/awslabs/tc-redirect-tap.git" --depth 1 /tmp/tc-redirect-tap && \
   cd /tmp/tc-redirect-tap && \
   GOOS=linux GOARCH=amd64 go build -o bin/tc-redirect-tap-amd64 ./cmd/tc-redirect-tap
 
@@ -63,13 +63,13 @@ RUN curl -Lo /tmp/starship.tar.gz "https://github.com/starship/starship/releases
   ostree container commit
 
 # Install Atuin Shell
-RUN curl -Lo /tmp/atuin.tgz $(curl https://api.github.com/repos/atuinsh/atuin/releases/latest | jq -r '.assets[] | select(.name| test("atuin-v.*-x86_64-unknown-linux-gnu.tar.gz$")).browser_download_url') && \
+RUN curl -Lo /tmp/atuin.tgz $(curl "https://api.github.com/repos/atuinsh/atuin/releases/latest" | jq -r '.assets[] | select(.name| test("atuin-v.*-x86_64-unknown-linux-gnu.tar.gz$")).browser_download_url') && \
   tar -xzf /tmp/atuin.tgz -C /tmp && \
   mv /tmp/atuin-v* /tmp/atuin && \
   install -c -m 0755 /tmp/atuin/atuin /usr/bin && \
   cp /tmp/atuin/completions/atuin.bash /usr/share/bash-completion/completions/atuin \
   && \
-  curl -Lo /tmp/bash-preexec.sh https://raw.githubusercontent.com/rcaloras/bash-preexec/master/bash-preexec.sh && \
+  curl -Lo /tmp/bash-preexec.sh "https://raw.githubusercontent.com/rcaloras/bash-preexec/master/bash-preexec.sh" && \
   cp /tmp/bash-preexec.sh /usr/etc/bashrc.d/bash-preexec.sh \
   && \
   rm -rf /tmp/* /var/* && \
@@ -109,12 +109,12 @@ RUN rpm-ostree install \
 
 # Install Firecracker and CNI plugins
 RUN release_url="https://github.com/firecracker-microvm/firecracker/releases" && \
-  LATEST=$(basename $(curl -fsSLI -o /dev/null -w %{url_effective} ${release_url}/latest)) && \
-  curl -L ${release_url}/download/${LATEST}/firecracker-${LATEST}-$(uname -m).tgz | tar -xz -C /tmp && \
+  LATEST=$(basename $(curl -fsSLI -o /dev/null -w %{url_effective} "${release_url}/latest")) && \
+  curl -L "${release_url}/download/${LATEST}/firecracker-${LATEST}-$(uname -m).tgz" | tar -xz -C /tmp && \
   install -c -m 0755 /tmp/release-${LATEST}-$(uname -m)/firecracker-${LATEST}-$(uname -m) /usr/bin/firecracker && \
   install -c -m 0755 /tmp/release-${LATEST}-$(uname -m)/jailer-${LATEST}-$(uname -m) /usr/bin/jailer \
   && \
-  curl -Lo /tmp/cni-plugins.tgz $(curl https://api.github.com/repos/containernetworking/plugins/releases/latest | jq -r '.assets[] | select(.name| test("cni-plugins-linux-amd64-v.*.tgz$")).browser_download_url') && \
+  curl -Lo /tmp/cni-plugins.tgz $(curl "https://api.github.com/repos/containernetworking/plugins/releases/latest" | jq -r '.assets[] | select(.name| test("cni-plugins-linux-amd64-v.*.tgz$")).browser_download_url') && \
   mkdir -p /tmp/cni-plugins && \
   tar -xzf /tmp/cni-plugins.tgz -C /tmp/cni-plugins && \
   mkdir -p /usr/cni/bin && \
@@ -125,19 +125,19 @@ RUN release_url="https://github.com/firecracker-microvm/firecracker/releases" &&
 
 # Install additional CLI apps
 COPY --from=tc-redirect-tap-build /tmp/tc-redirect-tap/bin/tc-redirect-tap-amd64 /usr/cni/bin/tc-redirect-tap
-COPY --from=cgr.dev/chainguard/ko:latest /usr/bin/ko /usr/bin/ko
-COPY --from=cgr.dev/chainguard/kubectl:latest /usr/bin/kubectl /usr/bin/kubectl
-RUN curl -Lo /tmp/kind "https://github.com/kubernetes-sigs/kind/releases/latest/download/kind-$(uname)-amd64" && \
-  install -c -m 0755 /tmp/kind /usr/bin/kind \
-  && \
-  rpm-ostree install $(curl https://api.github.com/repos/charmbracelet/vhs/releases/latest | jq -r '.assets[] | select(.name| test(".*.x86_64.rpm$")).browser_download_url') && \
-  curl -Lo /tmp/ttyd https://github.com/tsl0922/ttyd/releases/latest/download/ttyd.x86_64 && \
-  install -c -m 0755 /tmp/ttyd /usr/bin/ttyd \
-  && \
-  curl -Lo /tmp/devbox https://releases.jetpack.io/devbox && \
+RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s "https://dl.k8s.io/release/stable.txt")/bin/linux/amd64/kubectl" && \
+  curl -Lo /tmp/kind "https://github.com/kubernetes-sigs/kind/releases/latest/download/kind-$(uname)-amd64" && \
+  curl -Lo /tmp/ttyd "https://github.com/tsl0922/ttyd/releases/latest/download/ttyd.x86_64" && \
+  curl -Lo /tmp/devbox "https://releases.jetpack.io/devbox" && \
+  install -c -m 0755 /tmp/kubectl /usr/bin/kubectl && \
+  install -c -m 0755 /tmp/kind /usr/bin/kind && \
+  install -c -m 0755 /tmp/ttyd /usr/bin/ttyd && \
   install -c -m 0755 /tmp/devbox /usr/bin/devbox \
   && \
-  rpm-ostree install gh && \
+  rpm-ostree install \
+    $(curl "https://api.github.com/repos/charmbracelet/vhs/releases/latest" | jq -r '.assets[] | select(.name| test(".*.x86_64.rpm$")).browser_download_url') \
+    gh \
+  && \
   rm -f /etc/yum.repos.d/github.repo \
   && \
   rm -rf /tmp/* /var/* && \
