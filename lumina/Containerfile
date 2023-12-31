@@ -125,7 +125,7 @@ RUN release_url="https://github.com/firecracker-microvm/firecracker/releases" &&
 
 # Install additional CLI apps
 COPY --from=tc-redirect-tap-build /tmp/tc-redirect-tap/bin/tc-redirect-tap-amd64 /usr/cni/bin/tc-redirect-tap
-COPY --from=cgr.dev/chainguard/helm:latest /usr/bin/ko /usr/bin/helm
+COPY --from=cgr.dev/chainguard/helm:latest /usr/bin/helm /usr/bin/helm
 COPY --from=cgr.dev/chainguard/kubectl:latest /usr/bin/kubectl /usr/bin/kubectl
 RUN curl -Lo /tmp/kind "https://github.com/kubernetes-sigs/kind/releases/latest/download/kind-$(uname)-amd64" && \
   install -c -m 0755 /tmp/kind /usr/bin/kind \
