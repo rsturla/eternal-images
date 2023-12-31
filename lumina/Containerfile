@@ -125,10 +125,13 @@ RUN release_url="https://github.com/firecracker-microvm/firecracker/releases" &&
 
 # Install additional CLI apps
 COPY --from=tc-redirect-tap-build /tmp/tc-redirect-tap/bin/tc-redirect-tap-amd64 /usr/cni/bin/tc-redirect-tap
-COPY --from=cgr.dev/chainguard/ko:latest /usr/bin/ko /usr/bin/ko
+COPY --from=cgr.dev/chainguard/helm:latest /usr/bin/helm /usr/bin/helm
 COPY --from=cgr.dev/chainguard/kubectl:latest /usr/bin/kubectl /usr/bin/kubectl
 RUN curl -Lo /tmp/kind "https://github.com/kubernetes-sigs/kind/releases/latest/download/kind-$(uname)-amd64" && \
   install -c -m 0755 /tmp/kind /usr/bin/kind \
+  && \
+  curl -Lo /tmp/vcluster "https://github.com/loft-sh/vcluster/releases/latest/download/vcluster-linux-amd64" && \
+  install -c -m 0755 /tmp/vcluster /usr/bin/vcluster \
   && \
   rpm-ostree install $(curl https://api.github.com/repos/charmbracelet/vhs/releases/latest | jq -r '.assets[] | select(.name| test(".*.x86_64.rpm$")).browser_download_url') && \
   curl -Lo /tmp/ttyd https://github.com/tsl0922/ttyd/releases/latest/download/ttyd.x86_64 && \
