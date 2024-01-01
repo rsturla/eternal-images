@@ -102,24 +102,8 @@ jobs:
         with:
           image: '${{ env.IMAGE_REGISTRY }}/${{ env.BASE_IMAGE_NAME}}:${{ matrix.fedora-version }}-nvidia${{ matrix.nvidia-version }}'
 
-      - name: Generate Image Metadata
-        if: github.event_name != 'pull_request'
-        shell: bash
-        run: |
-          TAGS=()
-
-          TAGS+=("${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.fedora-version }}-nvidia${{ matrix.nvidia-version }}")
-          TAGS+=("${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:$(git rev-parse --short HEAD)-${{ matrix.fedora-version }}-nvidia${{ matrix.nvidia-version }}")
-          if [[ "${{ matrix.nvidia-is-stable }}" == "true" ]]; then
-            TAGS+=("${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.fedora-version }}-nvidia")
-            TAGS+=("${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:$(git rev-parse --short HEAD)-${{ matrix.fedora-version }}-nvidia")
-          fi
-
-          echo "TAGS=${TAGS[*]}" >> $GITHUB_ENV
-          echo "TAGS_CONCAT=$(IFS=, ; echo "${TAGS[*]}")" >> $GITHUB_ENV
-
       - name: Generate Image Tags
-        uses: ./.github/actions/generate-image-tags
+        uses: rsturla/eternal-main/.github/actions/generate-image-tags@main
         id: generate-image-tags
         with:
           image-name: ${{ env.IMAGE_REGISTRY}}/${{ env.IMAGE_NAME }}
