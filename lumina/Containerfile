@@ -102,7 +102,7 @@ RUN rpm-ostree install \
   && \
   rm -f /etc/yum.repos.d/docker-ce.repo \
   && \
-  systemctl enable docker.service \
+  systemctl enable docker.socket \
   && \
   rm -rf /var/* /tmp/* && \
   ostree container commit
