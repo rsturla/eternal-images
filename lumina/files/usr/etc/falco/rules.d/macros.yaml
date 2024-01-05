@@ -1,0 +1,5 @@
+- macro: user_known_read_sensitive_files_activities
+  condition: >
+    (fd.name startswith /etc/pam.d/ and proc.name=gdm-session-wor and user.name=root) or
+    (fd.name startswith /etc/shadow and proc.name=systemd-userwor and user.name=root) or
+    (fd.name startswith /etc/sudoers)
