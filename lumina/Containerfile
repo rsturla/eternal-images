@@ -16,8 +16,8 @@ COPY files/etc/yum.repos.d /etc/yum.repos.d
 COPY files/usr /usr
 
 # Configure Just
-RUN echo "!include /usr/share/eternal/lumina.just" >> /usr/share/eternal/justfile && \
-  echo "!include /usr/share/eternal/lumina-setup.just" >> /usr/share/eternal/justfile
+RUN echo "import '/usr/share/eternal/lumina.just'" >> /usr/share/eternal/justfile && \
+  echo "import '/usr/share/eternal/lumina-setup.just'" >> /usr/share/eternal/justfile
 
 # Configure file permissions
 RUN chmod +x /usr/etc/eternal/setup-manager/system.d/* && \
