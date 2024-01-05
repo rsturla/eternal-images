@@ -1,0 +1,15 @@
+- list: trusted_executables
+  items: [/usr/bin/rpm-ostree]
+
+# Warning Read monitored file via directory traversal (file=/etc/dnf/vars fileraw=/proc/self/fd/28/./../../../../../../../etc/dnf/vars gparent=<NA>
+# ggparent=<NA> gggparent=<NA> evt_type=openat user=root user_uid=0 user_loginuid=-1 process=pool-spawner proc_exepath=/usr/bin/rpm-ostree parent=systemd
+# command=pool-spawner start-daemon terminal=0 exe_flags=O_DIRECTORY|O_NONBLOCK|O_RDONLY|O_CLOEXEC|O_TMPFILE container_id=host container_name=host)
+- rule: Directory traversal monitored file read
+  condition: >
+    (open_read or open_file_failed)
+    and (etc_dir or user_ssh_directory or
+         fd.name startswith /root/.ssh or
+         fd.name contains "id_rsa")
+    and directory_traversal
+    and not proc.pname in (shell_binaries)
+    and not proc.exepath in (known_binaries)
