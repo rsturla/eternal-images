@@ -31,8 +31,9 @@ RUN curl "https://api.github.com/repos/falcosecurity/falco/releases" -o /tmp/fal
   tar -xzf /tmp/falco.tar.gz -C /tmp && \
   cp -R /tmp/falco-${FALCO_VERSION}-x86_64/* / \
   && \
-  curl -Lo /etc/systemd/system/falco-modern-bpf.service https://raw.githubusercontent.com/falcosecurity/falco/${FALCO_VERSION}/scripts/systemd/falco-modern-bpf.service && \
-  curl -Lo /etc/systemd/system/falcoctl-artifact-follow.service https://raw.githubusercontent.com/falcosecurity/falco/${FALCO_VERSION}/scripts/systemd/falcoctl-artifact-follow.service \
+  GITHUB_RAW_URL="https://raw.githubusercontent.com/falcosecurity/falco/${FALCO_VERSION}" && \
+  curl -Lo /etc/systemd/system/falco-modern-bpf.service ${GITHUB_RAW_URL}/scripts/systemd/falco-modern-bpf.service && \
+  curl -Lo /etc/systemd/system/falcoctl-artifact-follow.service ${GITHUB_RAW_URL}/scripts/systemd/falcoctl-artifact-follow.service \
   && \
   systemctl enable falco-modern-bpf.service \
   && \
