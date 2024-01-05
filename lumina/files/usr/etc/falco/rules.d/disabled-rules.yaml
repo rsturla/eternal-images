@@ -1,0 +1,2 @@
+- rule: Directory traversal monitored file read
+  enabled: false
