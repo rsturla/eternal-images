@@ -141,3 +141,16 @@ jobs:
           digest: ${{ steps.build.outputs.digest }}
           private-key: ${{ secrets.ETERNAL_LINUX_SIGNING_KEY }}
           private-key-passphrase: ${{ secrets.ETERNAL_LINUX_SIGNING_KEY_PASSPHRASE }}
+
+  check:
+    needs: [build-lumina, build-lumina-nvidia]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+
+      - name: Check Job Status
+        uses: rsturla/eternal-main/.github/actions/check-jobs-success@main
+        with:
+          jobs: ${{ toJSON(needs) }}
