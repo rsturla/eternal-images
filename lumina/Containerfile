@@ -54,12 +54,11 @@ RUN rpm-ostree install \
   rm -rf /tmp/* /var/* && \
   ostree container commit
 
-# Remove unwanted packages
-RUN rpm-ostree override remove \
-    gnome-tour \
-    gnome-extensions-app \
-    gnome-system-monitor \
-    yelp \
+# Hide unwanted packages
+RUN echo "Hidden=true" >> /usr/share/applications/gnome-tour.desktop && \
+  echo "Hidden=true" >> /usr/share/applications/gnome-extensions-app.desktop && \
+  echo "Hidden=true" >> /usr/share/applications/gnome-system-monitor.desktop && \
+  echo "Hidden=true" >> /usr/share/applications/yelp.desktop \
   && \
   rm -rf /tmp/* /var/* && \
   ostree container commit
