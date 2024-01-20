@@ -60,11 +60,6 @@ RUN wget https://copr.fedorainfracloud.org/coprs/dsommers/openvpn3-devsnapshots/
     openvpn3-client \
   rm -f /etc/yum.repos.d/openvpn3-devsnapshots.repo \
   && \
-  wget https://copr.fedorainfracloud.org/coprs/dsommers/openvpn3/repo/fedora-$(rpm -E %fedora)/dsommers-openvpn3-fedora-$(rpm -E %fedora).repo -O /etc/yum.repos.d/openvpn3.repo && \
-  rpm-ostree install \
-    kmod-ovpn-dco && \
-  rm -f /etc/yum.repos.d/openvpn3.repo \
-  && \
   rm -rf /tmp/* /var/* && \
   ostree container commit
 
