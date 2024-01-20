@@ -57,7 +57,7 @@ RUN systemctl unmask dconf-update.service && \
 # Install OpenVPN3
 RUN wget https://copr.fedorainfracloud.org/coprs/dsommers/openvpn3-devsnapshots/repo/fedora-$(rpm -E %fedora)/dsommers-openvpn3-devsnapshots-fedora-$(rpm -E %fedora).repo -O /etc/yum.repos.d/openvpn3-devsnapshots.repo && \
   rpm-ostree install \
-    openvpn3-client \
+    openvpn3-client && \
   rm -f /etc/yum.repos.d/openvpn3-devsnapshots.repo \
   && \
   rm -rf /tmp/* /var/* && \
