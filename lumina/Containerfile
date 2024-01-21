@@ -162,3 +162,9 @@ RUN curl -Lo /tmp/kind "https://github.com/kubernetes-sigs/kind/releases/latest/
   && \
   rm -rf /tmp/* /var/* && \
   ostree container commit
+
+# Disable all RPM Fusion repos
+RUN sed -i 's/enabled=1/enabled=0/g' /etc/yum.repos.d/rpmfusion-{free,nonfree}{,-updates,-updates-testing}.repo \
+  && \
+  rm -rf /tmp/* /var/* && \
+  ostree container commit
