@@ -20,4 +20,4 @@ jobs:
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
 
       - name: Validate Renovate Configuration
-        uses: rsturla/eternal-main/.github/actions/validate-renovate-config
+        uses: rsturla/eternal-main/.github/actions/validate-renovate-config@main
