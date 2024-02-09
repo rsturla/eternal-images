@@ -33,7 +33,7 @@ jobs:
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
 
       - name: Optimize GHA Storage
-        uses: ./.github/actions/optimise-gha-storage
+        uses: rsturla/eternal-main/.github/actions/optimise-gha-storage@main
 
       - name: Verify Base Image
         uses: rsturla/eternal-main/.github/actions/verify-image@main
@@ -120,7 +120,7 @@ jobs:
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
 
       - name: Optimize GHA Storage
-        uses: ./.github/actions/optimise-gha-storage
+        uses: rsturla/eternal-main/.github/actions/optimise-gha-storage@main
 
       - name: Verify Base Image
         uses: rsturla/eternal-main/.github/actions/verify-image@main
