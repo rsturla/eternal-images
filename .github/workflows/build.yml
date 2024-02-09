@@ -32,6 +32,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
 
+      - name: Optimize GHA Storage
+        uses: ./.github/actions/optimise-gha-storage
+
       - name: Verify Base Image
         uses: rsturla/eternal-main/.github/actions/verify-image@main
         with:
@@ -57,14 +60,33 @@ jobs:
 
       - name: Build Image
         id: build
-        uses: docker/build-push-action@4a13e500e55cf31b7a5d59a38ab2040ab0f42f56 # v5
+        uses: redhat-actions/buildah-build@b4dc19b4ba891854660ab1f88a097d45aa158f76 # v2
         with:
           context: lumina/.
-          file: lumina/Containerfile
-          push: true
-          tags: ${{ steps.generate-image-tags.outputs.names-full-concat }}
+          containerfiles: |
+            lumina/Containerfile
+          image: ${{ env.IMAGE_NAME }}
+          tags: |
+            ${{ steps.generate-image-tags.outputs.tags }}
           build-args: |
             BASE_TAG=${{ matrix.fedora-version }}
+
+      - name: Push Image
+        id: push
+        uses: redhat-actions/push-to-registry@9986a6552bc4571882a4a67e016b17361412b4df # v2
+        with:
+          image: ${{ steps.build.outputs.image }}
+          tags: ${{ steps.build.outputs.tags }}
+          registry: ${{ env.IMAGE_REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Login to GHCR
+        uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
 
       - name: Sign Image
         uses: rsturla/eternal-main/.github/actions/sign-image@main
@@ -97,6 +119,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
 
+      - name: Optimize GHA Storage
+        uses: ./.github/actions/optimise-gha-storage
+
       - name: Verify Base Image
         uses: rsturla/eternal-main/.github/actions/verify-image@main
         with:
@@ -112,6 +137,29 @@ jobs:
           nvidia-driver-version: ${{ matrix.nvidia-version }}
           nvidia-driver-is-stable: ${{ matrix.nvidia-is-stable }}
 
+      - name: Build Image
+        id: build
+        uses: redhat-actions/buildah-build@b4dc19b4ba891854660ab1f88a097d45aa158f76 # v2
+        with:
+          context: lumina/.
+          containerfiles: |
+            lumina/Containerfile
+          image: ${{ env.IMAGE_NAME }}
+          tags: |
+            ${{ steps.generate-image-tags.outputs.tags }}
+          build-args: |
+            BASE_TAG=${{ matrix.fedora-version }}-nvidia${{ matrix.nvidia-version }}
+
+      - name: Push Image
+        id: push
+        uses: redhat-actions/push-to-registry@9986a6552bc4571882a4a67e016b17361412b4df # v2
+        with:
+          image: ${{ steps.build.outputs.image }}
+          tags: ${{ steps.build.outputs.tags }}
+          registry: ${{ env.IMAGE_REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Login to GHCR
         uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3
         with:
@@ -119,26 +167,12 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ github.token }}
 
-      - name: Setup Docker Buildx
-        uses: docker/setup-buildx-action@f95db51fddba0c2d1ec667646a06c2ce06100226 # v3
-
-      - name: Build Image
-        id: build
-        uses: docker/build-push-action@4a13e500e55cf31b7a5d59a38ab2040ab0f42f56 # v5
-        with:
-          context: lumina/.
-          file: lumina/Containerfile
-          push: true
-          tags: ${{ steps.generate-image-tags.outputs.names-full-concat }}
-          build-args: |
-            BASE_TAG=${{ matrix.fedora-version }}-nvidia${{ matrix.nvidia-version }}
-
       - name: Sign Image
         uses: rsturla/eternal-main/.github/actions/sign-image@main
         if: github.event_name != 'pull_request'
         with:
           registry: ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}
-          digest: ${{ steps.build.outputs.digest }}
+          digest: ${{ steps.push.outputs.digest }}
           private-key: ${{ secrets.ETERNAL_LINUX_SIGNING_KEY }}
           private-key-passphrase: ${{ secrets.ETERNAL_LINUX_SIGNING_KEY_PASSPHRASE }}
 
