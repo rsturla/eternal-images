@@ -1,0 +1,22 @@
+# The rpm-ostree updates use relative paths to /etc/dnf/vars and /etc/yum/vars for some unknown reason.  This is a false positive.
+- list: trusted_executables
+  items: [/usr/bin/rpm-ostree]
+
+# Copied from /etc/falco/falco_rules.yaml and modified to ignore the rpm-ostree false positive
+- rule: Directory traversal monitored file read
+  desc: >
+    Web applications can be vulnerable to directory traversal attacks that allow accessing files outside of the web app's root directory
+    (e.g. Arbitrary File Read bugs). System directories like /etc are typically accessed via absolute paths. Access patterns outside of this
+    (here path traversal) can be regarded as suspicious. This rule includes failed file open attempts.
+  condition: >
+    (open_read or open_file_failed)
+    and (etc_dir or user_ssh_directory or
+         fd.name startswith /root/.ssh or
+         fd.name contains "id_rsa")
+    and directory_traversal
+    and not proc.pname in (shell_binaries)
+    and not proc.exepath in (trusted_executables)
+  enabled: true
+  output: Read monitored file via directory traversal (file=%fd.name fileraw=%fd.nameraw gparent=%proc.aname[2] ggparent=%proc.aname[3] gggparent=%proc.aname[4] evt_type=%evt.type user=%user.name user_uid=%user.uid user_loginuid=%user.loginuid process=%proc.name proc_exepath=%proc.exepath parent=%proc.pname command=%proc.cmdline terminal=%proc.tty exe_flags=%evt.arg.flags %container.info)
+  priority: WARNING
+  tags: [maturity_stable, host, container, filesystem, mitre_credential_access, T1555]

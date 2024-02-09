@@ -1,7 +1,7 @@
 setup:
-  @just --unstable setup-docker
-  @just --unstable setup-rpms
-  @just --unstable setup-homebrew
+  @just setup-docker
+  @just setup-rpms
+  @just setup-homebrew
   @echo "Setup complete!"
   @echo "Please reboot to complete the setup process."
 

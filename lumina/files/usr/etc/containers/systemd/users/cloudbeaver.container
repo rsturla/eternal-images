@@ -1,0 +1,16 @@
+[Unit]
+Description=A CloudBeaver container
+After=local-fs.target network-online.target
+
+[Container]
+Image=docker.io/dbeaver/cloudbeaver:latest
+ContainerName=cloudbeaver
+Network=eternal.network
+PublishPort=8978:8978
+Volume=./_config/cloudbeaver-config.conf:/opt/cloudbeaver/conf/cloudbeaver.conf:ro
+
+[Service]
+TimeoutStartSec=900
+
+[Install]
+WantedBy=multi-user.target

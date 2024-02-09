@@ -16,12 +16,29 @@ COPY files/etc/yum.repos.d /etc/yum.repos.d
 COPY files/usr /usr
 
 # Configure Just
-RUN echo "!include /usr/share/eternal/lumina.just" >> /usr/share/eternal/justfile && \
-  echo "!include /usr/share/eternal/lumina-setup.just" >> /usr/share/eternal/justfile
+RUN echo "import '/usr/share/eternal/lumina.just'" >> /usr/share/eternal/justfile && \
+  echo "import '/usr/share/eternal/lumina-setup.just'" >> /usr/share/eternal/justfile
 
 # Configure file permissions
 RUN chmod +x /usr/etc/eternal/setup-manager/system.d/* && \
   chmod +x /usr/etc/eternal/setup-manager/user.d/*
+
+# Install Falco security
+RUN curl "https://api.github.com/repos/falcosecurity/falco/releases" -o /tmp/falco-data.json && \
+  FALCO_VERSION=$(cat /tmp/falco-data.json | jq -r '.[] | select(.draft == false and .prerelease == false) | .tag_name' | head -n 1) && \
+  echo "Installing Falco version ${FALCO_VERSION}" && \
+  curl -Lo /tmp/falco.tar.gz "https://download.falco.org/packages/bin/x86_64/falco-${FALCO_VERSION}-x86_64.tar.gz" && \
+  tar -xzf /tmp/falco.tar.gz -C /tmp && \
+  cp -R /tmp/falco-${FALCO_VERSION}-x86_64/* / \
+  && \
+  GITHUB_RAW_URL="https://raw.githubusercontent.com/falcosecurity/falco/${FALCO_VERSION}" && \
+  curl -Lo /etc/systemd/system/falco-modern-bpf.service ${GITHUB_RAW_URL}/scripts/systemd/falco-modern-bpf.service && \
+  curl -Lo /etc/systemd/system/falcoctl-artifact-follow.service ${GITHUB_RAW_URL}/scripts/systemd/falcoctl-artifact-follow.service \
+  && \
+  systemctl enable falco-modern-bpf.service \
+  && \
+  rm -rf /tmp/* /var/* && \
+  ostree container commit
 
 # Configure Gnome Shell Extensions and themes
 RUN rpm-ostree install \
@@ -102,7 +119,7 @@ RUN rpm-ostree install \
   && \
   rm -f /etc/yum.repos.d/docker-ce.repo \
   && \
-  systemctl enable docker.service \
+  systemctl enable docker.socket \
   && \
   rm -rf /var/* /tmp/* && \
   ostree container commit
@@ -125,12 +142,15 @@ RUN release_url="https://github.com/firecracker-microvm/firecracker/releases" &&
 
 # Install additional CLI apps
 COPY --from=tc-redirect-tap-build /tmp/tc-redirect-tap/bin/tc-redirect-tap-amd64 /usr/cni/bin/tc-redirect-tap
-COPY --from=cgr.dev/chainguard/ko:latest /usr/bin/ko /usr/bin/ko
+COPY --from=cgr.dev/chainguard/helm:latest /usr/bin/helm /usr/bin/helm
 COPY --from=cgr.dev/chainguard/kubectl:latest /usr/bin/kubectl /usr/bin/kubectl
 RUN curl -Lo /tmp/kind "https://github.com/kubernetes-sigs/kind/releases/latest/download/kind-$(uname)-amd64" && \
   install -c -m 0755 /tmp/kind /usr/bin/kind \
   && \
   rpm-ostree install $(curl https://api.github.com/repos/wagoodman/dive/releases/latest | jq -r '.assets[] | select(.name| test(".*_linux_amd64.rpm$")).browser_download_url') \
+  && \
+  curl -Lo /tmp/vcluster "https://github.com/loft-sh/vcluster/releases/latest/download/vcluster-linux-amd64" && \
+  install -c -m 0755 /tmp/vcluster /usr/bin/vcluster \
   && \
   rpm-ostree install $(curl https://api.github.com/repos/charmbracelet/vhs/releases/latest | jq -r '.assets[] | select(.name| test(".*.x86_64.rpm$")).browser_download_url') && \
   curl -Lo /tmp/ttyd https://github.com/tsl0922/ttyd/releases/latest/download/ttyd.x86_64 && \
@@ -141,6 +161,12 @@ RUN curl -Lo /tmp/kind "https://github.com/kubernetes-sigs/kind/releases/latest/
   && \
   rpm-ostree install gh && \
   rm -f /etc/yum.repos.d/github.repo \
+  && \
+  rm -rf /tmp/* /var/* && \
+  ostree container commit
+
+# Disable all RPM Fusion repos
+RUN sed -i 's/enabled=1/enabled=0/g' /etc/yum.repos.d/rpmfusion-{free,nonfree}{,-updates,-updates-testing}.repo \
   && \
   rm -rf /tmp/* /var/* && \
   ostree container commit

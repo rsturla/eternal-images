@@ -26,8 +26,6 @@ jobs:
       packages: write
       id-token: write
     env:
-      TAGS: ""
-      TAGS_CONCAT: ""
       IMAGE_NAME: eternal-linux/lumina
       BASE_IMAGE_NAME: eternal-linux/main/silverblue
     steps:
@@ -39,29 +37,13 @@ jobs:
         with:
           image: '${{ env.IMAGE_REGISTRY }}/${{ env.BASE_IMAGE_NAME}}:${{ matrix.fedora-version }}-nvidia${{ matrix.nvidia-version }}'
 
-      - name: Generate Image Metadata
-        if: github.event_name != 'pull_request'
-        shell: bash
-        run: |
-          TAGS=()
-
-          TAGS+=("${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.fedora-version }}")
-          TAGS+=("${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:$(git rev-parse --short HEAD)-${{ matrix.fedora-version }}")
-
-          echo "TAGS=${TAGS[*]}" >> $GITHUB_ENV
-          echo "TAGS_CONCAT=$(IFS=, ; echo "${TAGS[*]}")" >> $GITHUB_ENV
-
-      - name: Generate Image Metadata (Pull Request)
-        if: github.event_name == 'pull_request'
-        shell: bash
-        run: |
-          TAGS=()
-
-          TAGS+=("${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:pr${{ github.event.number }}-${{ matrix.fedora-version }}")
-          TAGS+=("${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:pr${{ github.event.number }}-$(git rev-parse --short HEAD)-${{ matrix.fedora-version }}")
-
-          echo "TAGS=${TAGS[*]}" >> $GITHUB_ENV
-          echo "TAGS_CONCAT=$(IFS=, ; echo "${TAGS[*]}")" >> $GITHUB_ENV
+      - name: Generate Image Tags
+        uses: rsturla/eternal-main/.github/actions/generate-image-tags@main
+        id: generate-image-tags
+        with:
+          image-name: ${{ env.IMAGE_REGISTRY}}/${{ env.IMAGE_NAME }}
+          major-version: ${{ matrix.fedora-version }}
+          is-release: ${{ github.event_name != 'pull_request' }}
 
       - name: Login to GHCR
         uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3
@@ -80,7 +62,7 @@ jobs:
           context: lumina/.
           file: lumina/Containerfile
           push: true
-          tags: ${{ env.TAGS_CONCAT }}
+          tags: ${{ steps.generate-image-tags.outputs.names-full-concat }}
           build-args: |
             BASE_TAG=${{ matrix.fedora-version }}
 
@@ -109,8 +91,6 @@ jobs:
       packages: write
       id-token: write
     env:
-      TAGS: ""
-      TAGS_CONCAT: ""
       IMAGE_NAME: eternal-linux/lumina
       BASE_IMAGE_NAME: eternal-linux/main/silverblue
     steps:
@@ -122,37 +102,15 @@ jobs:
         with:
           image: '${{ env.IMAGE_REGISTRY }}/${{ env.BASE_IMAGE_NAME}}:${{ matrix.fedora-version }}-nvidia${{ matrix.nvidia-version }}'
 
-      - name: Generate Image Metadata
-        if: github.event_name != 'pull_request'
-        shell: bash
-        run: |
-          TAGS=()
-
-          TAGS+=("${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.fedora-version }}-nvidia${{ matrix.nvidia-version }}")
-          TAGS+=("${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:$(git rev-parse --short HEAD)-${{ matrix.fedora-version }}-nvidia${{ matrix.nvidia-version }}")
-          if [[ "${{ matrix.nvidia-is-stable }}" == "true" ]]; then
-            TAGS+=("${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.fedora-version }}-nvidia")
-            TAGS+=("${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:$(git rev-parse --short HEAD)-${{ matrix.fedora-version }}-nvidia")
-          fi
-
-          echo "TAGS=${TAGS[*]}" >> $GITHUB_ENV
-          echo "TAGS_CONCAT=$(IFS=, ; echo "${TAGS[*]}")" >> $GITHUB_ENV
-
-      - name: Generate Image Metadata (Pull Request)
-        if: github.event_name == 'pull_request'
-        shell: bash
-        run: |
-          TAGS=()
-
-          TAGS+=("${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:pr${{ github.event.number }}-${{ matrix.fedora-version }}-nvidia${{ matrix.nvidia-version }}")
-          TAGS+=("${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:pr${{ github.event.number }}-$(git rev-parse --short HEAD)-${{ matrix.fedora-version }}-nvidia${{ matrix.nvidia-version }}")
-          if [[ "${{ matrix.nvidia-is-stable }}" == "true" ]]; then
-            TAGS+=("${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:pr${{ github.event.number }}-${{ matrix.fedora-version }}-nvidia")
-            TAGS+=("${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:pr${{ github.event.number }}-$(git rev-parse --short HEAD)-${{ matrix.fedora-version }}-nvidia")
-          fi
-
-          echo "TAGS=${TAGS[*]}" >> $GITHUB_ENV
-          echo "TAGS_CONCAT=$(IFS=, ; echo "${TAGS[*]}")" >> $GITHUB_ENV
+      - name: Generate Image Tags
+        uses: rsturla/eternal-main/.github/actions/generate-image-tags@main
+        id: generate-image-tags
+        with:
+          image-name: ${{ env.IMAGE_REGISTRY}}/${{ env.IMAGE_NAME }}
+          major-version: ${{ matrix.fedora-version }}
+          is-release: ${{ github.event_name != 'pull_request' }}
+          nvidia-driver-version: ${{ matrix.nvidia-version }}
+          nvidia-driver-is-stable: ${{ matrix.nvidia-is-stable }}
 
       - name: Login to GHCR
         uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3
@@ -171,7 +129,7 @@ jobs:
           context: lumina/.
           file: lumina/Containerfile
           push: true
-          tags: ${{ env.TAGS_CONCAT }}
+          tags: ${{ steps.generate-image-tags.outputs.names-full-concat }}
           build-args: |
             BASE_TAG=${{ matrix.fedora-version }}-nvidia${{ matrix.nvidia-version }}
 
@@ -183,3 +141,16 @@ jobs:
           digest: ${{ steps.build.outputs.digest }}
           private-key: ${{ secrets.ETERNAL_LINUX_SIGNING_KEY }}
           private-key-passphrase: ${{ secrets.ETERNAL_LINUX_SIGNING_KEY_PASSPHRASE }}
+
+  check:
+    needs: [build-lumina, build-lumina-nvidia]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+
+      - name: Check Job Status
+        uses: rsturla/eternal-main/.github/actions/check-jobs-success@main
+        with:
+          jobs: ${{ toJSON(needs) }}
