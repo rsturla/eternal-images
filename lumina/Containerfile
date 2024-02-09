@@ -141,6 +141,8 @@ COPY --from=cgr.dev/chainguard/kubectl:latest /usr/bin/kubectl /usr/bin/kubectl
 RUN curl -Lo /tmp/kind "https://github.com/kubernetes-sigs/kind/releases/latest/download/kind-$(uname)-amd64" && \
   install -c -m 0755 /tmp/kind /usr/bin/kind \
   && \
+  rpm-ostree install $(curl https://api.github.com/repos/wagoodman/dive/releases/latest | jq -r '.assets[] | select(.name| test(".*_linux_amd64.rpm$")).browser_download_url') \
+  && \
   curl -Lo /tmp/vcluster "https://github.com/loft-sh/vcluster/releases/latest/download/vcluster-linux-amd64" && \
   install -c -m 0755 /tmp/vcluster /usr/bin/vcluster \
   && \
