@@ -13,9 +13,8 @@ PublishPort=5000:5000
 
 [Service]
 TimeoutStartSec=900
-ExecStartPre=-ls %E/containers/systemd/_config
 ExecStartPre=-mkdir -p %h/.config/eternal
-ExecStartPre=-cp %E/containers/systemd/_config/zot-config.yaml %h/.config/eternal/zot-config.yaml
+ExecStartPre=-cp %E/containers/systemd/users/_config/zot-config.yaml %h/.config/eternal/zot-config.yaml
 
 [Install]
 WantedBy=multi-user.target
