@@ -8,11 +8,14 @@ ContainerName=zot
 Exec=serve /etc/zot/config.yaml
 Network=eternal.network
 Volume=zot.volume:/var/lib/zot/data
-Volume=./_config/zot-config.yaml:/etc/zot/config.yaml:ro
+Volume=%h/.config/eternal/zot-config.yaml:/etc/zot/config.yaml:Z
 PublishPort=5000:5000
 
 [Service]
 TimeoutStartSec=900
+ExecStartPre=-ls %E/containers/systemd/_config
+ExecStartPre=-mkdir -p %h/.config/eternal
+ExecStartPre=-cp %E/containers/systemd/_config/zot-config.yaml %h/.config/eternal/zot-config.yaml
 
 [Install]
 WantedBy=multi-user.target
