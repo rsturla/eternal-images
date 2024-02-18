@@ -1,0 +1,18 @@
+[Unit]
+Description=A Zot registry container
+After=network-online.target
+
+[Container]
+Image=cgr.dev/chainguard/zot:latest
+ContainerName=zot
+Exec=serve /etc/zot/config.yaml
+Network=eternal.network
+Volume=zot.volume:/var/lib/zot/data
+Volume=./_config/zot-config.yaml:/etc/zot/config.yaml:ro
+PublishPort=5000:5000
+
+[Service]
+TimeoutStartSec=900
+
+[Install]
+WantedBy=multi-user.target
