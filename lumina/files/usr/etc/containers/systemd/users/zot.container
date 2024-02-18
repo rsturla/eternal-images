@@ -3,7 +3,7 @@ Description=A Zot registry container
 After=network-online.target
 
 [Container]
-Image=cgr.dev/chainguard/zot:latest
+Image=ghcr.io/project-zot/zot-linux-amd64:latest
 ContainerName=zot
 Exec=serve /etc/zot/config.yaml
 Network=eternal.network
