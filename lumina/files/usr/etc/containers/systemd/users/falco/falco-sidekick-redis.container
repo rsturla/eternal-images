@@ -1,0 +1,14 @@
+[Unit]
+Description=Redis is an open source, in-memory data structure store, used as a database, cache, and message broker.
+After=network-online.target
+
+[Container]
+Image=docker.io/redislabs/redisearch:latest
+ContainerName=falco-sidekick-redis
+Network=falco.network
+
+[Service]
+TimeoutStartSec=900
+
+[Install]
+WantedBy=multi-user.target default.target

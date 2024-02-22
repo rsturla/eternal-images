@@ -1,0 +1,17 @@
+[Unit]
+Description=A simple daemon for connecting Falco to your ecosystem. It takes a Falco events and forward them to different outputs in a fan-out way.
+After=network-online.target
+
+[Container]
+Image=docker.io/falcosecurity/falcosidekick:latest
+ContainerName=falco-sidekick
+Exec=-c /etc/falcosidekick/config.conf
+Network=falco.network
+PublishPort=12801:2801
+Volume=/etc/falco/sidekick.conf:/etc/falcosidekick/config.conf:ro,Z
+
+[Service]
+TimeoutStartSec=900
+
+[Install]
+WantedBy=multi-user.target default.target

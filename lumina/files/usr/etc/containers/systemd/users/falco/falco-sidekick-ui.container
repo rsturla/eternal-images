@@ -1,0 +1,17 @@
+[Unit]
+Description=A simple WebUI with latest events from Falco
+After=network-online.target falco-sidekick-redis.service
+
+[Container]
+Image=docker.io/falcosecurity/falcosidekick-ui:latest
+ContainerName=falco-sidekick-ui
+Environment=FALCOSIDEKICK_UI_REDIS_URL=falco-sidekick-redis:6379
+Environment=FALCOSIDEKICK_UI_DISABLEAUTH=true
+Network=falco.network
+PublishPort=2802:2802
+
+[Service]
+TimeoutStartSec=900
+
+[Install]
+WantedBy=multi-user.target default.target
