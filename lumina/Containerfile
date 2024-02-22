@@ -71,6 +71,15 @@ RUN systemctl unmask dconf-update.service && \
   rm -rf /tmp/* /var/* && \
   ostree container commit
 
+# Install OpenVPN3
+RUN wget https://copr.fedorainfracloud.org/coprs/dsommers/openvpn3-devsnapshots/repo/fedora-$(rpm -E %fedora)/dsommers-openvpn3-devsnapshots-fedora-$(rpm -E %fedora).repo -O /etc/yum.repos.d/openvpn3-devsnapshots.repo && \
+  rpm-ostree install \
+    openvpn3-client && \
+  rm -f /etc/yum.repos.d/openvpn3-devsnapshots.repo \
+  && \
+  rm -rf /tmp/* /var/* && \
+  ostree container commit
+
 # Install Starship Shell Prompt
 RUN curl -Lo /tmp/starship.tar.gz "https://github.com/starship/starship/releases/latest/download/starship-x86_64-unknown-linux-gnu.tar.gz" && \
   tar -xzf /tmp/starship.tar.gz -C /tmp && \
