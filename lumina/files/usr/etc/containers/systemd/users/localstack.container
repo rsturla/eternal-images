@@ -4,6 +4,7 @@ After=network-online.target
 
 [Container]
 Image=docker.io/localstack/localstack:latest
+AutoUpdate=true
 ContainerName=localstack
 Network=eternal.network
 PublishPort=4566:4566

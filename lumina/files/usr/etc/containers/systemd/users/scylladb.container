@@ -4,6 +4,7 @@ After=network-online.target
 
 [Container]
 Image=docker.io/scylladb/scylla:latest
+AutoUpdate=true
 ContainerName=scylladb
 Exec=--developer-mode 1 --smp 1 --overprovisioned 1
 Network=eternal.network

@@ -4,6 +4,7 @@ After=network-online.target
 
 [Container]
 Image=docker.io/library/postgres:16
+AutoUpdate=true
 ContainerName=postgres
 Environment=POSTGRES_USER=admin
 Environment=POSTGRES_PASSWORD=password

@@ -4,6 +4,7 @@ After=network-online.target
 
 [Container]
 Image=docker.io/ollama/ollama:latest
+AutoUpdate=true
 ContainerName=ollama
 Network=eternal.network
 Volume=ollama.volume:/root/.ollama

@@ -4,6 +4,7 @@ After=network-online.target
 
 [Container]
 Image=docker.io/hashicorp/vault:latest
+AutoUpdate=true
 ContainerName=vault
 Exec=server -dev
 Environment=VAULT_DEV_ROOT_TOKEN_ID=root
