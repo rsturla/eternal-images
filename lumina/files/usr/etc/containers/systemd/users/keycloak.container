@@ -4,6 +4,7 @@ After=network-online.target
 
 [Container]
 Image=quay.io/keycloak/keycloak:latest
+AutoUpdate=true
 ContainerName=keycloak
 Exec=start-dev
 Environment=KEYCLOAK_ADMIN=admin

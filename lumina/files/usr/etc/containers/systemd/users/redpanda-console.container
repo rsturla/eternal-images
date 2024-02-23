@@ -5,6 +5,7 @@ Requires=redpanda-server.service
 
 [Container]
 Image=docker.redpanda.com/redpandadata/console:latest
+AutoUpdate=true
 ContainerName=redpanda-console
 Environment=CONFIG_FILEPATH=/etc/redpanda-console/config.yml
 Network=eternal.network
