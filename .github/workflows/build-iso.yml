@@ -3,6 +3,8 @@ name: Build ISO Files
 on:
   workflow_dispatch:
   pull_request:
+  schedule:
+    - cron: '0 0 * * 0'
 
 jobs:
   build:
@@ -36,5 +38,6 @@ jobs:
           RCLONE_CONFIG_R2_REGION: auto
           RCLONE_CONFIG_R2_ENDPOINT: https://${{ secrets.CLOUDFLARE_ACCOUNT_ID }}.r2.cloudflarestorage.com
           R2_BUCKET_NAME: ${{ vars.R2_BUCKET_NAME }}
+          R2_BUCKET_PREFIX: ${{ matrix.image }}
         with:
-          args: copy output/ R2:$R2_BUCKET_NAME
+          args: copy output/ R2:$R2_BUCKET_NAME/${{ matrix.image }}
