@@ -17,7 +17,7 @@ jobs:
         nvidia: [true, false]
     steps:
       - name: Generate ISOs
-        uses: rsturla/eternal-iso-generator
+        uses: rsturla/eternal-iso-generator@main
         with:
           arch: ${{ matrix.arch }}
           image-name: ${{ matrix.image }}
