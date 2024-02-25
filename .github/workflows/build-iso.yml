@@ -18,7 +18,7 @@ jobs:
         driver: ['', nvidia]
     steps:
       - name: Generate ISOs
-        uses: rsturla/eternal-iso-generator@build-image-separate
+        uses: rsturla/eternal-iso-generator@97d121f55b1b6c588a00804fed84dcd2c32f2e2d
         with:
           arch: ${{ matrix.arch }}
           image-name: ${{ matrix.image }}
