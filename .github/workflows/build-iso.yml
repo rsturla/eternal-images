@@ -19,14 +19,19 @@ jobs:
         arch: [x86_64]
         driver: ['', nvidia]
     steps:
-      - name: Generate ISOs
-        uses: rsturla/eternal-iso-generator@main
-        with:
-          arch: ${{ matrix.arch }}
-          image-name: ${{ matrix.image }}
-          image-tag: ${{ matrix.version }}${{ matrix.driver && format('-{0}', matrix.driver) || '' }}
-          version: ${{ matrix.version }}
-          image-repo: ${{ env.IMAGE_REGISTRY }}
+      # - name: Generate ISOs
+      #   uses: rsturla/eternal-iso-generator@main
+      #   with:
+      #     arch: ${{ matrix.arch }}
+      #     image-name: ${{ matrix.image }}
+      #     image-tag: ${{ matrix.version }}${{ matrix.driver && format('-{0}', matrix.driver) || '' }}
+      #     version: ${{ matrix.version }}
+      #     image-repo: ${{ env.IMAGE_REGISTRY }}
+
+      - name: Create test file
+        run: |
+          mkdir -p output
+          echo "Hello, World!" > output/test.txt
 
       - name: Upload ISO
         uses: docker://rclone/rclone
