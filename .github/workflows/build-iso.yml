@@ -29,7 +29,7 @@ jobs:
           image-repo: ${{ env.IMAGE_REGISTRY }}
 
       - name: Upload ISO
-        uses: rsturla/eternal-main/.github/actions/rclone@main
+        shell: bash
         env:
           RCLONE_CONFIG_R2_TYPE: s3
           RCLONE_CONFIG_R2_PROVIDER: Cloudflare
@@ -39,5 +39,7 @@ jobs:
           RCLONE_CONFIG_R2_ENDPOINT: https://${{ secrets.CLOUDFLARE_ACCOUNT_ID }}.r2.cloudflarestorage.com
           R2_BUCKET_NAME: ${{ vars.R2_BUCKET_NAME }}
           R2_BUCKET_PREFIX: ${{ matrix.image }}
-        with:
-          args: copy output/ R2:$R2_BUCKET_NAME/$R2_BUCKET_PREFIX
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y rclone
+          rclone copy output/ R2:$R2_BUCKET_NAME/$R2_BUCKET_PREFIX
