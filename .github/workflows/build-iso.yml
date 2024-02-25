@@ -8,7 +8,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      IMAGE_REGISTRY: ghcr.io/${{ github.owner }}/eternal-linux
+      IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}/eternal-linux
     strategy:
       fail-fast: false
       matrix:
