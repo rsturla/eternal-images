@@ -34,7 +34,7 @@ jobs:
           echo "Hello, World!" > output/test.txt
 
       - name: Upload ISO
-        uses: docker://rclone/rclone
+        uses: rsturla/eternal-main/.github/actions/rclone@main
         env:
           RCLONE_CONFIG_R2_TYPE: s3
           RCLONE_CONFIG_R2_PROVIDER: Cloudflare
