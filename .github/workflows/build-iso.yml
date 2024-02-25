@@ -27,8 +27,14 @@ jobs:
           image-repo: ${{ env.IMAGE_REGISTRY }}
 
       - name: Upload ISO
-        uses: actions/upload-artifact@5d5d22a31266ced268874388b861e4b58bb5c2f3 # v4
+        uses: rsturla/eternal-main/.github/actions/rclone@main
+        env:
+          RCLONE_CONFIG_R2_TYPE: s3
+          RCLONE_CONFIG_R2_PROVIDER: Cloudflare
+          RCLONE_CONFIG_R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          RCLONE_CONFIG_R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          RCLONE_CONFIG_R2_REGION: auto
+          RCLONE_CONFIG_R2_ENDPOINT: https://${{ secrets.CLOUDFLARE_ACCOUNT_ID }}.r2.cloudflarestorage.com
+          R2_BUCKET_NAME: ${{ vars.R2_BUCKET_NAME }}
         with:
-          name: ${{ matrix.image }}-${{ matrix.version }}${{ matrix.driver && format('-{0}', matrix.driver) || '' }}-${{ matrix.arch }}-iso
-          path: output/*.iso
-          retention-days: 7
+          args: copy output/ R2:$R2_BUCKET_NAME
