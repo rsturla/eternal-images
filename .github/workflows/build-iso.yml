@@ -19,19 +19,14 @@ jobs:
         arch: [x86_64]
         driver: ['', nvidia]
     steps:
-      # - name: Generate ISOs
-      #   uses: rsturla/eternal-iso-generator@main
-      #   with:
-      #     arch: ${{ matrix.arch }}
-      #     image-name: ${{ matrix.image }}
-      #     image-tag: ${{ matrix.version }}${{ matrix.driver && format('-{0}', matrix.driver) || '' }}
-      #     version: ${{ matrix.version }}
-      #     image-repo: ${{ env.IMAGE_REGISTRY }}
-
-      - name: Create test file
-        run: |
-          mkdir -p output
-          echo "Hello, World!" > output/test.txt
+      - name: Generate ISOs
+        uses: rsturla/eternal-iso-generator@main
+        with:
+          arch: ${{ matrix.arch }}
+          image-name: ${{ matrix.image }}
+          image-tag: ${{ matrix.version }}${{ matrix.driver && format('-{0}', matrix.driver) || '' }}
+          version: ${{ matrix.version }}
+          image-repo: ${{ env.IMAGE_REGISTRY }}
 
       - name: Upload ISO
         uses: rsturla/eternal-main/.github/actions/rclone@main
@@ -45,4 +40,4 @@ jobs:
           R2_BUCKET_NAME: ${{ vars.R2_BUCKET_NAME }}
           R2_BUCKET_PREFIX: ${{ matrix.image }}
         with:
-          args: copy output/ R2:$R2_BUCKET_NAME/${{ matrix.image }}
+          args: copy output/ R2:$R2_BUCKET_NAME/$R2_BUCKET_PREFIX
