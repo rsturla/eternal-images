@@ -21,7 +21,7 @@ jobs:
         with:
           arch: ${{ matrix.arch }}
           image-name: ${{ matrix.image }}
-          image-tag: ${{ matrix.version }}${{ matrix.driver && "-nvidia" }}
+          image-tag: ${{ matrix.version }}${{ matrix.nvidia && "-nvidia" }}
           version: ${{ matrix.version }}
           image-repo: ${{ env.IMAGE_REGISTRY }}
           use-web-installer: false
