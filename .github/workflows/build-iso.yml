@@ -10,6 +10,7 @@ jobs:
     env:
       IMAGE_REGISTRY: ghcr.io/${{ github.owner }}/eternal-linux
     strategy:
+      fail-fast: false
       matrix:
         image: [lumina]
         version: [39]
