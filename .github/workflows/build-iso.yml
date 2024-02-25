@@ -14,14 +14,14 @@ jobs:
         image: [lumina]
         version: [39]
         arch: [x86_64]
-        nvidia: [true, false]
+        driver: ['', nvidia]
     steps:
       - name: Generate ISOs
         uses: rsturla/eternal-iso-generator@main
         with:
           arch: ${{ matrix.arch }}
           image-name: ${{ matrix.image }}
-          image-tag: ${{ matrix.version }}${{ matrix.nvidia && '-nvidia' || '' }}
+          image-tag: ${{ matrix.version }}${{ matrix.driver != '' && '-${{ matrix.driver }}' || '' }}
           version: ${{ matrix.version }}
           image-repo: ${{ env.IMAGE_REGISTRY }}
           use-web-installer: false
