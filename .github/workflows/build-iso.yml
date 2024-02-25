@@ -22,7 +22,7 @@ jobs:
         with:
           arch: ${{ matrix.arch }}
           image-name: ${{ matrix.image }}
-          image-tag: ${{ matrix.version }}${{ matrix.driver != '' && '-${{ matrix.driver }}' || '' }}
+          image-tag: ${{ matrix.version }}${{ matrix.driver && format('-{0}', matrix.driver) || '' }}
           version: ${{ matrix.version }}
           image-repo: ${{ env.IMAGE_REGISTRY }}
 
