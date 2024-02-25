@@ -30,4 +30,4 @@ jobs:
         with:
           name: ${{ matrix.image }}-${{ matrix.version }}-${{ matrix.arch }}-iso
           path: output/*.iso
-          retention-days: 5
+          retention-days: 7
