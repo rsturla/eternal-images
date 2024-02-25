@@ -29,7 +29,7 @@ jobs:
           image-repo: ${{ env.IMAGE_REGISTRY }}
 
       - name: Upload ISO
-        uses: rsturla/eternal-main/.github/actions/rclone@main
+        uses: docker://rclone/rclone
         env:
           RCLONE_CONFIG_R2_TYPE: s3
           RCLONE_CONFIG_R2_PROVIDER: Cloudflare
