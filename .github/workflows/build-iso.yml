@@ -24,7 +24,6 @@ jobs:
           image-tag: ${{ matrix.version }}${{ matrix.driver != '' && '-${{ matrix.driver }}' || '' }}
           version: ${{ matrix.version }}
           image-repo: ${{ env.IMAGE_REGISTRY }}
-          use-web-installer: false
 
       - name: Upload ISO
         uses: actions/upload-artifact@v4
