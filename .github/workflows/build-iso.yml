@@ -40,6 +40,5 @@ jobs:
           R2_BUCKET_NAME: ${{ vars.R2_BUCKET_NAME }}
           R2_BUCKET_PREFIX: ${{ matrix.image }}
         run: |
-          sudo apt-get update
-          sudo apt-get install -y rclone
+          sudo -v ; curl https://rclone.org/install.sh | sudo bash
           rclone copy output/ R2:$R2_BUCKET_NAME/$R2_BUCKET_PREFIX
