@@ -4,7 +4,7 @@ After=network-online.target
 
 [Container]
 Image=docker.redpanda.com/redpandadata/redpanda:latest
-AutoUpdate=true
+AutoUpdate=registry
 ContainerName=redpanda-server
 Exec=start --config /etc/redpanda/config/redpanda-server.yml
 Network=eternal.network

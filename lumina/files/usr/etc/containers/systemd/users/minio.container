@@ -5,7 +5,7 @@ Requires=prometheus.service
 
 [Container]
 Image=docker.io/minio/minio:latest
-AutoUpdate=true
+AutoUpdate=registry
 ContainerName=minio
 Exec=server --console-address ":9001"
 Environment=MINIO_ROOT_USER=admin
