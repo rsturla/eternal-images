@@ -4,7 +4,7 @@ After=network-online.target
 
 [Container]
 Image=ghcr.io/project-zot/zot-linux-amd64:latest
-AutoUpdate=true
+AutoUpdate=registry
 ContainerName=zot
 Exec=serve /etc/zot/config.yaml
 Network=eternal.network
