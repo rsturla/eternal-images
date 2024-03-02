@@ -2,6 +2,9 @@ name: Build ISO Files
 
 on:
   workflow_dispatch:
+  pull_request:
+    paths:
+      - '.github/workflows/build-iso.yml'
   schedule:
     - cron: '0 0 1 * *'
 
@@ -30,7 +33,18 @@ jobs:
           secureboot-key-url: 'https://github.com/rsturla/akmods/raw/main/_certs/public_key.der'
           secureboot-password: 'eternal'
 
+      - name: Upload ISO (Pull Request)
+        uses: actions/upload-artifact@v4
+        if: github.event_name == 'pull_request'
+        with:
+          name: ${{ matrix.image }}-${{ matrix.version }}${{ matrix.driver && format('-{0}', matrix.driver) || '' }}
+          path: ${{ steps.generate.outputs.output-directory }}
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+
       - name: Upload ISO
+        if: github.event_name == 'workflow_dispatch'
         shell: bash
         env:
           RCLONE_CONFIG_R2_TYPE: s3
