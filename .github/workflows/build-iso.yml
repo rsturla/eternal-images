@@ -38,7 +38,7 @@ jobs:
         if: github.event_name == 'pull_request'
         with:
           name: ${{ matrix.image }}-${{ matrix.version }}${{ matrix.driver && format('-{0}', matrix.driver) || '' }}
-          path: ${{ steps.generate.outputs.output-directory }}
+          path: ${{ steps.generate.outputs.output-path }}
           if-no-files-found: error
           retention-days: 7
           compression-level: 0
