@@ -7,6 +7,8 @@ on:
   pull_request:
     branches:
       - main
+    paths-ignore:
+      - '.github/workflows/build-iso.yml'
   schedule:
     - cron: "0 1,13 * * *" # 1am & 1pm every day
   workflow_dispatch:
