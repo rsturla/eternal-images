@@ -20,12 +20,15 @@ jobs:
     steps:
       - name: Generate ISOs
         uses: rsturla/eternal-iso-generator@main
+        id: generate
         with:
           arch: ${{ matrix.arch }}
+          image-repo: ${{ env.IMAGE_REGISTRY }}
           image-name: ${{ matrix.image }}
           image-tag: ${{ matrix.version }}${{ matrix.driver && format('-{0}', matrix.driver) || '' }}
-          version: ${{ matrix.version }}
-          image-repo: ${{ env.IMAGE_REGISTRY }}
+          fedora-version: ${{ matrix.version }}
+          secureboot-key-url: 'https://github.com/rsturla/akmods/raw/main/_certs/public_key.der'
+          secureboot-password: 'eternal'
 
       - name: Upload ISO
         shell: bash
@@ -38,6 +41,7 @@ jobs:
           RCLONE_CONFIG_R2_ENDPOINT: https://${{ secrets.CLOUDFLARE_ACCOUNT_ID }}.r2.cloudflarestorage.com
           R2_BUCKET_NAME: ${{ vars.R2_BUCKET_NAME }}
           R2_BUCKET_PREFIX: ${{ matrix.image }}
+          SOURCE_DIR: ${{ steps.generate.outputs.output-path }}
         run: |
           sudo -v ; curl https://rclone.org/install.sh | sudo bash
-          rclone copy output/ R2:$R2_BUCKET_NAME/$R2_BUCKET_PREFIX
+          rclone copy $SOURCE_DIR R2:$R2_BUCKET_NAME/$R2_BUCKET_PREFIX
