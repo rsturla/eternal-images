@@ -2,3 +2,22 @@
 command-as-login-shell=true
 theme-dark='Dracula'
 style-preference=2
+
+[org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0]
+binding='<Control><Alt>t'
+command='ptyxis --tab-with-profile=2871e8027773ae74d6c87a5f659bbc74 --new-window'
+name='Host Ptyxis'
+
+[com/github/stunkymonkey/nautilus-open-any-terminal]
+terminal='ptyxis'
+keybindings=''
+new-tab=false
+flatpak='off'
+
+[org/gnome/Ptyxis]
+interface-style='system'
+restore-session=false
+restore-window-size=false
+audible-bell=false
+profile-uuids=['2871e8027773ae74d6c87a5f659bbc74']
+default-profile-uuid='2871e8027773ae74d6c87a5f659bbc74'

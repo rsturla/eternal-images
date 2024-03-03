@@ -49,10 +49,12 @@ RUN rpm-ostree install \
     gnome-shell-extension-dash-to-dock \
     gnome-shell-extension-blur-my-shell \
     gnome-shell-extension-gsconnect \
+    nautilus-open-any-terminal \
     nautilus-gsconnect \
     yaru-theme \
     gnome-tweaks \
     libcanberra-gtk3 \
+    ptyxis \
   && \
   rm -rf /tmp/* /var/* && \
   ostree container commit
