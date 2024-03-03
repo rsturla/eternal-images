@@ -49,13 +49,23 @@ RUN rpm-ostree install \
     gnome-shell-extension-dash-to-dock \
     gnome-shell-extension-blur-my-shell \
     gnome-shell-extension-gsconnect \
-    nautilus-open-any-terminal \
     nautilus-gsconnect \
     yaru-theme \
     gnome-tweaks \
     libcanberra-gtk3 \
-    ptyxis \
   && \
+  rm -rf /tmp/* /var/* && \
+  ostree container commit
+
+# Configure Terminal
+RUN wget https://copr.fedorainfracloud.org/coprs/kylegospo/prompt/repo/fedora-$(rpm -E %fedora)/kylegospo-prompt-fedora-$(rpm -E %fedora).repo?arch=x86_64 -O /etc/yum.repos.d/_copr_kylegospo-prompt.repo && \
+  wget https://copr.fedorainfracloud.org/coprs/ublue-os/staging/repo/fedora-$(rpm -E %fedora)/ublue-os-staging-fedora-$(rpm -E %fedora).repo -O /etc/yum.repos.d/_copr_ublue-os_staging.repo \
+  && \
+  rpm-ostree install \
+    ptyxis \
+    nautilus-open-any-terminal \
+  && \
+  rm -rf /etc/yum.repos.d/_copr_kylegospo-prompt.repo /etc/yum.repos.d/_copr_ublue-os_staging.repo && \
   rm -rf /tmp/* /var/* && \
   ostree container commit
 
