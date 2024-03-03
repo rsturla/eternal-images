@@ -5,7 +5,7 @@ style-preference=2
 
 [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0]
 binding='<Control><Alt>t'
-command='ptyxis --tab-with-profile=2871e8027773ae74d6c87a5f659bbc74 --new-window'
+command='ptyxis --new-window'
 name='Host Ptyxis'
 
 [com/github/stunkymonkey/nautilus-open-any-terminal]
