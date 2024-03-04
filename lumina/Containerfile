@@ -38,8 +38,6 @@ RUN curl "https://api.github.com/repos/falcosecurity/falco/releases" -o /tmp/fal
   curl -Lo /etc/systemd/system/falco-modern-bpf.service ${GITHUB_RAW_URL}/scripts/systemd/falco-modern-bpf.service && \
   curl -Lo /etc/systemd/system/falcoctl-artifact-follow.service ${GITHUB_RAW_URL}/scripts/systemd/falcoctl-artifact-follow.service \
   && \
-  systemctl enable falco-modern-bpf.service \
-  && \
   rm -rf /tmp/* /var/* && \
   ostree container commit
 
