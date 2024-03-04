@@ -64,6 +64,9 @@ RUN wget https://copr.fedorainfracloud.org/coprs/kylegospo/prompt/repo/fedora-$(
   rpm-ostree install \
     ptyxis \
     nautilus-open-any-terminal \
+    vte291 \
+    vte-profile \
+    libadwaita \
   && \
   rm -rf /etc/yum.repos.d/_copr_kylegospo-prompt.repo /etc/yum.repos.d/_copr_ublue-os_staging.repo && \
   rm -rf /tmp/* /var/* && \
