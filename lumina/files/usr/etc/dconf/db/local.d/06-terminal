@@ -1,4 +1,11 @@
-[com/raggesilver/BlackBox]
-command-as-login-shell=true
-theme-dark='Dracula'
-style-preference=2
+[com/github/stunkymonkey/nautilus-open-any-terminal]
+terminal='ptyxis'
+keybindings=''
+new-tab=false
+flatpak='off'
+
+[org/gnome/Ptyxis]
+interface-style='system'
+restore-session=false
+restore-window-size=false
+audible-bell=false
