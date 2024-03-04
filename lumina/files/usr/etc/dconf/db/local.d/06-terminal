@@ -1,13 +1,3 @@
-[com/raggesilver/BlackBox]
-command-as-login-shell=true
-theme-dark='Dracula'
-style-preference=2
-
-[org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0]
-binding='<Control><Alt>t'
-command='ptyxis --new-window'
-name='Host Ptyxis'
-
 [com/github/stunkymonkey/nautilus-open-any-terminal]
 terminal='ptyxis'
 keybindings=''

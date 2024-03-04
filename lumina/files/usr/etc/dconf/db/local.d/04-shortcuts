@@ -1,15 +1,20 @@
 [org/gnome/settings-daemon/plugins/media-keys]
 custom-keybindings=['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/']
 
+[org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0]
+binding='<Control><Alt>t'
+command='/usr/bin/ptyxis --new-window'
+name='Host Ptyxis'
+
 [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1]
 binding='<Control><Alt>u'
-command='flatpak run com.raggesilver.BlackBox --command "distrobox enter ubuntu"'
-name='blackbox-ubuntu'
+command='/usr/bin/ptyxis --new-window -- "distrobox enter ubuntu"'
+name='Container Ubuntu'
 
 [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2]
 binding='<Control><Alt>f'
-command='flatpak run com.raggesilver.BlackBox --command "distrobox enter fedora"'
-name='blackbox-fedora'
+command='/usr/bin/ptyxis --new-window -- "distrobox enter fedora"'
+name='Container Fedora'
 
 [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3]
 binding='<Control><Shift>Escape'
