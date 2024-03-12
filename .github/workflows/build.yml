@@ -32,7 +32,7 @@ jobs:
       BASE_IMAGE_NAME: eternal-linux/main/silverblue
     steps:
       - name: Checkout
-        uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # v4
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
 
       - name: Optimize GHA Storage
         uses: rsturla/eternal-main/.github/actions/optimise-gha-storage@main
@@ -119,7 +119,7 @@ jobs:
       BASE_IMAGE_NAME: eternal-linux/main/silverblue
     steps:
       - name: Checkout
-        uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # v4
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
 
       - name: Optimize GHA Storage
         uses: rsturla/eternal-main/.github/actions/optimise-gha-storage@main
@@ -184,7 +184,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # v4
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
 
       - name: Check Job Status
         uses: rsturla/eternal-main/.github/actions/check-jobs-success@main
