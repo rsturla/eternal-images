@@ -22,7 +22,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        fedora-version: [39]
+        fedora-version: [39, 40]
     permissions:
       contents: read
       packages: write
@@ -105,7 +105,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        fedora-version: [39]
+        fedora-version: [39, 40]
         nvidia-version: [550]
         include:
           - nvidia-version: 550
