@@ -72,6 +72,9 @@ RUN wget https://copr.fedorainfracloud.org/coprs/kylegospo/prompt/repo/fedora-$(
     ptyxis \
     nautilus-open-any-terminal \
   && \
+  rpm-ostree install \
+    neovim \
+  && \
   rm -rf /etc/yum.repos.d/_copr_kylegospo-prompt.repo /etc/yum.repos.d/_copr_ublue-os_staging.repo && \
   rm -rf /tmp/* /var/* && \
   ostree container commit
