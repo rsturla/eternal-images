@@ -55,8 +55,7 @@ RUN wget https://copr.fedorainfracloud.org/coprs/kylegospo/prompt/repo/fedora-$(
     ptyxis \
     nautilus-open-any-terminal \
   && \
-  rpm-ostree install \
-    neovim \
+  sed -i 's@\[Desktop Entry\]@\[Desktop Entry\]\nNoDisplay=true@g' /usr/share/applications/org.gnome.Terminal.desktop \
   && \
   rm -rf /etc/yum.repos.d/_copr_kylegospo-prompt.repo /etc/yum.repos.d/_copr_ublue-os_staging.repo && \
   rm -rf /tmp/* /var/* && \
@@ -162,7 +161,10 @@ RUN curl -Lo /tmp/kind "https://github.com/kubernetes-sigs/kind/releases/latest/
   curl -Lo /tmp/devbox https://releases.jetpack.io/devbox && \
   install -c -m 0755 /tmp/devbox /usr/bin/devbox \
   && \
-  rpm-ostree install gh && \
+  rpm-ostree install \
+    gh \
+    neovim \
+  && \
   rm -f /etc/yum.repos.d/github.repo \
   && \
   rm -rf /tmp/* /var/* && \
