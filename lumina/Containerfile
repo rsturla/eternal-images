@@ -182,6 +182,8 @@ RUN curl -Lo /tmp/kind "https://github.com/kubernetes-sigs/kind/releases/latest/
     gh \
     neovim \
   && \
+  gh extension install github/gh-copilot \
+  && \
   rm -f /etc/yum.repos.d/github.repo \
   && \
   rm -rf /tmp/* /var/* && \
