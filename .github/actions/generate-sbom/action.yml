@@ -8,6 +8,9 @@ inputs:
   artifact-name:
     description: 'The name of the artifact to generate the SBOM for'
     required: false
+  config-file:
+    description: 'The path to the configuration file'
+    required: false
   output-file:
     description: 'The path to the SBOM file'
     required: false
@@ -32,9 +35,11 @@ runs:
     - name: Scan Image
       if: inputs.image-ref != ''
       shell: bash
+      env:
+        SYFT_CONFIG: ${{ inputs.config-file != '' && inputs.config-file || format('{0}/syft.default.yaml', github.action_path) }}
       run: |
-        syft -vv ${{ inputs.image-ref }} -o cyclonedx-json=${{ inputs.output-file }} \
-          --exclude '/sysroot/ostree/repo/objects/**' --exclude '/usr/share/icons/**' --exclude '/usr/share/doc/**'
+        syft ${{ inputs.image-ref }} -o cyclonedx-json=${{ inputs.output-file }} \
+          --config-file $SYFT_CONFIG
 
     - name: Upload SBOM Artifact
       if: inputs.artifact-name != ''
