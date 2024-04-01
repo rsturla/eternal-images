@@ -33,7 +33,8 @@ runs:
       if: inputs.image-ref != ''
       shell: bash
       run: |
-        syft -vv ${{ inputs.image-ref }} -o cyclonedx-json=${{ inputs.output-file }}
+        syft -vv ${{ inputs.image-ref }} -o cyclonedx-json=${{ inputs.output-file }} \
+          --exclude '/sysroot/ostree/repo/objects/**' --exclude '/usr/share/icons/**' --exclude '/usr/share/doc/**'
 
     - name: Upload SBOM Artifact
       if: inputs.artifact-name != ''
