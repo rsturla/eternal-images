@@ -1,0 +1,46 @@
+name: Generate Image SBOM
+
+inputs:
+  image-ref:
+    description: 'The image reference to generate the SBOM for'
+    required: false
+    default: ''
+  artifact-name:
+    description: 'The name of the artifact to generate the SBOM for'
+    required: false
+  output-file:
+    description: 'The path to the SBOM file'
+    required: false
+    default: 'syft-sbom.json'
+
+outputs:
+  output-file:
+    description: 'The path to the SBOM file'
+    value: ${{ inputs.output-file }}
+  artifact-url:
+    description: 'The URL to the uploaded artifact'
+    value: ${{ steps.upload.outputs.artifact_url }}
+
+runs:
+  using: composite
+  steps:
+    - name: Install Syft
+      shell: bash
+      run: |
+        curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin
+
+    - name: Scan Image
+      if: inputs.image-ref != ''
+      shell: bash
+      run: |
+        syft ${{ inputs.image-ref }} -o cyclonedx-json=${{ inputs.output-file }}
+
+    - name: Upload SBOM Artifact
+      if: inputs.artifact-name != ''
+      id: upload
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ inputs.artifact-name }}
+        path: ${{ inputs.output-file }}
+        if-no-files-found: error
+        compression-level: 8
