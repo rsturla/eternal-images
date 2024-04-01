@@ -38,8 +38,9 @@ runs:
       env:
         SYFT_CONFIG: ${{ inputs.config-file != '' && inputs.config-file || format('{0}/syft.default.yaml', github.action_path) }}
       run: |
-        syft ${{ inputs.image-ref }} -o cyclonedx-json=${{ inputs.output-file }} \
-          --config-file $SYFT_CONFIG
+        syft ${{ inputs.image-ref }} \
+          -o cyclonedx-json=${{ inputs.output-file }} \
+          --config $SYFT_CONFIG
 
     - name: Upload SBOM Artifact
       if: inputs.artifact-name != ''
