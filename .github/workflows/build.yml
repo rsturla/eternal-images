@@ -101,7 +101,7 @@ jobs:
 
       - name: Generate SBOM
         id: generate-sbom
-        uses: ./.github/actions/generate-sbom
+        uses: rsturla/eternal-main/.github/actions/generate-sbom@main
         with:
           image-ref: ${{ steps.push.outputs.registry-path }}
           artifact-name: lumina-${{ matrix.fedora-version }}-sbom
@@ -187,7 +187,7 @@ jobs:
 
       - name: Generate SBOM
         id: generate-sbom
-        uses: ./.github/actions/generate-sbom
+        uses: rsturla/eternal-main/.github/actions/generate-sbom@main
         with:
           image-ref: ${{ steps.push.outputs.registry-path }}
           artifact-name: lumina-${{ matrix.fedora-version }}-nvidia${{ matrix.nvidia-version }}-sbom
