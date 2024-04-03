@@ -52,7 +52,7 @@ RUN wget https://copr.fedorainfracloud.org/coprs/ublue-os/staging/repo/fedora-$(
     --experimental \
     --from repo=copr:copr.fedorainfracloud.org:ublue-os:staging \
       gtk4 \
-      libadwaita && \
+      libadwaita \
   ; fi && \
   rpm-ostree install \
     ptyxis \
