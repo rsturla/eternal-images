@@ -47,7 +47,7 @@ RUN wget https://copr.fedorainfracloud.org/coprs/ublue-os/staging/repo/fedora-$(
     --from repo=copr:copr.fedorainfracloud.org:ublue-os:staging \
       vte291 \
       vte-profile && \
-  if [ ${FEDORA_MAJOR_VERSION} -eq "39" ]; then \
+  if [ ${FEDORA_VERSION} -eq "39" ]; then \
   rpm-ostree override replace \
     --experimental \
     --from repo=copr:copr.fedorainfracloud.org:ublue-os:staging \
