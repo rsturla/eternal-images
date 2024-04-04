@@ -67,8 +67,7 @@ jobs:
           context: lumina/.
           file: lumina/Containerfile
           load: true
-          tags: |
-            ${{ steps.generate-image-tags.outputs.names-full }}
+          tags: ${{ steps.generate-image-tags.outputs.names-full-concat }}
           build-args: |
             BASE_TAG=${{ matrix.fedora-version }}
 
