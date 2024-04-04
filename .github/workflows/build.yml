@@ -62,33 +62,15 @@ jobs:
 
       - name: Build Image
         id: build
-        uses: redhat-actions/buildah-build@7a95fa7ee0f02d552a32753e7414641a04307056 # v2
+        uses: docker/build-push-action@v5
         with:
           context: lumina/.
-          containerfiles: |
-            lumina/Containerfile
-          image: ${{ env.IMAGE_NAME }}
+          file: lumina/Containerfile
+          load: true
           tags: |
-            ${{ steps.generate-image-tags.outputs.tags }}
+            ${{ steps.generate-image-tags.outputs.names-full }}
           build-args: |
             BASE_TAG=${{ matrix.fedora-version }}
-
-      - name: Push Image
-        id: push
-        uses: redhat-actions/push-to-registry@5ed88d269cf581ea9ef6dd6806d01562096bee9c # v2
-        with:
-          image: ${{ steps.build.outputs.image }}
-          tags: ${{ steps.build.outputs.tags }}
-          registry: ${{ env.IMAGE_REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Login to GHCR
-        uses: docker/login-action@e92390c5fb421da1463c202d546fed0ec5c39f20 # v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ github.token }}
 
       - name: Sign Image
         uses: rsturla/eternal-main/.github/actions/sign-image@main
