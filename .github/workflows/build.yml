@@ -107,7 +107,7 @@ jobs:
           artifact-name: lumina-${{ matrix.fedora-version }}-sbom
 
       - name: Scan SBOM
-        uses: rsturla/eternal-main/.github/actions/scan-sbom@main
+        uses: rsturla/eternal-main/.github/actions/scan-sbom@scan-configuration
         with:
           sbom-file: ${{ steps.generate-sbom.outputs.output-file }}
           artifact-name: lumina-${{ matrix.fedora-version }}-scan
@@ -199,7 +199,7 @@ jobs:
           artifact-name: lumina-${{ matrix.fedora-version }}-nvidia${{ matrix.nvidia-version }}-sbom
 
       - name: Scan SBOM
-        uses: rsturla/eternal-main/.github/actions/scan-sbom@main
+        uses: rsturla/eternal-main/.github/actions/scan-sbom@scan-configuration
         with:
           sbom-file: ${{ steps.generate-sbom.outputs.output-file }}
           artifact-name: lumina-${{ matrix.fedora-version }}-nvidia${{ matrix.nvidia-version }}-scan
