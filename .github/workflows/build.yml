@@ -21,6 +21,7 @@ jobs:
       fail-fast: false
       matrix:
         fedora-version: [39]
+        desktop-environment: [silverblue]
     permissions:
       contents: read
       packages: write
@@ -77,6 +78,7 @@ jobs:
           tags: ${{ env.TAGS_CONCAT }}
           build-args: |
             BASE_TAG=${{ matrix.fedora-version }}
+            DESKTOP_ENVIRONMENT=${{ matrix.desktop-environment }}
 
       - name: Sign Image
         uses: rsturla/eternal-main/.github/actions/sign-image@main
@@ -95,6 +97,7 @@ jobs:
       matrix:
         fedora-version: [39]
         nvidia-version: [545]
+        desktop-environment: [silverblue]
         include:
           - nvidia-version: 545
             nvidia-is-stable: true
@@ -162,6 +165,7 @@ jobs:
           tags: ${{ env.TAGS_CONCAT }}
           build-args: |
             BASE_TAG=${{ matrix.fedora-version }}-nvidia${{ matrix.nvidia-version }}
+            DESKTOP_ENVIRONMENT=${{ matrix.desktop-environment }}
 
       - name: Sign Image
         uses: rsturla/eternal-main/.github/actions/sign-image@main
