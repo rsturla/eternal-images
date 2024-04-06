@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        image: [lumina]
+        image: [lumina-silverblue]
         version: [39]
         arch: [x86_64]
         driver: ['', nvidia]
