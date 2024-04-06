@@ -1,23 +1,23 @@
-ARG BASE_IMAGE=ghcr.io/rsturla/eternal-linux/main/silverblue
+ARG BASE_IMAGE=silverblue
+ARG BASE_REGISTRY=ghcr.io/rsturla/eternal-linux/main/${BASE_IMAGE}
 ARG BASE_TAG=39
 ARG FEDORA_VERSION=${BASE_TAG}
-ARG DESKTOP_ENVIRONMENT=silverblue
 
 
-FROM ${BASE_IMAGE}:${BASE_TAG}
+FROM ${BASE_REGISTRY}:${BASE_TAG}
 
 ARG FEDORA_VERSION
-ARG DESKTOP_ENVIRONMENT
+ARG BASE_IMAGE
 
 COPY files/_base/etc/yum.repos.d /etc/yum.repos.d
 COPY files/_base/usr /usr
-COPY files/_${DESKTOP_ENVIRONMENT}/usr /usr
+COPY files/_${BASE_IMAGE}/usr /usr
 
 COPY scripts/ /tmp/scripts/
 
-RUN chmod +x /tmp/scripts/*.sh /tmp/scripts/*.sh /tmp/scripts/_${DESKTOP_ENVIRONMENT}/*.sh && \
-  /tmp/scripts/setup.sh --version ${FEDORA_VERSION} --base ${DESKTOP_ENVIRONMENT} && \
-  /tmp/scripts/cleanup.sh --version ${FEDORA_VERSION} --base ${DESKTOP_ENVIRONMENT} && \
+RUN chmod +x /tmp/scripts/*.sh /tmp/scripts/*.sh /tmp/scripts/_${BASE_IMAGE}/*.sh && \
+  /tmp/scripts/setup.sh --version ${FEDORA_VERSION} --base ${BASE_IMAGE} && \
+  /tmp/scripts/cleanup.sh --version ${FEDORA_VERSION} --base ${BASE_IMAGE} && \
   rm -rf /tmp/* /var/* && \
   ostree container commit
 
