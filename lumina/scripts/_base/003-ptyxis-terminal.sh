@@ -13,6 +13,5 @@ rpm-ostree override replace \
     libadwaita
 
 rpm-ostree install ptyxis
-sed -i 's@\[Desktop Entry\]@\[Desktop Entry\]\nNoDisplay=true@g' /usr/share/applications/org.gnome.Terminal.desktop
 
 rm -rf /etc/yum.repos.d/_copr_ublue-os_staging.repo
