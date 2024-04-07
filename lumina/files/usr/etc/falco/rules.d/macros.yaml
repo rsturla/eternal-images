@@ -1,7 +1,0 @@
-# When logging into the Desktop Environment, system must validate the user's credentials by reading the /etc/shadow and various /etc/pam.d files
-# Distrobox inherits the permissions of the host system, so reading /etc/sudoers is expected
-- macro: user_known_read_sensitive_files_activities
-  condition: >
-    (fd.name startswith /etc/pam.d/ and proc.name=gdm-session-wor and user.name=root) or
-    (fd.name startswith /etc/shadow and proc.name=systemd-userwor and user.name=root) or
-    (fd.name startswith /etc/sudoers)

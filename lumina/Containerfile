@@ -1,194 +1,24 @@
-ARG BASE_IMAGE=ghcr.io/rsturla/eternal-linux/main/silverblue
+ARG BASE_IMAGE=silverblue
+ARG BASE_REGISTRY=ghcr.io/rsturla/eternal-linux/main/${BASE_IMAGE}
 ARG BASE_TAG=39
 ARG FEDORA_VERSION=${BASE_TAG}
 
 
-FROM golang:1.21 AS tc-redirect-tap-build
+FROM ${BASE_REGISTRY}:${BASE_TAG}
 
-RUN git clone https://github.com/awslabs/tc-redirect-tap.git --depth 1 /tmp/tc-redirect-tap && \
-  cd /tmp/tc-redirect-tap && \
-  GOOS=linux GOARCH=amd64 go build -o bin/tc-redirect-tap-amd64 ./cmd/tc-redirect-tap
+ARG FEDORA_VERSION
+ARG BASE_IMAGE
 
+COPY files/_base/etc/yum.repos.d /etc/yum.repos.d
+COPY files/_base/usr /usr
+COPY files/_${BASE_IMAGE}/usr /usr
 
-FROM ${BASE_IMAGE}:${BASE_TAG}
+COPY scripts/ /tmp/scripts/
 
-COPY files/etc/yum.repos.d /etc/yum.repos.d
-COPY files/usr /usr
-
-# Configure GRUB pretty name
-RUN sed -i '/^PRETTY_NAME/s/Silverblue/Lumina/' /usr/lib/os-release
-
-# Configure Just
-RUN echo "import '/usr/share/eternal/lumina.just'" >> /usr/share/eternal/justfile && \
-  echo "import '/usr/share/eternal/lumina-setup.just'" >> /usr/share/eternal/justfile
-
-# Configure file permissions
-RUN chmod +x /usr/etc/eternal/setup-manager/system.d/* && \
-  chmod +x /usr/etc/eternal/setup-manager/user.d/*
-
-# Install Falco security
-RUN curl "https://api.github.com/repos/falcosecurity/falco/releases" -o /tmp/falco-data.json && \
-  FALCO_VERSION=$(cat /tmp/falco-data.json | jq -r '.[] | select(.draft == false and .prerelease == false) | .tag_name' | head -n 1) && \
-  echo "Installing Falco version ${FALCO_VERSION}" && \
-  curl -Lo /tmp/falco.tar.gz "https://download.falco.org/packages/bin/x86_64/falco-${FALCO_VERSION}-x86_64.tar.gz" && \
-  tar -xzf /tmp/falco.tar.gz -C /tmp && \
-  cp -R /tmp/falco-${FALCO_VERSION}-x86_64/* / \
+RUN chmod +x /tmp/scripts/*.sh /tmp/scripts/*.sh /tmp/scripts/_${BASE_IMAGE}/*.sh && \
+  /tmp/scripts/setup.sh --version ${FEDORA_VERSION} --base ${BASE_IMAGE} && \
+  /tmp/scripts/cleanup.sh --version ${FEDORA_VERSION} --base ${BASE_IMAGE} \
   && \
-  GITHUB_RAW_URL="https://raw.githubusercontent.com/falcosecurity/falco/${FALCO_VERSION}" && \
-  curl -Lo /etc/systemd/system/falco-modern-bpf.service ${GITHUB_RAW_URL}/scripts/systemd/falco-modern-bpf.service && \
-  curl -Lo /etc/systemd/system/falcoctl-artifact-follow.service ${GITHUB_RAW_URL}/scripts/systemd/falcoctl-artifact-follow.service \
-  && \
-  systemctl enable falco-modern-bpf.service \
-  && \
-  rm -rf /tmp/* /var/* && \
-  ostree container commit
-
-# Configure Gnome Shell Extensions and themes
-RUN rpm-ostree install \
-    gnome-shell-extension-appindicator \
-    gnome-shell-extension-dash-to-dock \
-    gnome-shell-extension-blur-my-shell \
-    gnome-shell-extension-gsconnect \
-    nautilus-gsconnect \
-    yaru-theme \
-    gnome-tweaks \
-    libcanberra-gtk3 \
-  && \
-  rm -rf /tmp/* /var/* && \
-  ostree container commit
-
-# Configure Terminal
-RUN wget https://copr.fedorainfracloud.org/coprs/ublue-os/staging/repo/fedora-$(rpm -E %fedora)/ublue-os-staging-fedora-$(rpm -E %fedora).repo -O /etc/yum.repos.d/_copr_ublue-os_staging.repo \
-  && \
-  rpm-ostree override replace \
-    --experimental \
-    --from repo=copr:copr.fedorainfracloud.org:ublue-os:staging \
-     gtk4 \
-     vte291 \
-    vte-profile \
-    libadwaita \
-  && \
-  rpm-ostree install \
-    ptyxis \
-    nautilus-open-any-terminal \
-  && \
-  sed -i 's@\[Desktop Entry\]@\[Desktop Entry\]\nNoDisplay=true@g' /usr/share/applications/org.gnome.Terminal.desktop \
-  && \
-  rm -rf /etc/yum.repos.d/_copr_kylegospo-prompt.repo /etc/yum.repos.d/_copr_ublue-os_staging.repo && \
-  rm -rf /tmp/* /var/* && \
-  ostree container commit
-
-# Remove unwanted packages
-RUN rpm-ostree override remove \
-    gnome-tour \
-    gnome-extensions-app \
-    gnome-system-monitor \
-    gnome-terminal-nautilus \
-    yelp \
-  && \
-  rm -rf /tmp/* /var/* && \
-  ostree container commit
-
-# Configure dconf automated updates
-RUN systemctl unmask dconf-update.service && \
-  systemctl enable dconf-update.service \
-  && \
-  rm -rf /tmp/* /var/* && \
-  ostree container commit
-
-# Install Starship Shell Prompt
-RUN curl -Lo /tmp/starship.tar.gz "https://github.com/starship/starship/releases/latest/download/starship-x86_64-unknown-linux-gnu.tar.gz" && \
-  tar -xzf /tmp/starship.tar.gz -C /tmp && \
-  install -c -m 0755 /tmp/starship /usr/bin \
-  && \
-  rm -rf /tmp/* /var/* && \
-  ostree container commit
-
-# Install Atuin Shell
-RUN curl -Lo /tmp/atuin.tgz $(curl https://api.github.com/repos/atuinsh/atuin/releases/latest | jq -r '.assets[] | select(.name| test("atuin-v.*-x86_64-unknown-linux-gnu.tar.gz$")).browser_download_url') && \
-  tar -xzf /tmp/atuin.tgz -C /tmp && \
-  mv /tmp/atuin-v* /tmp/atuin && \
-  install -c -m 0755 /tmp/atuin/atuin /usr/bin && \
-  cp /tmp/atuin/completions/atuin.bash /usr/share/bash-completion/completions/atuin \
-  && \
-  curl -Lo /tmp/bash-preexec.sh https://raw.githubusercontent.com/rcaloras/bash-preexec/master/bash-preexec.sh && \
-  cp /tmp/bash-preexec.sh /usr/etc/bashrc.d/bash-preexec.sh \
-  && \
-  rm -rf /tmp/* /var/* && \
-  ostree container commit
-
-# Install Visual Studio Code
-RUN rpm-ostree install \
-    code \
-  && \
-  rm -f /etc/yum.repos.d/vscode.repo \
-  && \
-  rm -rf /tmp/* /var/* && \
-  ostree container commit
-
-# Install virt-manager
-RUN rpm-ostree install \
-    libvirt \
-    virt-manager \
-  && \
-  rm -rf /tmp/* /var/* && \
-  ostree container commit
-
-# Install Docker
-RUN rpm-ostree install \
-  docker-ce \
-  docker-ce-cli \
-  containerd.io \
-  docker-buildx-plugin \
-  docker-compose-plugin \
-  && \
-  rm -f /etc/yum.repos.d/docker-ce.repo \
-  && \
-  systemctl enable docker.socket \
-  && \
-  rm -rf /var/* /tmp/* && \
-  ostree container commit
-
-# Install CNI plugins
-RUN curl -Lo /tmp/cni-plugins.tgz $(curl https://api.github.com/repos/containernetworking/plugins/releases/latest | jq -r '.assets[] | select(.name| test("cni-plugins-linux-amd64-v.*.tgz$")).browser_download_url') && \
-  mkdir -p /tmp/cni-plugins && \
-  tar -xzf /tmp/cni-plugins.tgz -C /tmp/cni-plugins && \
-  mkdir -p /usr/cni/bin && \
-  mv /tmp/cni-plugins/* /usr/cni/bin \
-  && \
-  rm -rf /tmp/* /var/* && \
-  ostree container commit
-
-# Install additional CLI apps
-COPY --from=tc-redirect-tap-build /tmp/tc-redirect-tap/bin/tc-redirect-tap-amd64 /usr/cni/bin/tc-redirect-tap
-COPY --from=cgr.dev/chainguard/helm:latest /usr/bin/helm /usr/bin/helm
-COPY --from=cgr.dev/chainguard/kubectl:latest /usr/bin/kubectl /usr/bin/kubectl
-RUN curl -Lo /tmp/kind "https://github.com/kubernetes-sigs/kind/releases/latest/download/kind-$(uname)-amd64" && \
-  install -c -m 0755 /tmp/kind /usr/bin/kind \
-  && \
-  rpm-ostree install $(curl https://api.github.com/repos/wagoodman/dive/releases/latest | jq -r '.assets[] | select(.name| test(".*_linux_amd64.rpm$")).browser_download_url') \
-  && \
-  curl -Lo /tmp/vcluster "https://github.com/loft-sh/vcluster/releases/latest/download/vcluster-linux-amd64" && \
-  install -c -m 0755 /tmp/vcluster /usr/bin/vcluster \
-  && \
-  rpm-ostree install $(curl https://api.github.com/repos/charmbracelet/vhs/releases/latest | jq -r '.assets[] | select(.name| test(".*.x86_64.rpm$")).browser_download_url') && \
-  curl -Lo /tmp/ttyd https://github.com/tsl0922/ttyd/releases/latest/download/ttyd.x86_64 && \
-  install -c -m 0755 /tmp/ttyd /usr/bin/ttyd \
-  && \
-  curl -Lo /tmp/devbox https://releases.jetpack.io/devbox && \
-  install -c -m 0755 /tmp/devbox /usr/bin/devbox \
-  && \
-  rpm-ostree install \
-    gh \
-    neovim \
-  && \
-  rm -f /etc/yum.repos.d/github.repo \
-  && \
-  rm -rf /tmp/* /var/* && \
-  ostree container commit
-
-# Disable all RPM Fusion repos
-RUN sed -i 's/enabled=1/enabled=0/g' /etc/yum.repos.d/rpmfusion-{free,nonfree}{,-updates,-updates-testing}.repo \
-  && \
+  rpm-ostree cleanup -m && \
   rm -rf /tmp/* /var/* && \
   ostree container commit

@@ -22,14 +22,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        base-image: [silverblue]
         fedora-version: [39]
     permissions:
       contents: read
       packages: write
       id-token: write
     env:
-      IMAGE_NAME: eternal-linux/lumina
-      BASE_IMAGE_NAME: eternal-linux/main/silverblue
+      IMAGE_NAME: ""
     steps:
       - name: Checkout
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
@@ -37,10 +37,15 @@ jobs:
       - name: Optimize GHA Storage
         uses: rsturla/eternal-main/.github/actions/optimise-gha-storage@main
 
-      - name: Verify Base Image
-        uses: rsturla/eternal-main/.github/actions/verify-image@main
-        with:
-          image: '${{ env.IMAGE_REGISTRY }}/${{ env.BASE_IMAGE_NAME}}:${{ matrix.fedora-version }}-nvidia${{ matrix.nvidia-version }}'
+      - name: Setup Environment Variables
+        env:
+          BASE_IMAGE: ${{ matrix.base-image }}
+        run: |
+          if [ "${BASE_IMAGE}" == "silverblue" ]; then
+            echo "IMAGE_NAME=eternal-linux/lumina" >> $GITHUB_ENV
+          else
+            echo "IMAGE_NAME=eternal-linux/lumina-${BASE_IMAGE}" >> $GITHUB_ENV
+          fi
 
       - name: Generate Image Tags
         uses: rsturla/eternal-main/.github/actions/generate-image-tags@main
@@ -72,6 +77,7 @@ jobs:
             ${{ steps.generate-image-tags.outputs.tags }}
           build-args: |
             BASE_TAG=${{ matrix.fedora-version }}
+            BASE_IMAGE=${{ matrix.base-image }}
 
       - name: Push Image
         id: push
@@ -118,6 +124,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        base-image: [silverblue]
         fedora-version: [39]
         nvidia-version: [550]
         include:
@@ -128,8 +135,7 @@ jobs:
       packages: write
       id-token: write
     env:
-      IMAGE_NAME: eternal-linux/lumina
-      BASE_IMAGE_NAME: eternal-linux/main/silverblue
+      IMAGE_NAME: ""
     steps:
       - name: Checkout
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
@@ -137,10 +143,15 @@ jobs:
       - name: Optimize GHA Storage
         uses: rsturla/eternal-main/.github/actions/optimise-gha-storage@main
 
-      - name: Verify Base Image
-        uses: rsturla/eternal-main/.github/actions/verify-image@main
-        with:
-          image: '${{ env.IMAGE_REGISTRY }}/${{ env.BASE_IMAGE_NAME}}:${{ matrix.fedora-version }}-nvidia${{ matrix.nvidia-version }}'
+      - name: Setup Environment Variables
+        env:
+          BASE_IMAGE: ${{ matrix.base-image }}
+        run: |
+          if [ "${BASE_IMAGE}" == "silverblue" ]; then
+            echo "IMAGE_NAME=eternal-linux/lumina" >> $GITHUB_ENV
+          else
+            echo "IMAGE_NAME=eternal-linux/lumina-${BASE_IMAGE}" >> $GITHUB_ENV
+          fi
 
       - name: Generate Image Tags
         uses: rsturla/eternal-main/.github/actions/generate-image-tags@main
@@ -164,6 +175,7 @@ jobs:
             ${{ steps.generate-image-tags.outputs.tags }}
           build-args: |
             BASE_TAG=${{ matrix.fedora-version }}-nvidia${{ matrix.nvidia-version }}
+            BASE_IMAGE=${{ matrix.base-image }}
 
       - name: Push Image
         id: push
