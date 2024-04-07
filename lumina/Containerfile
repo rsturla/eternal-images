@@ -20,5 +20,5 @@ RUN chmod +x /tmp/scripts/*.sh /tmp/scripts/*.sh /tmp/scripts/_${BASE_IMAGE}/*.s
   /tmp/scripts/cleanup.sh --version ${FEDORA_VERSION} --base ${BASE_IMAGE} \
   && \
   rpm-ostree cleanup -m && \
-  rm -rf /tmp/* /var/* && \
+  rm -rf /tmp/* /var/* /usr/share/rpm/rpmdb.sqlite && \
   ostree container commit
