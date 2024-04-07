@@ -2,14 +2,17 @@
 
 set -euox pipefail
 
-curl -Lo /tmp/kind "https://github.com/kubernetes-sigs/kind/releases/latest/download/kind-$(uname)-amd64"
-install -c -m 0755 /tmp/kind /usr/bin/kind
-
+# Install Dive
 rpm-ostree install $(curl https://api.github.com/repos/wagoodman/dive/releases/latest | jq -r '.assets[] | select(.name| test(".*_linux_amd64.rpm$")).browser_download_url')
 
+# Install Kubernetes tools
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+HELM_VERSION=$(curl -s https://api.github.com/repos/helm/helm/releases/latest | jq -r '.tag_name')
+curl -Lo /tmp/helm "https://get.helm.sh/helm-${HELM_VERSION#v}-linux-amd64.tar.gz"
 curl -Lo /tmp/vcluster "https://github.com/loft-sh/vcluster/releases/latest/download/vcluster-linux-amd64"
 install -c -m 0755 /tmp/vcluster /usr/bin/vcluster
-
+curl -Lo /tmp/kind "https://github.com/kubernetes-sigs/kind/releases/latest/download/kind-$(uname)-amd64"
+install -c -m 0755 /tmp/kind /usr/bin/kind
 curl -Lo /tmp/devbox https://releases.jetpack.io/devbox
 install -c -m 0755 /tmp/devbox /usr/bin/devbox
 

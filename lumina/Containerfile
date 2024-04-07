@@ -17,12 +17,8 @@ COPY scripts/ /tmp/scripts/
 
 RUN chmod +x /tmp/scripts/*.sh /tmp/scripts/*.sh /tmp/scripts/_${BASE_IMAGE}/*.sh && \
   /tmp/scripts/setup.sh --version ${FEDORA_VERSION} --base ${BASE_IMAGE} && \
-  /tmp/scripts/cleanup.sh --version ${FEDORA_VERSION} --base ${BASE_IMAGE} && \
+  /tmp/scripts/cleanup.sh --version ${FEDORA_VERSION} --base ${BASE_IMAGE} \
+  && \
+  rpm-ostree cleanup -m && \
   rm -rf /tmp/* /var/* && \
   ostree container commit
-
-
-
-# Install additional CLI apps
-# COPY --from=cgr.dev/chainguard/helm:latest /usr/bin/helm /usr/bin/helm
-# COPY --from=cgr.dev/chainguard/kubectl:latest /usr/bin/kubectl /usr/bin/kubectl
