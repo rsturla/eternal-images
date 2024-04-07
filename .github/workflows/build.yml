@@ -38,8 +38,14 @@ jobs:
         uses: rsturla/eternal-main/.github/actions/optimise-gha-storage@main
 
       - name: Setup Environment Variables
+        env:
+          BASE_IMAGE: ${{ matrix.base-image }}
         run: |
-          echo "IMAGE_NAME=eternal-linux/lumina-${{ matrix.base-image }}" >> $GITHUB_ENV
+          if [ "${BASE_IMAGE}" == "silverblue" ]; then
+            echo "IMAGE_NAME=eternal-linux/lumina" >> $GITHUB_ENV
+          else
+            echo "IMAGE_NAME=eternal-linux/lumina-${BASE_IMAGE}" >> $GITHUB_ENV
+          fi
 
       - name: Generate Image Tags
         uses: rsturla/eternal-main/.github/actions/generate-image-tags@main
@@ -138,8 +144,14 @@ jobs:
         uses: rsturla/eternal-main/.github/actions/optimise-gha-storage@main
 
       - name: Setup Environment Variables
+        env:
+          BASE_IMAGE: ${{ matrix.base-image }}
         run: |
-          echo "IMAGE_NAME=eternal-linux/lumina-${{ matrix.base-image }}" >> $GITHUB_ENV
+          if [ "${BASE_IMAGE}" == "silverblue" ]; then
+            echo "IMAGE_NAME=eternal-linux/lumina" >> $GITHUB_ENV
+          else
+            echo "IMAGE_NAME=eternal-linux/lumina-${BASE_IMAGE}" >> $GITHUB_ENV
+          fi
 
       - name: Generate Image Tags
         uses: rsturla/eternal-main/.github/actions/generate-image-tags@main
