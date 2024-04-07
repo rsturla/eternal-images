@@ -22,7 +22,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        base-image: [silverblue]
+        base-image: [silverblue, kinoite]
         fedora-version: [39]
     permissions:
       contents: read
@@ -124,7 +124,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        base-image: [silverblue]
+        base-image: [silverblue, kinoite]
         fedora-version: [39]
         nvidia-version: [550]
         include:
