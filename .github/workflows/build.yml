@@ -22,7 +22,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        base-image: [silverblue]
+        base-image: [silverblue, kinoite]
         fedora-version: [39]
     permissions:
       contents: read
@@ -110,13 +110,13 @@ jobs:
         uses: rsturla/eternal-main/.github/actions/generate-sbom@main
         with:
           image-ref: ${{ steps.push.outputs.registry-path }}
-          artifact-name: lumina-${{ matrix.fedora-version }}-sbom
+          artifact-name: lumina-${{ matrix.fedora-version }}-${{ matrix.base-image }}-sbom
 
       - name: Scan SBOM
         uses: rsturla/eternal-main/.github/actions/scan-sbom@main
         with:
           sbom-file: ${{ steps.generate-sbom.outputs.output-file }}
-          artifact-name: lumina-${{ matrix.fedora-version }}-scan
+          artifact-name: lumina-${{ matrix.fedora-version }}-${{ matrix.base-image }}-scan
 
 
   build-lumina-nvidia:
@@ -124,7 +124,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        base-image: [silverblue]
+        base-image: [silverblue, kinoite]
         fedora-version: [39]
         nvidia-version: [550]
         include:
@@ -208,13 +208,13 @@ jobs:
         uses: rsturla/eternal-main/.github/actions/generate-sbom@main
         with:
           image-ref: ${{ steps.push.outputs.registry-path }}
-          artifact-name: lumina-${{ matrix.fedora-version }}-nvidia${{ matrix.nvidia-version }}-sbom
+          artifact-name: lumina-${{ matrix.fedora-version }}-${{ matrix.base-image }}-nvidia${{ matrix.nvidia-version }}-sbom
 
       - name: Scan SBOM
         uses: rsturla/eternal-main/.github/actions/scan-sbom@main
         with:
           sbom-file: ${{ steps.generate-sbom.outputs.output-file }}
-          artifact-name: lumina-${{ matrix.fedora-version }}-nvidia${{ matrix.nvidia-version }}-scan
+          artifact-name: lumina-${{ matrix.fedora-version }}-${{ matrix.base-image }}-nvidia${{ matrix.nvidia-version }}-scan
 
   check:
     needs: [build-lumina, build-lumina-nvidia]
