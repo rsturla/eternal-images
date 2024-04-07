@@ -9,8 +9,7 @@ FROM ${BASE_REGISTRY}:${BASE_TAG}
 ARG FEDORA_VERSION
 ARG BASE_IMAGE
 
-COPY files/_base/etc/yum.repos.d /etc/yum.repos.d
-COPY files/_base/usr /usr
+COPY files/_base /
 COPY files/_${BASE_IMAGE}/usr /usr
 
 COPY scripts/ /tmp/scripts/
