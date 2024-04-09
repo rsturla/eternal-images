@@ -7,10 +7,6 @@ rpm-ostree install $(curl https://api.github.com/repos/wagoodman/dive/releases/l
 
 # Install Kubernetes tools
 curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-HELM_VERSION=$(curl -s https://api.github.com/repos/helm/helm/releases/latest | jq -r '.tag_name')
-curl -Lo /tmp/helm.tar.gz "https://get.helm.sh/helm-${HELM_VERSION#v}-linux-amd64.tar.gz"
-tar -C /tmp -xzf /tmp/helm.tar.gz
-install -c -m 0755 /tmp/linux-amd64/helm /usr/bin/helm
 curl -Lo /tmp/vcluster "https://github.com/loft-sh/vcluster/releases/latest/download/vcluster-linux-amd64"
 install -c -m 0755 /tmp/vcluster /usr/bin/vcluster
 curl -Lo /tmp/kind "https://github.com/kubernetes-sigs/kind/releases/latest/download/kind-$(uname)-amd64"
