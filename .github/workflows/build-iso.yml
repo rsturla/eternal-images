@@ -19,7 +19,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        image: [lumina, kinoite]
+        image: [lumina, lumina-kinoite]
         version: [39]
         arch: [x86_64]
         driver: ['', nvidia]
