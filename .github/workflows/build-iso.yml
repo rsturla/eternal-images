@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       upload-to-r2:
-        description: 'Whether to push to CloudFlare R2 storage'
+        description: 'CloudFlare R2 storage'
         required: true
         type: boolean
   pull_request:
