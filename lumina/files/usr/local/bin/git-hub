@@ -1,0 +1,126 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+ARCH=$(uname)
+BRANCH=
+FILE=
+HASH=
+RANGE=
+REL_PATH=
+REMOTE_BRANCH=
+BLAME=false
+
+usage() {
+    cat <<EOF
+git-hub
+
+Usage: $0 [args] <file-or-directory>
+
+Args:
+--blame     If given, opens the branch in the Blame view. Not applicable if given a topic branch or hash.
+--branch    The branch to use as the base lookup branch on GitHub.
+--hash      The commit hash to lookup on GitHub.
+--range     Specify in the format 'L10-L20' to highlight a visual range on GitHub.
+--help      Help.
+EOF
+}
+
+# Set GitHub URL based on the repository's URL
+set_github_url() {
+    # If the url begins with `https://`, remove the '.git' extension.
+    # If the url is a SSH or git url, convert it to an https url.
+    GITHUB_URL=$(git -C "$(dirname "$FILE")" ls-remote --get-url)
+
+    if [[ "$GITHUB_URL" == git* ]]
+    then
+        # Replaces first match of ":" with "/".
+        GITHUB_URL=${GITHUB_URL/://}
+
+        # Replaces first match of "git@" with "https://".
+        GITHUB_URL=${GITHUB_URL/git@/https://}
+    fi
+
+    if [[ "$GITHUB_URL" == ssh* ]]
+    then
+        # Replaces first match of "ssh://" with "https://".
+        GITHUB_URL=${GITHUB_URL/ssh:\/\/git@/https://}
+    fi
+
+    if [[ "$GITHUB_URL" == *.git ]]
+    then
+        # Remove the '.git' extension.
+        GITHUB_URL=${GITHUB_URL%.git}
+    fi
+}
+
+# Parse command-line arguments
+while [[ "$#" -gt 0 ]]; do
+    case "$1" in
+        --blame)
+            BLAME=true
+            ;;
+        --branch|-b)
+            REMOTE_BRANCH="$2"
+            shift
+            ;;
+        --hash)
+            HASH="$2"
+            shift
+            ;;
+        --range)
+            RANGE="$2"
+            shift
+            ;;
+        --help)
+            usage
+            exit 0
+            ;;
+        *)
+            FILE="$1"
+            ;;
+    esac
+    shift
+done
+
+if ! git -C "$(dirname "$FILE")" rev-parse --is-inside-work-tree &>/dev/null; then
+    echo "Object is not under version control, exiting..."
+    exit 1
+fi
+
+set_github_url
+
+REL_PATH=$(git -C "$(dirname "$FILE")" rev-parse --show-prefix)
+BRANCH=$(git -C "$(dirname "$FILE")" branch --show-current)
+
+# Handle hash or branch inputs
+if [[ -n "$HASH" ]]; then
+    GITHUB_URL+="/commit/$HASH"
+else
+    if [[ -n "$FILE" ]]; then
+        REL_PATH+=$(basename "$FILE")
+    fi
+
+    if [[ -n "$REMOTE_BRANCH" ]]; then
+        BRANCH="$REMOTE_BRANCH"
+    fi
+
+    if [[ -n "$REL_PATH" ]]; then
+        TOKEN=$("$BLAME" && echo "blame" || echo "blob")
+        GITHUB_URL+="/$TOKEN/$BRANCH/$REL_PATH"
+    fi
+fi
+
+# Append range if specified
+if [[ -n "$RANGE" ]]; then
+    GITHUB_URL+="#$RANGE"
+fi
+
+# Open GitHub URL
+echo "Opening $GITHUB_URL"
+if [ "$ARCH" == "Linux" ]
+then
+    xdg-open "$GITHUB_URL" > /dev/null 2>&1 &
+else
+    open "$GITHUB_URL" > /dev/null 2>&1 &
+fi

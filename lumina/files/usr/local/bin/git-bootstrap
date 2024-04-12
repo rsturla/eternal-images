@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+GIT_DIR=
+WORKTREE=false
+BASE_BRANCH=main
+
+usage() {
+    cat <<EOF
+git-worktree
+
+Usage: $0 [args] <directory>
+
+Args:
+--branch, -b    The base branch to use. Defaults to 'main'.
+--worktree  Whether to use a worktree. Defaults to false.
+--help      Help.
+EOF
+}
+
+while [[ "$#" -gt 0 ]]; do
+    case "$1" in
+        --branch|-b)
+            BASE_BRANCH="$2"
+            shift
+            ;;
+        --worktree)
+            WORKTREE=true
+            ;;
+        --help)
+            usage
+            exit 0
+            ;;
+        *)
+            # Assign the last argument to GIT_DIR
+            GIT_DIR="$1"
+            ;;
+    esac
+    shift
+done
+
+if [[ -z "$GIT_DIR" ]]; then
+    echo "No directory specified."
+    usage
+    exit 1
+fi
+
+if [[ -d "$GIT_DIR/.git" || -d "$GIT_DIR/.bare" ]]; then
+    echo "Directory already contains a git repository."
+    exit 1
+fi
+
+if [[ "$WORKTREE" = true ]]; then
+    # Create a bare repository
+    git init --bare --initial-branch="$BASE_BRANCH" "$GIT_DIR/.bare"
+    # Set up gitdir file
+    echo "gitdir: ./.bare" > "$GIT_DIR/.git"
+    # Add a worktree
+    git -C "$GIT_DIR" worktree add --orphan "./default/$BASE_BRANCH"
+else
+    # Initialize a regular repository
+    git init "$GIT_DIR" --initial-branch="$BASE_BRANCH"
+fi
