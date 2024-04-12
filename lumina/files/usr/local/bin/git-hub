@@ -18,11 +18,11 @@ git-hub
 Usage: $0 [args] <file-or-directory>
 
 Args:
---blame     If given, opens the branch in the Blame view. Not applicable if given a topic branch or hash.
---branch    The branch to use as the base lookup branch on GitHub.
---hash      The commit hash to lookup on GitHub.
---range     Specify in the format 'L10-L20' to highlight a visual range on GitHub.
---help      Help.
+--blame         If given, opens the branch in the Blame view. Not applicable if given a topic branch or hash.
+--branch, -b    The branch to use as the base lookup branch on GitHub.
+--hash          The commit hash to lookup on GitHub.
+--range         Specify in the format 'L10-L20' to highlight a visual range on GitHub.
+--help, -h      Show this help message.
 EOF
 }
 
@@ -72,7 +72,7 @@ while [[ "$#" -gt 0 ]]; do
             RANGE="$2"
             shift
             ;;
-        --help)
+        --help|-h)
             usage
             exit 0
             ;;

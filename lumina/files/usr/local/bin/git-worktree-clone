@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+GIT_DIR=
+GIT_SSH_URL=
+
+usage() {
+    cat <<EOF
+git worktree-clone
+
+Usage: $0 [args] <git-url>
+
+Args:
+--dir, -d  The directory to clone the repository into. Defaults to the repository name.
+--help, -h Show this help message.
+EOF
+}
+
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --dir|-d)
+            GIT_DIR="$2"
+            shift
+            ;;
+        --help|-h)
+            usage
+            exit 0
+            ;;
+        *)
+            GIT_SSH_URL="$1"
+            ;;
+    esac
+    shift
+done
+
+if [[ -z "$GIT_SSH_URL" ]]; then
+    echo "No git URL provided."
+    usage
+    exit 1
+fi
+
+if [[ -z "$GIT_DIR" ]]; then
+    GIT_DIR=$(basename "$GIT_SSH_URL" .git)
+fi
+
+if [[ -n "$GIT_DIR" && -e "$GIT_DIR" ]]; then
+    echo "Destination directory $GIT_DIR already exists."
+    exit 1
+fi
+
+mkdir -p "$GIT_DIR"
+git clone --bare "$GIT_SSH_URL" "$GIT_DIR/.bare"
+echo "gitdir: ./.bare" > "$GIT_DIR/.git"
+
+DEFAULT_BRANCH=$(git --git-dir "$GIT_DIR/.bare" symbolic-ref --short HEAD)
+git -C "$GIT_DIR" worktree add "./default/$DEFAULT_BRANCH"
+
+echo "Cloned $GIT_SSH_URL into $GIT_DIR"

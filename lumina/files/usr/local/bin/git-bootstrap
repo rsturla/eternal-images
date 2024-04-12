@@ -8,14 +8,14 @@ BASE_BRANCH=main
 
 usage() {
     cat <<EOF
-git-worktree
+git-bootstrap
 
 Usage: $0 [args] <directory>
 
 Args:
 --branch, -b    The base branch to use. Defaults to 'main'.
---worktree  Whether to use a worktree. Defaults to false.
---help      Help.
+--worktree      Whether to use a worktree. Defaults to false.
+--help, -h      Show this help message.
 EOF
 }
 
@@ -28,7 +28,7 @@ while [[ "$#" -gt 0 ]]; do
         --worktree)
             WORKTREE=true
             ;;
-        --help)
+        --help|-h)
             usage
             exit 0
             ;;
