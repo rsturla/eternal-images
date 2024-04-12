@@ -8,9 +8,9 @@ A collection of Immutable Linux Desktop images from the Eternal Linux project.  
 
 <!-- Table with an overview.  Columns should be Desktop Environment | Intended Usage | Description | Is Stable -->
 
-| Desktop Environment | Intended Usage | Description | Is Stable |
-| ------------------- | -------------- | ----------- | --------- |
-| GNOME               | Development    | A desktop optimised for DevOps | Yes |
+| Desktop Environment | Intended Usage | Description | Is Stable | ISOs |
+| ------------------- | -------------- | ----------- | --------- | --- |
+| GNOME               | Development    | A desktop optimised for DevOps | Yes | [Regular](https://download.eternal.sturla.tech/lumina/lumina-39-x86_64.iso) / [NVIDIA](https://download.eternal.sturla.tech/lumina/lumina-39-nvidia-x86_64.iso) |
 
 ![Lumina Desktop](./_assets/lumina-desktop.png)
 > The Lumina Desktop Environment featuring Distrobox and VSCode

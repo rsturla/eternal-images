@@ -1,0 +1,24 @@
+[Unit]
+Description=A RedPanda (Kafka) single node cluster
+After=network-online.target
+
+[Container]
+Image=docker.redpanda.com/redpandadata/redpanda:latest
+AutoUpdate=registry
+ContainerName=redpanda-server
+Exec=start --config /etc/redpanda/config/redpanda-server.yml
+Network=eternal.network
+PublishPort=8081:18081
+PublishPort=8082:18082
+PublishPort=9092:19092
+PublishPort=9644:9644
+Volume=redpanda.volume:/var/lib/redpanda/data:Z
+Volume=./_config/redpanda-server.yml:/etc/redpanda/config/redpanda-server.yml:ro
+UserNS=keep-id:uid=101,gid=101
+
+[Service]
+TimeoutStartSec=900
+
+[Install]
+WantedBy=multi-user.target
+Alias=redpanda.service

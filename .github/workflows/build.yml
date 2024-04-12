@@ -7,6 +7,8 @@ on:
   pull_request:
     branches:
       - main
+    paths-ignore:
+      - '.github/workflows/build-iso.yml'
   schedule:
     - cron: "0 1,13 * * *" # 1am & 1pm every day
   workflow_dispatch:
@@ -20,78 +22,101 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        fedora-version: [39]
+        base-image: [silverblue, kinoite]
+        fedora-version: [39, 40]
     permissions:
       contents: read
       packages: write
       id-token: write
     env:
-      TAGS: ""
-      TAGS_CONCAT: ""
-      IMAGE_NAME: eternal-linux/lumina
-      BASE_IMAGE_NAME: eternal-linux/main/silverblue
+      IMAGE_NAME: ""
     steps:
       - name: Checkout
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
 
-      - name: Verify Base Image
-        uses: rsturla/eternal-main/.github/actions/verify-image@main
+      - name: Optimize GHA Storage
+        uses: rsturla/eternal-main/.github/actions/optimise-gha-storage@main
+
+      - name: Setup Environment Variables
+        env:
+          BASE_IMAGE: ${{ matrix.base-image }}
+        run: |
+          if [ "${BASE_IMAGE}" == "silverblue" ]; then
+            echo "IMAGE_NAME=eternal-linux/lumina" >> $GITHUB_ENV
+          else
+            echo "IMAGE_NAME=eternal-linux/lumina-${BASE_IMAGE}" >> $GITHUB_ENV
+          fi
+
+      - name: Generate Image Tags
+        uses: rsturla/eternal-main/.github/actions/generate-image-tags@main
+        id: generate-image-tags
         with:
-          image: '${{ env.IMAGE_REGISTRY }}/${{ env.BASE_IMAGE_NAME}}:${{ matrix.fedora-version }}-nvidia${{ matrix.nvidia-version }}'
-
-      - name: Generate Image Metadata
-        if: github.event_name != 'pull_request'
-        shell: bash
-        run: |
-          TAGS=()
-
-          TAGS+=("${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.fedora-version }}")
-          TAGS+=("${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:$(git rev-parse --short HEAD)-${{ matrix.fedora-version }}")
-
-          echo "TAGS=${TAGS[*]}" >> $GITHUB_ENV
-          echo "TAGS_CONCAT=$(IFS=, ; echo "${TAGS[*]}")" >> $GITHUB_ENV
-
-      - name: Generate Image Metadata (Pull Request)
-        if: github.event_name == 'pull_request'
-        shell: bash
-        run: |
-          TAGS=()
-
-          TAGS+=("${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:pr${{ github.event.number }}-${{ matrix.fedora-version }}")
-          TAGS+=("${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:pr${{ github.event.number }}-$(git rev-parse --short HEAD)-${{ matrix.fedora-version }}")
-
-          echo "TAGS=${TAGS[*]}" >> $GITHUB_ENV
-          echo "TAGS_CONCAT=$(IFS=, ; echo "${TAGS[*]}")" >> $GITHUB_ENV
+          image-name: ${{ env.IMAGE_REGISTRY}}/${{ env.IMAGE_NAME }}
+          major-version: ${{ matrix.fedora-version }}
+          is-release: ${{ github.event_name != 'pull_request' }}
 
       - name: Login to GHCR
-        uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3
+        uses: docker/login-action@e92390c5fb421da1463c202d546fed0ec5c39f20 # v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ github.token }}
 
       - name: Setup Docker Buildx
-        uses: docker/setup-buildx-action@f95db51fddba0c2d1ec667646a06c2ce06100226 # v3
+        uses: docker/setup-buildx-action@d70bba72b1f3fd22344832f00baa16ece964efeb # v3
 
       - name: Build Image
         id: build
-        uses: docker/build-push-action@4a13e500e55cf31b7a5d59a38ab2040ab0f42f56 # v5
+        uses: redhat-actions/buildah-build@7a95fa7ee0f02d552a32753e7414641a04307056 # v2
         with:
           context: lumina/.
-          file: lumina/Containerfile
-          push: true
-          tags: ${{ env.TAGS_CONCAT }}
+          containerfiles: |
+            lumina/Containerfile
+          image: ${{ env.IMAGE_NAME }}
+          tags: |
+            ${{ steps.generate-image-tags.outputs.tags }}
           build-args: |
             BASE_TAG=${{ matrix.fedora-version }}
+            BASE_IMAGE=${{ matrix.base-image }}
+
+      - name: Push Image
+        id: push
+        uses: redhat-actions/push-to-registry@5ed88d269cf581ea9ef6dd6806d01562096bee9c # v2
+        with:
+          image: ${{ steps.build.outputs.image }}
+          tags: ${{ steps.build.outputs.tags }}
+          registry: ${{ env.IMAGE_REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Login to GHCR
+        uses: docker/login-action@e92390c5fb421da1463c202d546fed0ec5c39f20 # v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
 
       - name: Sign Image
         uses: rsturla/eternal-main/.github/actions/sign-image@main
         if: github.event_name != 'pull_request'
         with:
           registry: ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}
-          digest: ${{ steps.build.outputs.digest }}
+          digest: ${{ steps.push.outputs.digest }}
           private-key: ${{ secrets.ETERNAL_LINUX_SIGNING_KEY }}
           private-key-passphrase: ${{ secrets.ETERNAL_LINUX_SIGNING_KEY_PASSPHRASE }}
+
+      - name: Generate SBOM
+        id: generate-sbom
+        uses: rsturla/eternal-main/.github/actions/generate-sbom@main
+        with:
+          image-ref: ${{ steps.push.outputs.registry-path }}
+          artifact-name: lumina-${{ matrix.fedora-version }}-${{ matrix.base-image }}-sbom
+
+      - name: Scan SBOM
+        uses: rsturla/eternal-main/.github/actions/scan-sbom@main
+        with:
+          sbom-file: ${{ steps.generate-sbom.outputs.output-file }}
+          artifact-name: lumina-${{ matrix.fedora-version }}-${{ matrix.base-image }}-scan
 
 
   build-lumina-nvidia:
@@ -99,87 +124,108 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        fedora-version: [39]
-        nvidia-version: [545]
+        base-image: [silverblue, kinoite]
+        fedora-version: [39, 40]
+        nvidia-version: [550]
         include:
-          - nvidia-version: 545
+          - nvidia-version: 550
             nvidia-is-stable: true
     permissions:
       contents: read
       packages: write
       id-token: write
     env:
-      TAGS: ""
-      TAGS_CONCAT: ""
-      IMAGE_NAME: eternal-linux/lumina
-      BASE_IMAGE_NAME: eternal-linux/main/silverblue
+      IMAGE_NAME: ""
     steps:
       - name: Checkout
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
 
-      - name: Verify Base Image
-        uses: rsturla/eternal-main/.github/actions/verify-image@main
+      - name: Optimize GHA Storage
+        uses: rsturla/eternal-main/.github/actions/optimise-gha-storage@main
+
+      - name: Setup Environment Variables
+        env:
+          BASE_IMAGE: ${{ matrix.base-image }}
+        run: |
+          if [ "${BASE_IMAGE}" == "silverblue" ]; then
+            echo "IMAGE_NAME=eternal-linux/lumina" >> $GITHUB_ENV
+          else
+            echo "IMAGE_NAME=eternal-linux/lumina-${BASE_IMAGE}" >> $GITHUB_ENV
+          fi
+
+      - name: Generate Image Tags
+        uses: rsturla/eternal-main/.github/actions/generate-image-tags@main
+        id: generate-image-tags
         with:
-          image: '${{ env.IMAGE_REGISTRY }}/${{ env.BASE_IMAGE_NAME}}:${{ matrix.fedora-version }}-nvidia${{ matrix.nvidia-version }}'
+          image-name: ${{ env.IMAGE_REGISTRY}}/${{ env.IMAGE_NAME }}
+          major-version: ${{ matrix.fedora-version }}
+          is-release: ${{ github.event_name != 'pull_request' }}
+          nvidia-driver-version: ${{ matrix.nvidia-version }}
+          nvidia-driver-is-stable: ${{ matrix.nvidia-is-stable }}
 
-      - name: Generate Image Metadata
-        if: github.event_name != 'pull_request'
-        shell: bash
-        run: |
-          TAGS=()
+      - name: Build Image
+        id: build
+        uses: redhat-actions/buildah-build@7a95fa7ee0f02d552a32753e7414641a04307056 # v2
+        with:
+          context: lumina/.
+          containerfiles: |
+            lumina/Containerfile
+          image: ${{ env.IMAGE_NAME }}
+          tags: |
+            ${{ steps.generate-image-tags.outputs.tags }}
+          build-args: |
+            BASE_TAG=${{ matrix.fedora-version }}-nvidia${{ matrix.nvidia-version }}
+            FEDORA_VERSION=${{ matrix.fedora-version }}
+            BASE_IMAGE=${{ matrix.base-image }}
 
-          TAGS+=("${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.fedora-version }}-nvidia${{ matrix.nvidia-version }}")
-          TAGS+=("${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:$(git rev-parse --short HEAD)-${{ matrix.fedora-version }}-nvidia${{ matrix.nvidia-version }}")
-          if [[ "${{ matrix.nvidia-is-stable }}" == "true" ]]; then
-            TAGS+=("${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.fedora-version }}-nvidia")
-            TAGS+=("${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:$(git rev-parse --short HEAD)-${{ matrix.fedora-version }}-nvidia")
-          fi
-
-          echo "TAGS=${TAGS[*]}" >> $GITHUB_ENV
-          echo "TAGS_CONCAT=$(IFS=, ; echo "${TAGS[*]}")" >> $GITHUB_ENV
-
-      - name: Generate Image Metadata (Pull Request)
-        if: github.event_name == 'pull_request'
-        shell: bash
-        run: |
-          TAGS=()
-
-          TAGS+=("${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:pr${{ github.event.number }}-${{ matrix.fedora-version }}-nvidia${{ matrix.nvidia-version }}")
-          TAGS+=("${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:pr${{ github.event.number }}-$(git rev-parse --short HEAD)-${{ matrix.fedora-version }}-nvidia${{ matrix.nvidia-version }}")
-          if [[ "${{ matrix.nvidia-is-stable }}" == "true" ]]; then
-            TAGS+=("${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:pr${{ github.event.number }}-${{ matrix.fedora-version }}-nvidia")
-            TAGS+=("${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}:pr${{ github.event.number }}-$(git rev-parse --short HEAD)-${{ matrix.fedora-version }}-nvidia")
-          fi
-
-          echo "TAGS=${TAGS[*]}" >> $GITHUB_ENV
-          echo "TAGS_CONCAT=$(IFS=, ; echo "${TAGS[*]}")" >> $GITHUB_ENV
+      - name: Push Image
+        id: push
+        uses: redhat-actions/push-to-registry@5ed88d269cf581ea9ef6dd6806d01562096bee9c # v2
+        with:
+          image: ${{ steps.build.outputs.image }}
+          tags: ${{ steps.build.outputs.tags }}
+          registry: ${{ env.IMAGE_REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Login to GHCR
-        uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3
+        uses: docker/login-action@e92390c5fb421da1463c202d546fed0ec5c39f20 # v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ github.token }}
-
-      - name: Setup Docker Buildx
-        uses: docker/setup-buildx-action@f95db51fddba0c2d1ec667646a06c2ce06100226 # v3
-
-      - name: Build Image
-        id: build
-        uses: docker/build-push-action@4a13e500e55cf31b7a5d59a38ab2040ab0f42f56 # v5
-        with:
-          context: lumina/.
-          file: lumina/Containerfile
-          push: true
-          tags: ${{ env.TAGS_CONCAT }}
-          build-args: |
-            BASE_TAG=${{ matrix.fedora-version }}-nvidia${{ matrix.nvidia-version }}
 
       - name: Sign Image
         uses: rsturla/eternal-main/.github/actions/sign-image@main
         if: github.event_name != 'pull_request'
         with:
           registry: ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}
-          digest: ${{ steps.build.outputs.digest }}
+          digest: ${{ steps.push.outputs.digest }}
           private-key: ${{ secrets.ETERNAL_LINUX_SIGNING_KEY }}
           private-key-passphrase: ${{ secrets.ETERNAL_LINUX_SIGNING_KEY_PASSPHRASE }}
+
+      - name: Generate SBOM
+        id: generate-sbom
+        uses: rsturla/eternal-main/.github/actions/generate-sbom@main
+        with:
+          image-ref: ${{ steps.push.outputs.registry-path }}
+          artifact-name: lumina-${{ matrix.fedora-version }}-${{ matrix.base-image }}-nvidia${{ matrix.nvidia-version }}-sbom
+
+      - name: Scan SBOM
+        uses: rsturla/eternal-main/.github/actions/scan-sbom@main
+        with:
+          sbom-file: ${{ steps.generate-sbom.outputs.output-file }}
+          artifact-name: lumina-${{ matrix.fedora-version }}-${{ matrix.base-image }}-nvidia${{ matrix.nvidia-version }}-scan
+
+  check:
+    needs: [build-lumina, build-lumina-nvidia]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+
+      - name: Check Job Status
+        uses: rsturla/eternal-main/.github/actions/check-jobs-success@main
+        with:
+          jobs: ${{ toJSON(needs) }}

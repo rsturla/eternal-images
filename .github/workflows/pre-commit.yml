@@ -1,0 +1,23 @@
+name: Pre-Commit CI
+
+on:
+  pull_request:
+    paths:
+      - .pre-commit-config.yml
+      - .github/workflows/pre-commit.yml
+  push:
+    branches:
+      - main
+    paths:
+      - .pre-commit-config.yml
+      - .github/workflows/pre-commit.yml
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+
+      - name: Run pre-commit
+        uses: rsturla/eternal-main/.github/actions/run-pre-commit@main
