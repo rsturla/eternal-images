@@ -13,7 +13,7 @@ BLAME=false
 
 usage() {
     cat <<EOF
-git-hub
+git-web
 
 Usage: $0 [args] <file-or-directory>
 
