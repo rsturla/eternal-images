@@ -36,9 +36,7 @@ jobs:
           image_tag: ${{ matrix.version }}${{ matrix.driver && format('-{0}', matrix.driver) || '' }}
           secure_boot_key_url: 'https://github.com/rsturla/akmods/raw/main/_certs/public_key.der'
           enrollment_password: 'eternal'
-          flatpak_remote_refs: |
-            app/org.mozilla.firefox/x86_64/stable 
-            app/org.videolan.VLC/x86_64/stable
+          flatpak_remote_refs: app/org.mozilla.firefox/x86_64/stable app/org.videolan.VLC/x86_64/stable
 
       - name: Upload ISO (Job Artifact)
         uses: actions/upload-artifact@5d5d22a31266ced268874388b861e4b58bb5c2f3 # v4
