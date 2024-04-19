@@ -1,0 +1,9 @@
+[org/gnome/desktop/media-handling]
+autorun-never=true
+
+[org/gnome/desktop/screensaver]
+lock-delay='0'
+lock-enabled=true
+
+[org/gnome/desktop/session]
+idle-delay='300'
