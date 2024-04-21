@@ -1,18 +1,15 @@
 #!/usr/bin/env bash
 
 set -euox pipefail
+source /etc/os-release
 
 BASE=""
-FEDORA_VERSION=""
+FEDORA_VERSION=$VERSION_ID
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --base)
       BASE="$2"
-      shift 2
-      ;;
-    --version)
-      FEDORA_VERSION="$2"
       shift 2
       ;;
     *)
@@ -27,21 +24,16 @@ if [[ -z "$BASE" ]]; then
   exit 1
 fi
 
-if [[ -z "$FEDORA_VERSION" ]]; then
-  echo "--version flag is required"
-  exit 1
-fi
-
 for script in /tmp/scripts/_base/*.sh; do
   if [[ -f "$script" ]]; then
     echo "Running $script"
-    bash "$script" --version "$FEDORA_VERSION"
+    bash "$script"
   fi
 done
 
 for script in /tmp/scripts/_$BASE/*.sh; do
   if [[ -f "$script" ]]; then
     echo "Running $script"
-    bash "$script" --version "$FEDORA_VERSION"
+    bash "$script"
   fi
 done
