@@ -23,7 +23,7 @@ jobs:
       fail-fast: false
       matrix:
         base-image: [silverblue, kinoite]
-        fedora-version: [39, 40]
+        fedora-version: [39, 40, stable]
     permissions:
       contents: read
       packages: write
@@ -125,7 +125,7 @@ jobs:
       fail-fast: false
       matrix:
         base-image: [silverblue, kinoite]
-        fedora-version: [39, 40]
+        fedora-version: [39, 40, stable]
         nvidia-version: [550]
         include:
           - nvidia-version: 550
