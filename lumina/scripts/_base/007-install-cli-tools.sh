@@ -15,7 +15,6 @@ curl -Lo /tmp/devbox https://releases.jetpack.io/devbox
 install -c -m 0755 /tmp/devbox /usr/bin/devbox
 
 rpm-ostree install \
-  gh \
-  neovim
+  gh
 
 rm -f /etc/yum.repos.d/github.repo
