@@ -8,7 +8,10 @@ AutoUpdate=registry
 ContainerName=cloudbeaver
 Network=eternal.network
 PublishPort=8978:8978
-Volume=./_config/cloudbeaver-config.conf:/opt/cloudbeaver/conf/cloudbeaver.conf:ro
+Environment=CB_SERVER_NAME=CloudBeaver Quadlet
+Environment=CB_SERVER_URL=http://localhost:8978
+Environment=CB_ADMIN_NAME=administrator
+Environment=CB_ADMIN_PASSWORD=administrator
 
 [Service]
 TimeoutStartSec=900
