@@ -1,0 +1,18 @@
+[Unit]
+Description=A SurrealDB container
+After=network-online.target
+
+[Container]
+Image=docker.io/surrealdb/surrealdb:latest
+AutoUpdate=registry
+ContainerName=surrealdb
+Exec=start file://var/lib/surrealdb/data/database.db
+Network=eternal.network
+PublishPort=8000:8000
+Volume=surrealdb.volume:/var/lib/surrealdb/data:Z
+
+[Service]
+TimeoutStartSec=900
+
+[Install]
+WantedBy=multi-user.target
