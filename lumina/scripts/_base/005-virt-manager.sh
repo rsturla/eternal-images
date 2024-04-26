@@ -4,4 +4,5 @@ set -euox pipefail
 
 rpm-ostree install \
   libvirt \
-  virt-manager
+  virt-manager \
+  edk2-ovmf
