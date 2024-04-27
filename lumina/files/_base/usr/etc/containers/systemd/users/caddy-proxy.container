@@ -1,0 +1,18 @@
+[Unit]
+Description=A Caddy proxy container
+After=local-fs.target network-online.target
+
+[Container]
+Image=docker.io/library/caddy:latest
+AutoUpdate=registry
+ContainerName=caddy-proxy
+Network=eternal.network
+PublishPort=8978:8978 # CloudBeaver
+Volume=./_config/Caddyfile:/etc/caddy/Caddyfile:ro
+Volume=/etc/eternal/caddy/config/:/etc/caddy/config/:ro
+
+[Service]
+TimeoutStartSec=900
+
+[Install]
+WantedBy=multi-user.target
