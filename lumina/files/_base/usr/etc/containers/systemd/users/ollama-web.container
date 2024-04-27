@@ -1,0 +1,23 @@
+[Unit]
+Description=An Ollama WebUI container
+After=network-online.target ollama.service
+Requires=ollama.service
+
+[Container]
+Image=ghcr.io/open-webui/open-webui:latest
+AutoUpdate=registry
+ContainerName=ollama-web
+Environment=OLLAMA_BASE_URL=http://ollama:11434
+Environment=WEBUI_SECRET_KEY=abc123
+Environment=DEFAULT_USER_ROLE=admin
+# Open WebUI does not allow access without a user account, nor does it allow
+# account creation via environment variables.
+Environment=ENABLE_SIGNUP=true
+Network=eternal.network
+PublishPort=8080:8080
+
+[Service]
+TimeoutStartSec=900
+
+[Install]
+WantedBy=multi-user.target
