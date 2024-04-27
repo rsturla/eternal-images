@@ -1,0 +1,23 @@
+[Unit]
+Description=An InfluxDB container
+After=network-online.target
+
+[Container]
+Image=docker.io/library/influxdb:latest
+AutoUpdate=registry
+ContainerName=influxdb
+Environment=DOCKER_INFLUXDB_INIT_MODE=setup
+Environment=DOCKER_INFLUXDB_INIT_USERNAME=administrator
+Environment=DOCKER_INFLUXDB_INIT_PASSWORD=password
+Environment=DOCKER_INFLUXDB_INIT_ORG=eternal
+Environment=DOCKER_INFLUXDB_INIT_BUCKET=eternal
+Environment=DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=eternal
+Network=eternal.network
+PublishPort=8086:8086
+Volume=influxdb.volume:/var/lib/influxdb2:Z
+
+[Service]
+TimeoutStartSec=900
+
+[Install]
+WantedBy=multi-user.target
