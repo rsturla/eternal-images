@@ -7,7 +7,8 @@ Image=docker.io/library/caddy:latest
 AutoUpdate=registry
 ContainerName=caddy-proxy
 Network=eternal.network
-PublishPort=8978:8978 # CloudBeaver
+# CloudBeaver
+PublishPort=8978:8978
 Volume=./_config/Caddyfile:/etc/caddy/Caddyfile:ro
 Volume=/etc/eternal/caddy/config/:/etc/caddy/config/:ro
 
