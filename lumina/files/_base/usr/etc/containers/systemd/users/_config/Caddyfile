@@ -1,0 +1,5 @@
+import /etc/caddy/config/*.caddy
+
+cloudbeaver.localhost:{$HTTPS_PORT} {
+    reverse_proxy cloudbeaver:8978
+}

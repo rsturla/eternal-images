@@ -7,7 +7,6 @@ Image=docker.io/dbeaver/cloudbeaver:latest
 AutoUpdate=registry
 ContainerName=cloudbeaver
 Network=eternal.network
-PublishPort=8978:8978
 Environment=CB_SERVER_NAME=CloudBeaver Quadlet
 Environment=CB_SERVER_URL=http://localhost:8978
 Environment=CB_ADMIN_NAME=administrator
