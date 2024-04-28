@@ -14,6 +14,7 @@ Environment=DEFAULT_USER_ROLE=admin
 # account creation via environment variables.
 Environment=ENABLE_SIGNUP=true
 Network=eternal.network
+PublishPort=8080:8080
 
 [Service]
 TimeoutStartSec=900
