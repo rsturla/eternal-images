@@ -9,7 +9,6 @@ AutoUpdate=registry
 ContainerName=redpanda-console
 Environment=CONFIG_FILEPATH=/etc/redpanda-console/config.yml
 Network=eternal.network
-PublishPort=8080:8080
 Volume=./_config/redpanda-console.yml:/etc/redpanda-console/config.yml:ro
 
 [Service]

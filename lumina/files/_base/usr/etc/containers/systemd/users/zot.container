@@ -10,7 +10,6 @@ Exec=serve /etc/zot/config.yaml
 Network=eternal.network
 Volume=zot.volume:/var/lib/zot/data
 Volume=%h/.config/eternal/zot-config.yaml:/etc/zot/config.yaml:Z
-PublishPort=5000:5000
 
 [Service]
 TimeoutStartSec=900

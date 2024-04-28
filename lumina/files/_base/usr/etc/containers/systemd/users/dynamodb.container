@@ -8,7 +8,6 @@ AutoUpdate=registry
 ContainerName=dynamodb-local
 Exec=-jar DynamoDBLocal.jar -sharedDb -dbPath ./data
 Network=eternal.network
-PublishPort=8000:8000
 WorkingDir=/home/dynamodblocal
 Volume=dynamodb.volume:/home/dynamodblocal/data
 
