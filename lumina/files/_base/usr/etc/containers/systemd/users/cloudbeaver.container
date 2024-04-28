@@ -11,6 +11,7 @@ Environment=CB_SERVER_NAME=CloudBeaver Quadlet
 Environment=CB_SERVER_URL=http://localhost:8978
 Environment=CB_ADMIN_NAME=administrator
 Environment=CB_ADMIN_PASSWORD=administrator
+PublishPort=8978:8978
 
 [Service]
 TimeoutStartSec=900

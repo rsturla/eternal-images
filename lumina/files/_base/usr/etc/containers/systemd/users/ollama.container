@@ -8,6 +8,7 @@ AutoUpdate=registry
 ContainerName=ollama
 Network=eternal.network
 Volume=ollama.volume:/root/.ollama
+PublishPort=11434:11434
 AddDevice=nvidia.com/gpu=all
 SecurityLabelDisable=true
 
