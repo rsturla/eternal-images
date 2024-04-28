@@ -1,6 +1,5 @@
 setup:
   @just setup-docker
-  @just setup-rpms
   @just setup-homebrew
   @echo "Setup complete!"
   @echo "Please reboot to complete the setup process."
@@ -8,12 +7,6 @@ setup:
 setup-docker:
   @echo "Adding user to docker group..."
   @bash -c "sudo usermod -aG docker $(whoami)"
-
-setup-rpms:
-  @echo "Installing layered RPMs..."
-  @rpm-ostree install --idempotent \
-    google-chrome-stable \
-    1password
 
 setup-jetbrains:
   #!/usr/bin/env bash
