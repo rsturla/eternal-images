@@ -15,8 +15,6 @@ Environment=MINIO_PROMETHEUS_URL='http://prometheus:9090'
 Environment=MINIO_PROMETHEUS_AUTH_TYPE='public'
 Environment=MINIO_PROMETHEUS_JOB_ID='minio-job'
 Network=eternal.network
-PublishPort=9000:9000
-PublishPort=9001:9001
 Volume=minio.volume:/data:Z
 
 [Service]

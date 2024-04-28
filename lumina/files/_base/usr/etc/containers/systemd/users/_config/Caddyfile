@@ -1,5 +1,74 @@
 import /etc/caddy/config/*.caddy
 
+# CloadBeaver
 cloudbeaver.localhost:{$HTTPS_PORT} {
     reverse_proxy cloudbeaver:8978
+}
+
+# CockroachDB
+cockroachdb.localhost:{$HTTPS_PORT} {
+    reverse_proxy cockroachdb:8080
+}
+
+# DynamoDB
+dynamodb.localhost:{$HTTPS_PORT} {
+    reverse_proxy dynamodb:8000
+}
+
+# Keycloak
+keycloak.localhost:{$HTTPS_PORT} {
+    reverse_proxy keycloak:8080
+}
+
+# Minio
+minio.localhost:{$HTTPS_PORT} {
+    reverse_proxy minio:9000
+}
+
+api.minio.localhost:{$HTTPS_PORT} {
+    reverse_proxy minio:9001
+}
+
+# Neo4j
+neo4j.localhost:{$HTTPS_PORT} {
+    reverse_proxy neo4j:7474
+}
+
+# Ollama
+api.ollama.localhost:{$HTTPS_PORT} {
+    reverse_proxy ollama:11434
+}
+
+ollama.localhost:{$HTTPS_PORT} {
+    reverse_proxy ollama-web:8080
+}
+
+# Prometheus
+prometheus.localhost:{$HTTPS_PORT} {
+    reverse_proxy prometheus:9090
+}
+
+# Qdrant
+qdrant.localhost:{$HTTPS_PORT} {
+    reverse_proxy qdrant:6333
+}
+
+# RedPanda
+console.redpanda.localhost:{$HTTPS_PORT} {
+    reverse_proxy redpanda-console:8080
+}
+
+# ScyllaDB
+api.scylladb.localhost:{$HTTPS_PORT} {
+    reverse_proxy scylladb:10000
+}
+
+# HashiCorp Vault
+vault.localhost:{$HTTPS_PORT} {
+    reverse_proxy vault:8200
+}
+
+# Zot
+zot.localhost:{$HTTPS_PORT} {
+    reverse_proxy zot:5000
 }
