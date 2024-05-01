@@ -11,5 +11,3 @@ rpm-ostree install \
   cockpit-selinux \
   cockpit-storaged \
   cockpit-system
-
-systemctl enable cockpit.service
