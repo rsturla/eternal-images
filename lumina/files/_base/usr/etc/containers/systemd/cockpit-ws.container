@@ -1,0 +1,15 @@
+[Unit]
+Description=A Cockpit Web Server container
+After=network-online.target
+
+[Container]
+Image=quay.io/cockpit/ws:latest
+AutoUpdate=registry
+ContainerName=cockpit-ws
+PublishPort=9090:9090
+
+[Service]
+TimeoutStartSec=900
+
+[Install]
+WantedBy=multi-user.target default.target
