@@ -14,7 +14,7 @@ extensions:
   sync:
     registries:
       - urls:
-        - https://ghcr.io/rsturla
+        - https://ghcr.io
         onDemand: true
         content:
           - prefix: "rsturla/**"
