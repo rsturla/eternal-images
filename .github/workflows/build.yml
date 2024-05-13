@@ -156,7 +156,7 @@ jobs:
         id: build
         uses: rsturla/eternal-main/.github/actions/build-image@main
         with:
-          builder: buildah
+          builder: podman
           context: lumina/.
           dockerfile: lumina/Containerfile
           image-name: ${{ env.IMAGE_NAME }}
