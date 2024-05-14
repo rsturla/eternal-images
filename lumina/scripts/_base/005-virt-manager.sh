@@ -11,4 +11,3 @@ rpm-ostree install \
 # Another option is a systemd unit to create them, but seems overkill and the services are
 # not important
 systemctl disable pmlogger.service
-systemctl disable pmcd.service
