@@ -10,6 +10,5 @@ rpm-ostree install \
 # Some services depend on directories in /var/log, which are not present on atomic desktops
 # Another option is a systemd unit to create them, but seems overkill and the services are
 # not important
-systemctl disable pmie.service
 systemctl disable pmlogger.service
 systemctl disable pmcd.service
