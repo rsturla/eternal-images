@@ -2,6 +2,7 @@
 Description=Cockpit Container
 After=network-online.target
 Wants=network-online.target
+Requires=sshd.service
 RequiresMountsFor=%t/containers
 RequiresMountsFor=/
 
