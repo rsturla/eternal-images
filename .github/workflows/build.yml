@@ -59,7 +59,7 @@ jobs:
         id: build
         uses: rsturla/eternal-main/.github/actions/build-image@main
         with:
-          builder: podman
+          builder: docker
           context: lumina/.
           dockerfile: lumina/Containerfile
           image-name: ${{ env.IMAGE_NAME }}
@@ -156,7 +156,7 @@ jobs:
         id: build
         uses: rsturla/eternal-main/.github/actions/build-image@main
         with:
-          builder: podman
+          builder: docker
           context: lumina/.
           dockerfile: lumina/Containerfile
           image-name: ${{ env.IMAGE_NAME }}
