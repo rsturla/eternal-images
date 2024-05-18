@@ -8,8 +8,8 @@ AutoUpdate=registry
 ContainerName=glance
 Network=eternal.network
 PublishPort=8080:8080
-Volume=/etc/timezone:/etc/timezone:ro,Z
-Volume=/etc/localtime:/etc/localtime:ro,Z
+Volume=/etc/timezone:/etc/timezone:ro
+Volume=/etc/localtime:/etc/localtime:ro
 Volume=%h/.config/eternal/glance.yaml:/app/glance.yml:ro,Z
 
 [Service]
