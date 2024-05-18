@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -euox pipefail
+
+# Install development tools
+rpm-ostree install $(curl https://api.github.com/repos/wagoodman/dive/releases/latest | jq -r '.assets[] | select(.name| test(".*_linux_amd64.rpm$")).browser_download_url')
+curl -Lo /tmp/devbox https://releases.jetpack.io/devbox
+install -c -m 0755 /tmp/devbox /usr/bin/devbox
+rpm-ostree install \
+  gh zstd
+
+rm -f /etc/yum.repos.d/github.repo

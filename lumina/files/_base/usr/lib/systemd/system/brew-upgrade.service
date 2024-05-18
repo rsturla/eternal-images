@@ -2,11 +2,13 @@
 Description=Upgrade Brew packages
 After=local-fs.target
 After=network-online.target
-ConditionPathExists=/home/linuxbrew/.linuxbrew/bin/brew
+ConditionPathIsSymbolicLink=/home/linuxbrew/.linuxbrew/bin/brew
 
 [Service]
 # Override the user if different UID/User
 User=1000
 Type=oneshot
-ExecStart=/home/linuxbrew/.linuxbrew/bin/brew upgrade
-StandardOutput=journal
+Environment=HOMEBREW_CELLAR=/home/linuxbrew/.linuxbrew/Cellar
+Environment=HOMEBREW_PREFIX=/home/linuxbrew/.linuxbrew
+Environment=HOMEBREW_REPOSITORY=/home/linuxbrew/.linuxbrew/Homebrew
+ExecStart=/usr/bin/bash -c "/home/linuxbrew/.linuxbrew/bin/brew upgrade"
