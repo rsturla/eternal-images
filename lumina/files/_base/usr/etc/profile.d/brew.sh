@@ -1,4 +1,6 @@
-#!/bin/sh
+#!/usr/bin/env bash
+[[ -d /home/linuxbrew/.linuxbrew && $- == *i* ]] && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+
 # Check for interactive bash and that we haven't already been sourced.
 if [ "x${BASH_VERSION-}" != x -a "x${PS1-}" != x -a "x${BREW_BASH_COMPLETION-}" = x ]; then
 
