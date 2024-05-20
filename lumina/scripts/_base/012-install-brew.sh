@@ -25,3 +25,11 @@ systemctl enable brew-update.timer
 
 # Clean up
 rm -rf /.dockerenv /var/home /var/roothome
+
+# Register path symlink
+# We do this via tmpfiles.d so that it is created by the live system.
+cat >/usr/lib/tmpfiles.d/eternal-homebrew.conf <<EOF
+d /var/lib/homebrew 0755 1000 1000 - -
+d /var/cache/homebrew 0755 1000 1000 - -
+d /var/home/linuxbrew 0755 1000 1000 - -
+EOF
