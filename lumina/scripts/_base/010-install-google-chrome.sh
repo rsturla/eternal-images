@@ -39,6 +39,6 @@ mv /var/opt/google /usr/lib/google # move this over here
 #####
 # Register path symlink
 # We do this via tmpfiles.d so that it is created by the live system.
-cat >/usr/lib/tmpfiles.d/google.conf <<EOF
+cat >/usr/lib/tmpfiles.d/eternal-google.conf <<EOF
 L  /opt/google  -  -  -  -  /usr/lib/google
 EOF
