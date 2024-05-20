@@ -19,6 +19,17 @@ echo "Installing 1Password"
 mkdir -p /var/opt # -p just in case it exists
 # for some reason...
 
+# Setup repo
+cat << EOF > /etc/yum.repos.d/1password.repo
+[1password]
+name=1Password Stable Channel
+baseurl=https://downloads.1password.com/linux/rpm/stable/\$basearch
+enabled=1
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=https://downloads.1password.com/linux/keys/1password.asc
+EOF
+
 # Import signing key
 #rpm --import https://downloads.1password.com/linux/keys/1password.asc
 
