@@ -19,17 +19,6 @@ echo "Installing 1Password"
 mkdir -p /var/opt # -p just in case it exists
 # for some reason...
 
-# Setup repo
-cat << EOF > /etc/yum.repos.d/1password.repo
-[1password]
-name=1Password Stable Channel
-baseurl=https://downloads.1password.com/linux/rpm/stable/\$basearch
-enabled=1
-gpgcheck=1
-repo_gpgcheck=1
-gpgkey=https://downloads.1password.com/linux/keys/1password.asc
-EOF
-
 # Import signing key
 #rpm --import https://downloads.1password.com/linux/keys/1password.asc
 
@@ -50,8 +39,6 @@ ln -s /opt/1Password/1password /usr/bin/1password
 # The following is a bastardization of "after-install.sh"
 # which is normally packaged with 1password. You can compare with
 # /usr/lib/1Password/after-install.sh if you want to see.
-
-cd /usr/lib/1Password
 
 # chrome-sandbox requires the setuid bit to be specifically set.
 # See https://github.com/electron/electron/issues/17972
