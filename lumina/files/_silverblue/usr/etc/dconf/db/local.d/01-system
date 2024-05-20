@@ -14,6 +14,10 @@ theme-name='Yaru'
 button-layout=':minimize,maximize,close'
 num-workspaces='10'
 
+[org/gnome/desktop/wm/keybindings]
+switch-input-source = ['<Shift><Super>space']
+switch-input-source-backward = ['']
+
 [org/gnome/software]
 allow-updates=false
 download-updates=false

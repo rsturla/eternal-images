@@ -8,8 +8,7 @@ rpm-ostree install \
   gnome-shell-extension-appindicator \
   gnome-shell-extension-dash-to-dock \
   gnome-shell-extension-blur-my-shell \
-  gnome-shell-extension-gsconnect \
-  nautilus-gsconnect \
+  gnome-shell-extension-search-light \
   yaru-theme \
   gnome-tweaks \
   libcanberra-gtk3 \

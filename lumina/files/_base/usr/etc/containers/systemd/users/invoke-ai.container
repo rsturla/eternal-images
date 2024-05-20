@@ -1,0 +1,20 @@
+[Unit]
+Description=A CyberChef container
+After=network-online.target
+
+[Container]
+Image=ghcr.io/invoke-ai/invokeai:latest
+AutoUpdate=registry
+ContainerName=invoke-ai
+Environment=INVOKEAI_ROOT=/var/lib/invokeai
+PublishPort=9090:9090
+Volume=invoke-ai.volume:/var/lib/invokeai
+Network=eternal.network
+AddDevice=nvidia.com/gpu=all
+SecurityLabelDisable=true
+
+[Service]
+TimeoutStartSec=900
+
+[Install]
+WantedBy=multi-user.target

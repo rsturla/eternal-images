@@ -1,0 +1,33 @@
+[Unit]
+Description=A Milvus container
+After=network-online.target
+
+[Container]
+Image=docker.io/milvusdb/milvus:latest-gpu
+AutoUpdate=registry
+ContainerName=milvus
+Exec=milvus run standalone
+Environment=ETCD_USE_EMBED=true
+Environment=ETCD_DATA_DIR=/var/lib/milvus/etcd
+Environment=ETCD_CONFIG_PATH=/milvus/configs/embedEtcd.yaml
+Environment=COMMON_STORAGETYPE=local
+HealthCmd="curl -f http://localhost:9091/healthz"
+HealthInterval=30s
+HealthStartPeriod=90s
+HealthTimeout=20s
+HealthRetries=3
+Network=eternal.network
+PublishPort=19530:19530
+PublishPort=9091:9091
+PublishPort=2379:2379
+Volume=milvus.volume:/var/lib/milvus:Z
+Volume=./_config/milvus-etcd.yaml:/milvus/configs/embedEtcd.yaml:ro
+AddDevice=nvidia.com/gpu=all
+SecurityLabelDisable=true
+SeccompProfile=unconfined
+
+[Service]
+TimeoutStartSec=900
+
+[Install]
+WantedBy=multi-user.target
