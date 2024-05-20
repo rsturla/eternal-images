@@ -2,6 +2,16 @@
 
 set -euox pipefail
 
+# Setup repo
+cat << EOF > /etc/yum.repos.d/docker-ce.repo
+[docker-ce-stable]
+name=Docker CE Stable - $basearch
+baseurl=https://download.docker.com/linux/fedora/$releasever/$basearch/stable
+enabled=1
+gpgcheck=1
+gpgkey=https://download.docker.com/linux/fedora/gpg
+EOF
+
 rpm-ostree install \
   docker-ce \
   docker-ce-cli \

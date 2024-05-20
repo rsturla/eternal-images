@@ -18,6 +18,17 @@ echo "Installing Google Chrome"
 # Prepare staging directory
 mkdir -p /var/opt # -p just in case it exists
 
+# Setup repo
+cat << EOF > /etc/yum.repos.d/google-chrome.repo
+[google-chrome]
+name=google-chrome
+baseurl=https://dl.google.com/linux/chrome/rpm/stable/x86_64
+enabled=1
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-google
+EOF
+
 # Prepare alternatives directory
 mkdir -p /var/lib/alternatives
 
