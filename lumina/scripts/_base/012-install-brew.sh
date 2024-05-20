@@ -3,14 +3,7 @@
 set -euox pipefail
 
 # Install Brew dependencies
-# Install "Development Tools" group
-rpm-ostree install \
-  buildbot colordiff cvs cvs2cl cvsps darcs dejagnu diffstat doxygen expect \
-  gambas3-ide gettext git git-annex git-cola git2cl gitg gtranslator highlight lcov \
-  manedit meld monotone myrepos nemiver patch patchutils qgit quilt rapidsvn rcs robodoc \
-  scanmem subunit subversion svn2cl systemtap tig tortoisehg translate-toolkit utrac \
-
-rpm-ostree install procps-ng curl file git
+rpm-ostree install procps-ng curl file git gcc
 
 # Convince the installer we are in CI
 touch /.dockerenv
