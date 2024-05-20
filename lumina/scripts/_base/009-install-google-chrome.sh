@@ -22,7 +22,7 @@ mkdir -p /var/opt # -p just in case it exists
 cat << EOF > /etc/yum.repos.d/google-chrome.repo
 [google-chrome]
 name=google-chrome
-baseurl=https://dl.google.com/linux/chrome/rpm/stable/x86_64
+baseurl=https://dl.google.com/linux/chrome/rpm/stable/\$basearch
 enabled=1
 gpgcheck=1
 repo_gpgcheck=1
