@@ -42,7 +42,7 @@ jobs:
           image_tag: ${{ matrix.fedora-version }}${{ matrix.driver && format('-{0}', matrix.driver) || '' }}
           secure_boot_key_url: 'https://github.com/rsturla/akmods/raw/main/_certs/public_key.der'
           enrollment_password: 'eternal'
-          iso_name: ${{ matrix.image }}-${{ matrix.fedora-version }}${{ matrix.driver && format('-{0}', matrix.driver) || '' }}.iso
+          iso_name: ${{ matrix.image }}-${{ matrix.fedora-version }}${{ matrix.driver && format('-{0}', matrix.driver) || '' }}-${{ matrix.arch }}.iso
 
       - name: Move ISOs to Upload Directory
         id: upload-directory
