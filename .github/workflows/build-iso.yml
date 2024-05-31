@@ -19,29 +19,47 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        fedora-version: [40]
         image: [lumina, lumina-kinoite]
-        version: [stable]
         arch: [x86_64]
         driver: ['', nvidia]
     steps:
+      - name: Checkout
+        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4
+
+      - name: Optimize GHA Storage
+        uses: rsturla/eternal-main/.github/actions/optimise-gha-storage@main
+
       - name: Generate ISOs
-        uses: rsturla/eternal-iso-generator@main
+        uses: jasonn3/build-container-installer@v1.2.0
         id: generate
         with:
           arch: ${{ matrix.arch }}
-          image-repo: ${{ env.IMAGE_REGISTRY }}
-          image-name: ${{ matrix.image }}
-          image-tag: ${{ matrix.version }}${{ matrix.driver && format('-{0}', matrix.driver) || '' }}
-          fedora-version: ${{ matrix.version }}
-          secureboot-key-url: 'https://github.com/rsturla/akmods/raw/main/_certs/public_key.der'
-          secureboot-password: 'eternal'
+          image_repo: ${{ env.IMAGE_REGISTRY }}
+          image_name: ${{ matrix.image }}
+          variant: Other
+          version: ${{ matrix.fedora-version }}
+          image_tag: ${{ matrix.fedora-version }}${{ matrix.driver && format('-{0}', matrix.driver) || '' }}
+          secure_boot_key_url: 'https://github.com/rsturla/akmods/raw/main/_certs/public_key.der'
+          enrollment_password: 'eternal'
+          iso_name: ${{ matrix.image }}-${{ matrix.fedora-version }}${{ matrix.driver && format('-{0}', matrix.driver) || '' }}.iso
+
+      - name: Move ISOs to Upload Directory
+        id: upload-directory
+        shell: bash
+        run: |
+          ISO_UPLOAD_DIR=${{ github.workspace }}/upload
+          mkdir ${ISO_UPLOAD_DIR}
+          mv ${{ steps.generate.outputs.iso_path }}/${{ steps.generate.outputs.iso_name }} ${ISO_UPLOAD_DIR}
+          mv ${{ steps.generate.outputs.iso_path }}/${{ steps.generate.outputs.iso_name }}-CHECKSUM ${ISO_UPLOAD_DIR}
+          echo "iso-upload-dir=${ISO_UPLOAD_DIR}" >> $GITHUB_OUTPUT
 
       - name: Upload ISO (Job Artifact)
         uses: actions/upload-artifact@1746f4ab65b179e0ea60a494b83293b640dd5bba # v4
         if: github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && !inputs.upload-to-r2)
         with:
-          name: ${{ matrix.image }}-${{ matrix.version }}${{ matrix.driver && format('-{0}', matrix.driver) || '' }}
-          path: ${{ steps.generate.outputs.output-path }}
+          name: ${{ steps.build.outputs.iso_name }}
+          path: ${{ steps.upload-directory.outputs.iso-upload-dir }}
           if-no-files-found: error
           retention-days: 7
           compression-level: 0
@@ -58,7 +76,7 @@ jobs:
           RCLONE_CONFIG_R2_ENDPOINT: https://${{ secrets.CLOUDFLARE_ACCOUNT_ID }}.r2.cloudflarestorage.com
           R2_BUCKET_NAME: ${{ vars.R2_BUCKET_NAME }}
           R2_BUCKET_PREFIX: ${{ matrix.image }}
-          SOURCE_DIR: ${{ steps.generate.outputs.output-path }}
+          SOURCE_DIR: ${{ steps.upload-directory.outputs.iso-upload-dir }}
         run: |
           sudo -v ; curl https://rclone.org/install.sh | sudo bash
           rclone copy $SOURCE_DIR R2:$R2_BUCKET_NAME/$R2_BUCKET_PREFIX
