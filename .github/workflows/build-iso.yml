@@ -58,7 +58,7 @@ jobs:
         uses: actions/upload-artifact@1746f4ab65b179e0ea60a494b83293b640dd5bba # v4
         if: github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && !inputs.upload-to-r2)
         with:
-          name: ${{ steps.build.outputs.iso_name }}
+          name: ${{ steps.generate.outputs.iso_name }}
           path: ${{ steps.upload-directory.outputs.iso-upload-dir }}
           if-no-files-found: error
           retention-days: 7
