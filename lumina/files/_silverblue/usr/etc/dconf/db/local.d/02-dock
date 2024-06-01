@@ -12,5 +12,6 @@ intellihide-mode='MAXIMIZED_WINDOWS'
 max-alpha=0.8
 min-alpha=0.5
 require-pressure-to-show=false
+running-indicator-style='DOTS'
 show-delay=0.10
 transparency-mode='DYNAMIC'
