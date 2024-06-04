@@ -1,0 +1,29 @@
+default-model: llama3:8b
+format-text:
+  markdown: '{{ index .Config.FormatText "markdown" }}'
+  json: '{{ index .Config.FormatText "json" }}'
+roles:
+  "default": []
+  "summarize_git_diff":
+    - https://raw.githubusercontent.com/danielmiessler/fabric/main/patterns/summarize_git_diff/system.md
+format: false
+role: "default"
+raw: false
+quiet: false
+temp: 1.0
+topp: 1.0
+no-limit: false
+word-wrap: 80
+include-prompt-args: false
+include-prompt: 0
+max-retries: 5
+fanciness: 10
+status-text: Generating
+max-input-chars: 12250
+apis:
+  ollama:
+    base-url: http://localhost:11434/api
+    models:
+      "llama3:8b":
+        aliases: ["llama3"]
+        max-input-chars: 650000
