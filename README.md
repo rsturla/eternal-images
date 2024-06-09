@@ -1,5 +1,11 @@
 # Eternal Images
 
+> [!NOTE]
+> This project should not be consumed directly by anyone.  It should be used as a reference when building your own images.
+> This is my opinionated image and includes everything I use for day-to-day tasks, plus is used for testing new features before contributing them to [Universal Blue](https://github.com/ublue-os/).
+> 
+> Interested users are advised to consume images from [Universal Blue](https://github.com/ublue-os/) instead due to the larger community of maintainers and committment to providing support for their images.  They also provide guidance on creating your own image.
+
 A collection of Immutable Linux Desktop images from the Eternal Linux project.  All images provided are highly opinionated and represent my personal preferences for a Linux desktop. Feel free to clone and modify these images to suit your own needs.
 
 ## Images
