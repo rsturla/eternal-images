@@ -21,4 +21,4 @@ rpm-ostree install \
 
 systemctl enable docker.socket
 
-rm -f /etc/yum.repos.d/docker-ce.repo
+rm /etc/yum.repos.d/docker-ce.repo
