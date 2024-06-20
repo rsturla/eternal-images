@@ -24,4 +24,4 @@ fi
 
 rpm-ostree install ptyxis
 
-rm -rf /etc/yum.repos.d/_copr_ublue-os_staging.repo
+rm /etc/yum.repos.d/_copr_ublue-os_staging.repo

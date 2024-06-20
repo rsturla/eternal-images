@@ -93,8 +93,8 @@ EOF
 
 # remove the sysusers.d entries created by onepassword RPMs.
 # They don't magically set the GID like we need them to.
-rm -f /usr/lib/sysusers.d/30-rpmostree-pkg-group-onepassword.conf
-rm -f /usr/lib/sysusers.d/30-rpmostree-pkg-group-onepassword-cli.conf
+rm /usr/lib/sysusers.d/30-rpmostree-pkg-group-onepassword.conf
+rm /usr/lib/sysusers.d/30-rpmostree-pkg-group-onepassword-cli.conf
 
 # Register path symlink
 # We do this via tmpfiles.d so that it is created by the live system.

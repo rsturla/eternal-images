@@ -14,4 +14,4 @@ EOF
 
 rpm-ostree install code
 
-rm -f /etc/yum.repos.d/vscode.repo
+rm /etc/yum.repos.d/vscode.repo

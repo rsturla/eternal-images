@@ -18,4 +18,4 @@ install -c -m 0755 /tmp/devbox /usr/bin/devbox
 rpm-ostree install \
   gh zstd
 
-rm -f /etc/yum.repos.d/github.repo
+rm /etc/yum.repos.d/github.repo
