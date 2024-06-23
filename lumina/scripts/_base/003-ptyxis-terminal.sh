@@ -13,7 +13,8 @@ if [[ "$FEDORA_VERSION" == "39" ]]; then
     --experimental \
     --from repo=copr:copr.fedorainfracloud.org:ublue-os:staging \
       gtk4 \
-      libadwaita
+      libadwaita \
+      vte291
 fi
 
 rpm-ostree install ptyxis
