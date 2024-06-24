@@ -1,14 +1,12 @@
 [Unit]
-Description=An InvokeAI container
+Description=A JanAI container
 After=network-online.target
 
 [Container]
-Image=ghcr.io/invoke-ai/invokeai:latest
+Image=ghcr.io/janhq/jan-server:cuda-12.2-latest
 AutoUpdate=registry
-ContainerName=invoke-ai
-Environment=INVOKEAI_ROOT=/var/lib/invokeai
-PublishPort=9090:9090
-Volume=invoke-ai.volume:/var/lib/invokeai
+ContainerName=jan-ai
+PublishPort=3000:3000
 Network=eternal.network
 AddDevice=nvidia.com/gpu=all
 SecurityLabelDisable=true
