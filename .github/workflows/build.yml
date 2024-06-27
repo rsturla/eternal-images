@@ -100,10 +100,6 @@ jobs:
       matrix:
         base-image: [silverblue, kinoite]
         fedora-version: [39, 40, stable]
-        nvidia-version: [550]
-        include:
-          - nvidia-version: 550
-            nvidia-is-stable: true
     permissions:
       contents: read
       packages: write
@@ -134,8 +130,7 @@ jobs:
           image-name: ${{ env.IMAGE_REGISTRY}}/${{ env.IMAGE_NAME }}
           major-version: ${{ matrix.fedora-version }}
           is-release: ${{ github.event_name != 'pull_request' }}
-          nvidia-driver-version: ${{ matrix.nvidia-version }}
-          nvidia-driver-is-stable: ${{ matrix.nvidia-is-stable }}
+          is-nvidia: true
 
       - name: Build Image
         id: build
@@ -148,7 +143,7 @@ jobs:
           image-tags: |
             ${{ steps.generate-image-tags.outputs.tags }}
           build-args: |
-            BASE_TAG=${{ matrix.fedora-version }}-nvidia${{ matrix.nvidia-version }}
+            BASE_TAG=${{ matrix.fedora-version }}-nvidia
             FEDORA_VERSION=${{ matrix.fedora-version }}
             BASE_IMAGE=${{ matrix.base-image }}
 
