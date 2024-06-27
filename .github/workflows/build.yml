@@ -32,7 +32,7 @@ jobs:
       IMAGE_NAME: ""
     steps:
       - name: Checkout
-        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
 
       - name: Optimize GHA Storage
         uses: rsturla/eternal-main/.github/actions/optimise-gha-storage@main
@@ -108,7 +108,7 @@ jobs:
       IMAGE_NAME: ""
     steps:
       - name: Checkout
-        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
 
       - name: Optimize GHA Storage
         uses: rsturla/eternal-main/.github/actions/optimise-gha-storage@main
@@ -177,7 +177,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
 
       - name: Check Job Status
         uses: rsturla/eternal-main/.github/actions/check-jobs-success@main
