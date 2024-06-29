@@ -1,5 +1,5 @@
 [Unit]
-Description=A CyberChef container
+Description=An InvokeAI container
 After=network-online.target
 
 [Container]
