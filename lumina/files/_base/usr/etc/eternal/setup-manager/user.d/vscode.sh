@@ -9,6 +9,7 @@ extensions=(
   github.copilot
   hashicorp.hcl
   hashicorp.terraform
+  vscode-icons-team.vscode-icons
 )
 
 # Function to install a single extension
