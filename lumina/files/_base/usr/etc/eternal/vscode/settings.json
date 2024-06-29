@@ -1,0 +1,29 @@
+{
+    // Window settings
+    "window.titleBarStyle": "custom",
+    // Workbench settings
+    "workbench.colorTheme": "Default High Contrast",
+    "workbench.iconTheme": "vscode-icons",
+    // File settings
+    "files.autoSave": "onFocusChange",
+    "files.trimTrailingWhitespace": true,
+    "files.trimFinalNewlines": true,
+    "files.associations": {
+        "*.json5": "jsonc"
+    },
+    // Editor settings
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
+    "editor.minimap.size": "fit",
+    "editor.mouseWheelZoom": true,
+    "editor.cursorBlinking": "smooth",
+    "editor.acceptSuggestionOnEnter": "off",
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": "always"
+    },
+    // Devbox settings
+    "devbox.autoShellOnTerminal": false,
+    // Disable telemetry
+    "telemetry.telemetryLevel": "off"
+}
