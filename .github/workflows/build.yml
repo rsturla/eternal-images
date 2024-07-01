@@ -10,7 +10,7 @@ on:
     paths-ignore:
       - '.github/workflows/build-iso.yml'
   schedule:
-    - cron: "0 1,13 * * *" # 1am & 1pm every day
+    - cron: "0 1 * * 1" # Every Monday at 1am
   workflow_dispatch:
 
 env:
