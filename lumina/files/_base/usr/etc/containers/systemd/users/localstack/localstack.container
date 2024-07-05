@@ -1,6 +1,7 @@
 [Unit]
 Description=A Localstack container for local development of AWS services
 After=network-online.target
+Requires=podman.socket
 
 [Container]
 Image=docker.io/localstack/localstack:latest
