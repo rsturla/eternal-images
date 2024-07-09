@@ -4,6 +4,7 @@
   // Workbench settings
   "workbench.colorTheme": "Default High Contrast",
   "workbench.iconTheme": "vscode-icons",
+  "workbench.sideBar.location": "right",
   // File settings
   "files.autoSave": "onFocusChange",
   "files.trimTrailingWhitespace": true,
