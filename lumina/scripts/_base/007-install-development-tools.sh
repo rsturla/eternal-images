@@ -29,11 +29,14 @@ rpm-ostree install \
 curl -Lo /tmp/devbox https://releases.jetpack.io/devbox
 install -c -m 0755 /tmp/devbox /usr/bin/devbox
 
-# Install Zed IDE (https://zed.dev/api/releases/stable/latest/zed-linux-x86_64.tar.gz)
+# Install Zed IDE
 curl -Lo /tmp/zed.tar.gz https://zed.dev/api/releases/stable/latest/zed-linux-x86_64.tar.gz
 mkdir -p /usr/lib/zed.app/
 tar -xvf /tmp/zed.tar.gz -C /usr/lib/zed.app/
 ln -s /usr/lib/zed.app/bin/zed /usr/bin/zed
+cp /usr/lib/zed.app/share/applications/zed.desktop /usr/share/applications/zed.desktop
+sed -i "s|Icon=zed|Icon=/usr/lib/zed.app/share/icons/hicolor/512x512/apps/zed.png|g" /usr/share/applications/zed.desktop
+sed -i "s|Exec=zed|Exec=/usr/lib/zed.app/libexec/zed-editor|g" /usr/share/applications/zed.desktop
 
 rm -f /etc/yum.repos.d/github.repo
 rm -f /etc/yum.repos.d/vscode.repo
