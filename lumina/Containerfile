@@ -1,6 +1,6 @@
 ARG BASE_IMAGE=silverblue
 ARG BASE_REGISTRY=ghcr.io/rsturla/eternal-linux/main/${BASE_IMAGE}
-ARG BASE_TAG=39
+ARG BASE_TAG=40
 ARG FEDORA_VERSION=${BASE_TAG}
 
 
