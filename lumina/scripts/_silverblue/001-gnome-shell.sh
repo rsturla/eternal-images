@@ -9,6 +9,7 @@ rpm-ostree install \
   gnome-shell-extension-dash-to-dock \
   gnome-shell-extension-blur-my-shell \
   gnome-shell-extension-search-light \
+  gnome-shell-extension-caffeine \
   yaru-theme \
   gnome-tweaks \
   libcanberra-gtk3 \
