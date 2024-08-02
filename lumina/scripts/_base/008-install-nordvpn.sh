@@ -7,7 +7,9 @@ cat << EOF > /etc/yum.repos.d/nordvpn.repo
 name=NordVPN
 baseurl=https://repo.nordvpn.com/yum/nordvpn/centos/\$basearch/
 enabled=1
-gpgcheck=0
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=https://repo.nordvpn.com/gpg/nordvpn_public.asc
 EOF
 
 rpm-ostree install nordvpn
