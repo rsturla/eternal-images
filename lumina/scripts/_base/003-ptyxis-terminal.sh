@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 set -euox pipefail
+source /etc/os-release
 
 FEDORA_VERSION=$VERSION_ID
 
