@@ -8,7 +8,7 @@ on:
     branches:
       - main
     paths-ignore:
-      - '.github/workflows/build-iso.yml'
+      - ".github/workflows/build-iso.yml"
   schedule:
     - cron: "0 1 * * 1" # Every Monday at 1am
   workflow_dispatch:
@@ -22,8 +22,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        base-image: [silverblue, kinoite]
         fedora-version: [39, 40, stable]
+        base-image: [silverblue, kinoite, cosmic]
+        exclude:
+          - fedora-version: 39
+            base-image: cosmic
     permissions:
       contents: read
       packages: write
@@ -92,14 +95,16 @@ jobs:
           private-key: ${{ secrets.ETERNAL_LINUX_SIGNING_KEY }}
           private-key-passphrase: ${{ secrets.ETERNAL_LINUX_SIGNING_KEY_PASSPHRASE }}
 
-
   build-lumina-nvidia:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        base-image: [silverblue, kinoite]
         fedora-version: [39, 40, stable]
+        base-image: [silverblue, kinoite, cosmic]
+        exclude:
+          - fedora-version: 39
+            base-image: cosmic
     permissions:
       contents: read
       packages: write
@@ -169,7 +174,6 @@ jobs:
           digest: ${{ steps.push.outputs.digest }}
           private-key: ${{ secrets.ETERNAL_LINUX_SIGNING_KEY }}
           private-key-passphrase: ${{ secrets.ETERNAL_LINUX_SIGNING_KEY_PASSPHRASE }}
-
 
   check:
     needs: [build-lumina, build-lumina-nvidia]
