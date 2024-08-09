@@ -4,13 +4,13 @@ on:
   pull_request:
     paths:
       - ".github/workflows/*build-iso.yml"
-      - "flatpaks/**"
+      - "**/flatpaks/**"
   push:
     branches:
       - main
     paths:
       - ".github/workflows/*build-iso.yml"
-      - "flatpaks/**"
+      - "**/flatpaks/**"
   schedule:
     # Every week at midnight on Monday
     - cron: "0 0 * * 1"
