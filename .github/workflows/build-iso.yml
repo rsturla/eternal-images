@@ -1,64 +1,44 @@
-name: Build ISO Files
+name: Build ISOs
 
 on:
-  workflow_dispatch:
-    inputs:
-      upload-to-r2:
-        description: 'CloudFlare R2 storage'
-        required: true
-        type: boolean
   pull_request:
     paths:
-      - '.github/workflows/build-iso.yml'
+      - ".github/workflows/*build-iso.yml"
+      - "**/flatpaks/**"
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/*build-iso.yml"
+      - "**/flatpaks/**"
+  schedule:
+    # Every week at midnight on Monday
+    - cron: "0 0 * * 1"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref || github.run_id }}-iso
+  cancel-in-progress: true
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    env:
-      IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}/eternal-linux
+  build-lumina:
+    uses: rsturla/eternal-main/.github/workflows/_build-iso.yml@main
     strategy:
       fail-fast: false
       matrix:
-        image: [lumina, lumina-kinoite]
-        version: [stable]
-        arch: [x86_64]
-        driver: ['', nvidia]
-    steps:
-      - name: Generate ISOs
-        uses: rsturla/eternal-iso-generator@main
-        id: generate
-        with:
-          arch: ${{ matrix.arch }}
-          image-repo: ${{ env.IMAGE_REGISTRY }}
-          image-name: ${{ matrix.image }}
-          image-tag: ${{ matrix.version }}${{ matrix.driver && format('-{0}', matrix.driver) || '' }}
-          fedora-version: ${{ matrix.version }}
-          secureboot-key-url: 'https://github.com/rsturla/akmods/raw/main/_certs/public_key.der'
-          secureboot-password: 'eternal'
-
-      - name: Upload ISO (Job Artifact)
-        uses: actions/upload-artifact@1746f4ab65b179e0ea60a494b83293b640dd5bba # v4
-        if: github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && !inputs.upload-to-r2)
-        with:
-          name: ${{ matrix.image }}-${{ matrix.version }}${{ matrix.driver && format('-{0}', matrix.driver) || '' }}
-          path: ${{ steps.generate.outputs.output-path }}
-          if-no-files-found: error
-          retention-days: 7
-          compression-level: 0
-
-      - name: Upload ISO (CloudFlare R2)
-        if: (github.event_name == 'workflow_dispatch' && inputs.upload-to-r2)
-        shell: bash
-        env:
-          RCLONE_CONFIG_R2_TYPE: s3
-          RCLONE_CONFIG_R2_PROVIDER: Cloudflare
-          RCLONE_CONFIG_R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
-          RCLONE_CONFIG_R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
-          RCLONE_CONFIG_R2_REGION: auto
-          RCLONE_CONFIG_R2_ENDPOINT: https://${{ secrets.CLOUDFLARE_ACCOUNT_ID }}.r2.cloudflarestorage.com
-          R2_BUCKET_NAME: ${{ vars.R2_BUCKET_NAME }}
-          R2_BUCKET_PREFIX: ${{ matrix.image }}
-          SOURCE_DIR: ${{ steps.generate.outputs.output-path }}
-        run: |
-          sudo -v ; curl https://rclone.org/install.sh | sudo bash
-          rclone copy $SOURCE_DIR R2:$R2_BUCKET_NAME/$R2_BUCKET_PREFIX
+        image-name:
+          - lumina
+          - lumina-kinoite
+          - lumina-cosmic
+        image-tag:
+          - 40
+          - stable
+          - 40-nvidia
+          - stable-nvidia
+    with:
+      image-name: ${{ matrix.image-name }}
+      image-registry: ghcr.io/rsturla/eternal-linux
+      image-tag: ${{ matrix.image-tag }}
+      flatpak-manifest-lists: |
+        lumina/flatpaks/base
+        lumina/flatpaks/${{ matrix.image-name }}
+      installer-version: 40
