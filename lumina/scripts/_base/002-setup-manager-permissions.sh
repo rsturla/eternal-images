@@ -2,5 +2,5 @@
 
 set -euox pipefail
 
-chmod +x /usr/etc/eternal/setup-manager/system.d/*
-chmod +x /usr/etc/eternal/setup-manager/user.d/*
+chmod +x /etc/eternal/setup-manager/system.d/*
+chmod +x /etc/eternal/setup-manager/user.d/*
