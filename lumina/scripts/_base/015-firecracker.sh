@@ -12,7 +12,9 @@ install -c -m 0755 /tmp/release-${LATEST_VERSION}-$(uname -m)/jailer-${LATEST_VE
 
 
 curl -Lo /tmp/cni-plugins.tgz $(curl https://api.github.com/repos/containernetworking/plugins/releases/latest | jq -r '.assets[] | select(.name| test("cni-plugins-linux-amd64-v.*.tgz$")).browser_download_url')
-mkdir -p /tmp/cni-plugins
-tar -xzf /tmp/cni-plugins.tgz -C /tmp/cni-plugins
 mkdir -p /usr/cni/bin
-mv /tmp/cni-plugins/* /usr/cni/bin
+tar -xzf /tmp/cni-plugins.tgz -C /usr/cni/bin
+
+cat >/usr/lib/tmpfiles.d/eternal-cni.conf <<EOF
+C /opt/cni/bin 0755 root root - /usr/cni/bin
+EOF
