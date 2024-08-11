@@ -102,6 +102,7 @@ jobs:
       matrix:
         fedora-version: [39, 40, stable]
         base-image: [silverblue, kinoite, cosmic]
+        nvidia-type: [open, proprietary]
         exclude:
           - fedora-version: 39
             base-image: cosmic
@@ -136,6 +137,7 @@ jobs:
           major-version: ${{ matrix.fedora-version }}
           is-release: ${{ github.event_name != 'pull_request' }}
           is-nvidia: true
+          nvidia-type: ${{ matrix.nvidia-type }}
 
       - name: Build Image
         id: build
@@ -148,7 +150,7 @@ jobs:
           image-tags: |
             ${{ steps.generate-image-tags.outputs.tags }}
           build-args: |
-            BASE_TAG=${{ matrix.fedora-version }}-nvidia
+            BASE_TAG=${{ matrix.fedora-version }}-${{ matrix.nvidia-type == 'open' && 'nvidia-open' || 'nvidia' }}
             FEDORA_VERSION=${{ matrix.fedora-version }}
             BASE_IMAGE=${{ matrix.base-image }}
 
