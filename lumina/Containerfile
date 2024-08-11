@@ -4,6 +4,15 @@ ARG BASE_TAG=40
 ARG FEDORA_VERSION=${BASE_TAG}
 
 
+# TODO: Move this to the COPR and install as an RPM
+FROM golang:1.21 AS tc-redirect-tap-build
+
+RUN git clone https://github.com/awslabs/tc-redirect-tap.git --depth 1 /tmp/tc-redirect-tap && \
+  cd /tmp/tc-redirect-tap && \
+  CGOENABLED=0 GOOS=linux GOARCH=amd64 go build -o bin/tc-redirect-tap-amd64 ./cmd/tc-redirect-tap && \
+  CGOENABLED=0 GOOS=linux GOARCH=arm64 go build -o bin/tc-redirect-tap-arm64 ./cmd/tc-redirect-tap
+
+
 FROM ${BASE_REGISTRY}:${BASE_TAG}
 
 ARG FEDORA_VERSION
@@ -11,8 +20,9 @@ ARG BASE_IMAGE
 
 COPY files/_base /
 COPY files/_${BASE_IMAGE} /
-
 COPY scripts/ /tmp/scripts/
+
+COPY --from=tc-redirect-tap-build /tmp/tc-redirect-tap/bin/tc-redirect-tap-amd64 /usr/cni/bin/tc-redirect-tap
 
 RUN chmod +x /tmp/scripts/*.sh /tmp/scripts/*.sh /tmp/scripts/_${BASE_IMAGE}/*.sh && \
   /tmp/scripts/setup.sh --base ${BASE_IMAGE} && \
