@@ -1,0 +1,18 @@
+[Unit]
+Description=A Twingate connector container
+After=local-fs.target network-online.target
+
+[Container]
+Image=docker.io/twingate/connector:latest
+AutoUpdate=registry
+ContainerName=twingate-connector
+EnvironmentFile=%h/.config/twingate/connector.env
+Environment=TWINGATE_LABEL_DEPLOYED_BY=systemd-quadlet
+Environment=TWINGATE_LABEL_HOSTNAME=%H
+Network=host
+
+[Service]
+TimeoutStartSec=900
+
+[Install]
+WantedBy=multi-user.target
