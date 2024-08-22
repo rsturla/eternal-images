@@ -9,7 +9,7 @@ ContainerName=twingate-connector
 EnvironmentFile=%h/.config/twingate/connector.env
 Environment=TWINGATE_LABEL_DEPLOYED_BY=systemd-quadlet
 Environment=TWINGATE_LABEL_HOSTNAME=%H
-Network=eternal.network
+Network=host
 
 [Service]
 TimeoutStartSec=900
