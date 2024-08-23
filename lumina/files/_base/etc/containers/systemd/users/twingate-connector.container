@@ -1,6 +1,7 @@
 [Unit]
 Description=A Twingate connector container
 After=local-fs.target network-online.target
+ConditionPathExists=%h/.config/twingate/connector.env
 
 [Container]
 Image=docker.io/twingate/connector:latest
@@ -13,6 +14,7 @@ Network=host
 
 [Service]
 TimeoutStartSec=900
+Restart=always
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=multi-user.target default.target
