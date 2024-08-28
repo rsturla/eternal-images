@@ -37,9 +37,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
 
-      - name: Optimize GHA Storage
-        uses: rsturla/eternal-main/.github/actions/optimise-gha-storage@main
-
       - name: Setup Environment Variables
         env:
           BASE_IMAGE: ${{ matrix.base-image }}
