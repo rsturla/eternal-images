@@ -18,7 +18,7 @@ env:
 
 jobs:
   build-lumina:
-    runs-on: ubuntu-latest
+    runs-on: [runs-on,runner=2cpu-linux-x64,"run-id=${{ github.run_id }}"]
     strategy:
       fail-fast: false
       matrix:
