@@ -1,0 +1,23 @@
+[Unit]
+Description=An Ollama WebUI container
+After=network-online.target ollama.service
+Requires=ollama.service
+
+[Container]
+Image=ghcr.io/open-webui/open-webui:latest
+AutoUpdate=registry
+ContainerName=ollama-web
+Environment=OLLAMA_BASE_URL=http://ollama:11434
+Environment=WEBUI_SECRET_KEY=abc123
+Environment=WEBUI_AUTH=false
+Environment=ENABLE_COMMUNITY_SHARING=false
+Environment=ENABLE_RAG_WEB_SEARCH=true
+Environment=RAG_WEB_SEARCH_ENGINE=duckduckgo
+Network=eternal.network
+PublishPort=8080:8080
+
+[Service]
+TimeoutStartSec=900
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,18 @@
+[Unit]
+Description=An OWASP ZAP container
+After=network-online.target
+
+[Container]
+Image=ghcr.io/zaproxy/zaproxy:stable
+AutoUpdate=registry
+ContainerName=owasp-zap
+Exec=./zap-webswing.sh
+Network=eternal.network
+PublishPort=8080:8080
+PublishPort=8090:8090
+
+[Service]
+TimeoutStartSec=900
+
+[Install]
+WantedBy=multi-user.target

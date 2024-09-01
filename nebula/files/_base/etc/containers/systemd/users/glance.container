@@ -1,0 +1,20 @@
+[Unit]
+Description=A Glance feed container
+After=local-fs.target network-online.target
+
+[Container]
+Image=docker.io/glanceapp/glance:latest
+AutoUpdate=registry
+ContainerName=glance
+Network=eternal.network
+PublishPort=8080:8080
+Volume=/etc/localtime:/etc/localtime:ro
+Volume=%h/.config/eternal/glance.yaml:/app/glance.yml:ro,Z
+
+[Service]
+TimeoutStartSec=900
+ExecStartPre=-mkdir -p %h/.config/eternal
+ExecStartPre=-cp -n /etc/containers/systemd/users/_config/glance-default.yaml %h/.config/eternal/glance.yaml
+
+[Install]
+WantedBy=multi-user.target
