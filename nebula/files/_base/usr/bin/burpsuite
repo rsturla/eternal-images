@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+
 # Run burpsuite with the provided arguments
 java -jar /usr/share/java/burpsuite.jar "$@"
