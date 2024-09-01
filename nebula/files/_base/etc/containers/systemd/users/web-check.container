@@ -1,0 +1,16 @@
+[Unit]
+Description=A Web-Check container (https://github.com/Lissy93/web-check)
+After=network-online.target
+
+[Container]
+Image=ghcr.io/lissy93/web-check:latest
+AutoUpdate=registry
+ContainerName=web-check
+PublishPort=3000:3000
+Network=eternal.network
+
+[Service]
+TimeoutStartSec=900
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,24 @@
+[Unit]
+Description=A Localstack container for local development of AWS services
+After=network-online.target
+Requires=podman.socket
+
+[Container]
+Image=docker.io/localstack/localstack:latest
+AutoUpdate=registry
+ContainerName=localstack
+Environment=DOCKER_SOCK=unix:///var/run/podman/podman.sock
+Environment=DOCKER_HOST=unix:///var/run/podman/podman.sock
+Environment=DOCKER_CMD=podman
+Network=eternal.network
+PublishPort=4566:4566
+PublishPort=4510-4559:4510-4559
+Volume=localstack.volume:/var/lib/localstack:Z
+Volume=/var/run/user/%G/podman/podman.sock:/var/run/podman/podman.sock:ro
+SecurityLabelDisable=true
+
+[Service]
+TimeoutStartSec=900
+
+[Install]
+WantedBy=multi-user.target

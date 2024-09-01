@@ -1,0 +1,19 @@
+[Unit]
+Description=A Grafana container
+After=network-online.target
+
+[Container]
+Image=docker.io/grafana/grafana-oss:latest
+AutoUpdate=registry
+ContainerName=grafana
+Network=eternal.network
+Volume=grafana.volume:/var/lib/grafana
+Volume=../_config/grafana.ini:/etc/grafana/grafana.ini:ro
+Environment=GF_INSTALL_PLUGINS=aws-datasource-provisioner-app
+PublishPort=3000:3000
+
+[Service]
+TimeoutStartSec=900
+
+[Install]
+WantedBy=multi-user.target

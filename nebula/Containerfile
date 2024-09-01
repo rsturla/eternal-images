@@ -1,0 +1,21 @@
+ARG BASE_IMAGE=silverblue
+ARG BASE_REGISTRY=ghcr.io/rsturla/eternal-linux/main/${BASE_IMAGE}
+ARG BASE_TAG=40
+ARG FEDORA_VERSION=${BASE_TAG}
+
+FROM ${BASE_REGISTRY}:${BASE_TAG}
+
+ARG FEDORA_VERSION
+ARG BASE_IMAGE
+
+COPY files/_base /
+COPY files/_${BASE_IMAGE} /
+COPY scripts/ /tmp/scripts/
+
+RUN chmod +x /tmp/scripts/*.sh /tmp/scripts/*.sh /tmp/scripts/_${BASE_IMAGE}/*.sh && \
+  /tmp/scripts/setup.sh --base ${BASE_IMAGE} && \
+  /tmp/scripts/cleanup.sh --base ${BASE_IMAGE} \
+  && \
+  rpm-ostree cleanup -m && \
+  rm -rf /tmp/* /var/* && \
+  ostree container commit

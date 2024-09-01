@@ -1,0 +1,18 @@
+[Unit]
+Description=A Qdrant container
+After=network-online.target
+
+[Container]
+Image=docker.io/qdrant/qdrant:latest
+AutoUpdate=registry
+ContainerName=qdrant
+Network=eternal.network
+PublishPort=6333:6333
+PublishPort=6334:6334
+Volume=qdrant.volume:/qdrant/storage:Z
+
+[Service]
+TimeoutStartSec=900
+
+[Install]
+WantedBy=multi-user.target

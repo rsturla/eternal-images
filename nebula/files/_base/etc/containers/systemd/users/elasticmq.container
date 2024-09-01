@@ -1,0 +1,16 @@
+[Unit]
+Description=An ElasticMQ container
+After=network-online.target
+
+[Container]
+Image=docker.io/softwaremill/elasticmq-native:latest
+AutoUpdate=registry
+ContainerName=elasticmq
+Network=eternal.network
+PublishPort=9324:9324
+
+[Service]
+TimeoutStartSec=900
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,16 @@
+[Unit]
+Description=A CyberChef container
+After=network-online.target
+
+[Container]
+Image=ghcr.io/gchq/cyberchef:latest
+AutoUpdate=registry
+ContainerName=cyberchef
+PublishPort=8080:80
+Network=eternal.network
+
+[Service]
+TimeoutStartSec=900
+
+[Install]
+WantedBy=multi-user.target

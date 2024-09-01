@@ -1,0 +1,17 @@
+[Unit]
+Description=A Flipt feature flagging server
+After=network-online.target
+
+[Container]
+Image=ghcr.io/flipt-io/flipt:latest
+AutoUpdate=registry
+ContainerName=flipt
+Network=eternal.network
+PublishPort=8080:8080
+PublishPort=9000:9000
+
+[Service]
+TimeoutStartSec=900
+
+[Install]
+WantedBy=multi-user.target
