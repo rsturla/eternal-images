@@ -50,7 +50,7 @@ jobs:
           fi
 
       - name: Generate Image Tags
-        uses: rsturla/eternal-main/.github/actions/generate-image-tags@add-rechunk-action
+        uses: rsturla/eternal-main/.github/actions/generate-image-tags@main
         id: generate-image-tags
         with:
           image-name: ${{ env.IMAGE_REGISTRY}}/${{ env.IMAGE_NAME }}
@@ -59,7 +59,7 @@ jobs:
 
       - name: Build Image
         id: build
-        uses: rsturla/eternal-main/.github/actions/build-image@add-rechunk-action
+        uses: rsturla/eternal-main/.github/actions/build-image@main
         with:
           builder: docker
           context: lumina/.
@@ -73,7 +73,8 @@ jobs:
 
       - name: Rechunk
         id: rechunk
-        uses: rsturla/eternal-main/.github/actions/rechunk@add-rechunk-action
+        if: github.event_name != 'pull_request'
+        uses: rsturla/eternal-main/.github/actions/rechunk@main
         with:
           builder: ${{ steps.build.outputs.builder }}
           ref: ${{ steps.build.outputs.image }}:${{ steps.generate-image-tags.outputs.stable-tag }}
@@ -137,7 +138,7 @@ jobs:
           fi
 
       - name: Generate Image Tags
-        uses: rsturla/eternal-main/.github/actions/generate-image-tags@add-rechunk-action
+        uses: rsturla/eternal-main/.github/actions/generate-image-tags@main
         id: generate-image-tags
         with:
           image-name: ${{ env.IMAGE_REGISTRY}}/${{ env.IMAGE_NAME }}
@@ -148,7 +149,7 @@ jobs:
 
       - name: Build Image
         id: build
-        uses: rsturla/eternal-main/.github/actions/build-image@add-rechunk-action
+        uses: rsturla/eternal-main/.github/actions/build-image@main
         with:
           builder: docker
           context: lumina/.
@@ -163,7 +164,8 @@ jobs:
 
       - name: Rechunk
         id: rechunk
-        uses: rsturla/eternal-main/.github/actions/rechunk@add-rechunk-action
+        if: github.event_name != 'pull_request'
+        uses: rsturla/eternal-main/.github/actions/rechunk@main
         with:
           builder: ${{ steps.build.outputs.builder }}
           ref: ${{ steps.build.outputs.image }}:${{ steps.generate-image-tags.outputs.stable-tag }}
