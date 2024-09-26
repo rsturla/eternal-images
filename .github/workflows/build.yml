@@ -18,7 +18,7 @@ env:
 
 jobs:
   build-lumina:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
@@ -51,7 +51,7 @@ jobs:
           fi
 
       - name: Generate Image Tags
-        uses: rsturla/eternal-main/.github/actions/generate-image-tags@main
+        uses: rsturla/eternal-main/.github/actions/generate-image-tags@add-rechunk-action
         id: generate-image-tags
         with:
           image-name: ${{ env.IMAGE_REGISTRY}}/${{ env.IMAGE_NAME }}
@@ -60,7 +60,7 @@ jobs:
 
       - name: Build Image
         id: build
-        uses: rsturla/eternal-main/.github/actions/build-image@main
+        uses: rsturla/eternal-main/.github/actions/build-image@add-rechunk-action
         with:
           builder: docker
           context: lumina/.
@@ -71,6 +71,16 @@ jobs:
           build-args: |
             BASE_TAG=${{ matrix.fedora-version }}
             BASE_IMAGE=${{ matrix.base-image }}
+
+      - name: Rechunk
+        id: rechunk
+        if: false
+        uses: rsturla/eternal-main/.github/actions/rechunk@add-rechunk-action
+        with:
+          builder: ${{ steps.build.outputs.builder }}
+          ref: ${{ steps.build.outputs.image }}:${{ steps.generate-image-tags.outputs.stable-tag }}
+          prev-ref: ${{ env.IMAGE_REGISTRY }}/${{ steps.build.outputs.image }}:${{ steps.generate-image-tags.outputs.stable-tag }}
+          tags: ${{ steps.build.outputs.tags }}
 
       - name: Push Image
         id: push
@@ -96,7 +106,7 @@ jobs:
           private-key-passphrase: ${{ secrets.ETERNAL_LINUX_SIGNING_KEY_PASSPHRASE }}
 
   build-lumina-nvidia:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
@@ -130,7 +140,7 @@ jobs:
           fi
 
       - name: Generate Image Tags
-        uses: rsturla/eternal-main/.github/actions/generate-image-tags@main
+        uses: rsturla/eternal-main/.github/actions/generate-image-tags@add-rechunk-action
         id: generate-image-tags
         with:
           image-name: ${{ env.IMAGE_REGISTRY}}/${{ env.IMAGE_NAME }}
@@ -141,7 +151,7 @@ jobs:
 
       - name: Build Image
         id: build
-        uses: rsturla/eternal-main/.github/actions/build-image@main
+        uses: rsturla/eternal-main/.github/actions/build-image@add-rechunk-action
         with:
           builder: docker
           context: lumina/.
@@ -153,6 +163,16 @@ jobs:
             BASE_TAG=${{ matrix.fedora-version }}-${{ matrix.nvidia-type == 'open' && 'nvidia-open' || 'nvidia' }}
             FEDORA_VERSION=${{ matrix.fedora-version }}
             BASE_IMAGE=${{ matrix.base-image }}
+
+      - name: Rechunk
+        id: rechunk
+        if: false
+        uses: rsturla/eternal-main/.github/actions/rechunk@add-rechunk-action
+        with:
+          builder: ${{ steps.build.outputs.builder }}
+          ref: ${{ steps.build.outputs.image }}:${{ steps.generate-image-tags.outputs.stable-tag }}
+          prev-ref: ${{ env.IMAGE_REGISTRY }}/${{ steps.build.outputs.image }}:${{ steps.generate-image-tags.outputs.stable-tag }}
+          tags: ${{ steps.build.outputs.tags }}
 
       - name: Push Image
         id: push
