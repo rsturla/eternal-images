@@ -18,15 +18,12 @@ env:
 
 jobs:
   build-lumina:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
-        fedora-version: [39, 40, stable]
-        base-image: [silverblue, kinoite, cosmic]
-        exclude:
-          - fedora-version: 39
-            base-image: cosmic
+        fedora-version: [40, stable]
+        base-image: [silverblue, cosmic]
     permissions:
       contents: read
       packages: write
@@ -37,8 +34,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
 
-      - name: Optimize GHA Storage
-        uses: rsturla/eternal-main/.github/actions/optimise-gha-storage@main
+      - name: Maximize build space
+        uses: ublue-os/remove-unwanted-software@v7
+        with:
+          remove-codeql: true
 
       - name: Setup Environment Variables
         env:
@@ -72,6 +71,16 @@ jobs:
             BASE_TAG=${{ matrix.fedora-version }}
             BASE_IMAGE=${{ matrix.base-image }}
 
+      - name: Rechunk
+        id: rechunk
+        if: github.event_name != 'pull_request'
+        uses: rsturla/eternal-main/.github/actions/rechunk@main
+        with:
+          builder: ${{ steps.build.outputs.builder }}
+          ref: ${{ steps.build.outputs.image }}:${{ steps.generate-image-tags.outputs.stable-tag }}
+          prev-ref: ${{ env.IMAGE_REGISTRY }}/${{ steps.build.outputs.image }}:${{ steps.generate-image-tags.outputs.stable-tag }}
+          tags: ${{ steps.build.outputs.tags }}
+
       - name: Push Image
         id: push
         uses: rsturla/eternal-main/.github/actions/push-image@main
@@ -96,16 +105,13 @@ jobs:
           private-key-passphrase: ${{ secrets.ETERNAL_LINUX_SIGNING_KEY_PASSPHRASE }}
 
   build-lumina-nvidia:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
-        fedora-version: [39, 40, stable]
-        base-image: [silverblue, kinoite, cosmic]
-        nvidia-type: [open, proprietary]
-        exclude:
-          - fedora-version: 39
-            base-image: cosmic
+        fedora-version: [40, stable]
+        base-image: [silverblue, cosmic]
+        nvidia-type: [open]
     permissions:
       contents: read
       packages: write
@@ -116,8 +122,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
 
-      - name: Optimize GHA Storage
-        uses: rsturla/eternal-main/.github/actions/optimise-gha-storage@main
+      - name: Maximize build space
+        uses: ublue-os/remove-unwanted-software@v7
+        with:
+          remove-codeql: true
 
       - name: Setup Environment Variables
         env:
@@ -153,6 +161,16 @@ jobs:
             BASE_TAG=${{ matrix.fedora-version }}-${{ matrix.nvidia-type == 'open' && 'nvidia-open' || 'nvidia' }}
             FEDORA_VERSION=${{ matrix.fedora-version }}
             BASE_IMAGE=${{ matrix.base-image }}
+
+      - name: Rechunk
+        id: rechunk
+        if: github.event_name != 'pull_request'
+        uses: rsturla/eternal-main/.github/actions/rechunk@main
+        with:
+          builder: ${{ steps.build.outputs.builder }}
+          ref: ${{ steps.build.outputs.image }}:${{ steps.generate-image-tags.outputs.stable-tag }}
+          prev-ref: ${{ env.IMAGE_REGISTRY }}/${{ steps.build.outputs.image }}:${{ steps.generate-image-tags.outputs.stable-tag }}
+          tags: ${{ steps.build.outputs.tags }}
 
       - name: Push Image
         id: push
