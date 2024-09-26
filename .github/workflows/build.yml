@@ -22,11 +22,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        fedora-version: [39, 40, stable]
+        fedora-version: [40, stable]
         base-image: [silverblue, kinoite, cosmic]
-        exclude:
-          - fedora-version: 39
-            base-image: cosmic
     permissions:
       contents: read
       packages: write
@@ -110,12 +107,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        fedora-version: [39, 40, stable]
+        fedora-version: [40, stable]
         base-image: [silverblue, kinoite, cosmic]
         nvidia-type: [open, proprietary]
-        exclude:
-          - fedora-version: 39
-            base-image: cosmic
     permissions:
       contents: read
       packages: write
