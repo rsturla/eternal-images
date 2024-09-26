@@ -34,8 +34,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
 
-      - name: Optimize GHA Storage
-        uses: rsturla/eternal-main/.github/actions/optimise-gha-storage@main
+      - name: Maximize build space
+        uses: ublue-os/remove-unwanted-software@v7
+        with:
+          remove-codeql: true
 
       - name: Setup Environment Variables
         env:
@@ -120,8 +122,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
 
-      - name: Optimize GHA Storage
-        uses: rsturla/eternal-main/.github/actions/optimise-gha-storage@main
+      - name: Maximize build space
+        uses: ublue-os/remove-unwanted-software@v7
+        with:
+          remove-codeql: true
 
       - name: Setup Environment Variables
         env:
