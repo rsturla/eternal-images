@@ -28,12 +28,9 @@ jobs:
       matrix:
         image-name:
           - lumina
-          - lumina-kinoite
           - lumina-cosmic
         image-tag:
-          - 40
           - stable
-          - 40-nvidia
           - stable-nvidia
     with:
       image-name: ${{ matrix.image-name }}
