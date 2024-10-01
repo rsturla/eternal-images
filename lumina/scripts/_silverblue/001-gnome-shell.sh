@@ -13,6 +13,7 @@ rpm-ostree install \
   gnome-shell-extension-blur-my-shell \
   gnome-shell-extension-search-light \
   gnome-shell-extension-caffeine \
+  gnome-shell-extension-just-perfection \
   gnome-tweaks \
   libcanberra-gtk3 \
   nautilus-open-any-terminal

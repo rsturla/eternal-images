@@ -27,3 +27,6 @@ sort-directories-first=true
 
 [org/gtk/gtk4/settings/file-chooser]
 sort-directories-first=true
+
+[org/gnome/shell/extensions/just-perfection]
+window-demands-attention-focus=true
