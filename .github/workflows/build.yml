@@ -22,7 +22,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        fedora-version: [40, stable]
+        fedora-version: [40, 41, stable]
         base-image: [silverblue, cosmic]
     permissions:
       contents: read
@@ -109,7 +109,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        fedora-version: [40, stable]
+        fedora-version: [40, 41, stable]
         base-image: [silverblue, cosmic]
         nvidia-type: [open]
     permissions:
