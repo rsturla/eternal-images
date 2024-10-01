@@ -1,14 +1,13 @@
+[org/gnome/mutter]
+experimental-features=["scale-monitor-framebuffer", "xwayland-native-scaling"]
+
 [org/gnome/desktop/interface]
 enable-hot-corners=false
 color-scheme='prefer-dark'
-cursor-theme='Yaru'
-icon-theme='Yaru-dark'
-gtk-theme='Yaru-dark'
 font-antialiasing='rgba'
 
 [org/gnome/desktop/sound]
 allow-volume-above-100-percent=true
-theme-name='Yaru'
 
 [org/gnome/desktop/wm/preferences]
 button-layout=':minimize,maximize,close'
