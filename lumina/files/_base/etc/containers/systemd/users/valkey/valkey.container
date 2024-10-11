@@ -1,0 +1,17 @@
+[Unit]
+Description=A Valkey container
+After=network-online.target
+
+[Container]
+Image=docker.io/valkey/valkey:latest
+AutoUpdate=registry
+ContainerName=valkey
+Network=eternal.network
+PublishPort=6379:6379
+Volume=valkey.volume:/data:Z
+
+[Service]
+TimeoutStartSec=900
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: maybe-finance-config
+data:
+  SECRET_KEY_BASE: secret
+  SELF_HOSTING_ENABLED: true
+  RAILS_FORCE_SSL: false
+  RAILS_ASSUME_SSL: false
+  GOOD_JOB_EXECUTION_MODE: async
+  DB_HOST: postgres
+  POSTGRES_DB: maybe
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: password

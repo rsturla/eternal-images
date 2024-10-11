@@ -55,6 +55,7 @@ echo "gitdir: ./.bare" > "$GIT_DIR/.git"
 
 DEFAULT_BRANCH=$(git --git-dir "$GIT_DIR/.bare" symbolic-ref --short HEAD)
 git -C "$GIT_DIR" config remote.origin.fetch '+refs/heads/*:refs/remotes/origin/*'
+git -C "$GIT_DIR" fetch -a
 git -C "$GIT_DIR" worktree add "./default/$DEFAULT_BRANCH"
 
 echo "Cloned $GIT_SSH_URL into $GIT_DIR"

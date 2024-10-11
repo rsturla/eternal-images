@@ -1,0 +1,32 @@
+[org/gnome/mutter]
+experimental-features=["scale-monitor-framebuffer", "xwayland-native-scaling"]
+
+[org/gnome/desktop/interface]
+enable-hot-corners=false
+color-scheme='prefer-dark'
+font-antialiasing='rgba'
+
+[org/gnome/desktop/sound]
+allow-volume-above-100-percent=true
+
+[org/gnome/desktop/wm/preferences]
+button-layout=':minimize,maximize,close'
+num-workspaces='10'
+
+[org/gnome/desktop/wm/keybindings]
+switch-input-source = ['<Shift><Super>space']
+switch-input-source-backward = ['']
+
+[org/gnome/software]
+allow-updates=false
+download-updates=false
+download-updates-notify=false
+
+[org/gtk/settings/file-chooser]
+sort-directories-first=true
+
+[org/gtk/gtk4/settings/file-chooser]
+sort-directories-first=true
+
+[org/gnome/shell/extensions/just-perfection]
+window-demands-attention-focus=true

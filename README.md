@@ -16,10 +16,11 @@ A collection of Immutable Linux Desktop images from the Eternal Linux project.  
 
 | Desktop Environment | Intended Usage | Description | Is Stable | ISOs |
 | ------------------- | -------------- | ----------- | --------- | --- |
-| GNOME               | Development    | A desktop optimised for DevOps | Yes | [Regular](https://download.eternal.sturla.tech/lumina/lumina-39-x86_64.iso) / [NVIDIA](https://download.eternal.sturla.tech/lumina/lumina-39-nvidia-x86_64.iso) |
+| GNOME               | DevOps         | A desktop optimised for DevOps | Yes | [Regular](https://download.eternal.sturla.tech/lumina/lumina-stable-x86_64.iso) / [NVIDIA](https://download.eternal.sturla.tech/lumina/lumina-stable-nvidia-x86_64.iso) |
+| COSMIC              | DevOps         | A desktop optimised for DevOps | Yes | [Regular](https://download.eternal.sturla.tech/lumina/lumina-cosmic-stable-x86_64.iso) / [NVIDIA](https://download.eternal.sturla.tech/lumina/lumina-cosmic-stable-nvidia-x86_64.iso) |
 
 ![Lumina Desktop](./_assets/lumina-desktop.png)
-> The Lumina Desktop Environment featuring Distrobox and VSCode
+> The Lumina GNOME Desktop Environment featuring Distrobox and VSCode
 
 An opinionated development environment featuring various tools for development and productivity baked in.
 This image is perfect for any DevOps professionals who want to get up and running with a rock-solid desktop quickly.
@@ -27,17 +28,19 @@ This image is perfect for any DevOps professionals who want to get up and runnin
 Key features of this image include:
 - Containerisation with Docker, Podman and Distrobox
 - Virtualization using QEMU/KVM with virt-manager
-- Development packages managed with DevPod and Nix
+- Development through DevContianers and Nix
+- Local AI inference with Ollama
 - Visual Studio Code
-- Starship Bash prompt with Atuin history
+- Google Chrome & 1Password
 - Additional CLI tools
 
 #### Usage
 
-We build and publish this image to GitHub Container registry.  To use this image, you will need to have pre-installed the Fedora Silverblue desktop and run the following commands:
+You can either setup Lumina by installing the ISO (linked in the table above) or rebase through an existing Fedora Atomic Desktop installation.
+To rebase to the image, you will need to have pre-installed a Fedora Atomic Desktop and run the following commands:
 
 ```bash
-$ rpm-ostree rebase ostree-unverified-registry:ghcr.io/rsturla/eternal-linux/lumina:39
+$ rpm-ostree rebase ostree-unverified-registry:ghcr.io/rsturla/eternal-linux/lumina:stable
 $ systemctl reboot
 $ eternal setup
 ```

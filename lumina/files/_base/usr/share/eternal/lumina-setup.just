@@ -1,5 +1,6 @@
 setup:
   @just setup-docker
+  @just setup-nordvpn
   @echo "Setup complete!"
   @echo "Please reboot to complete the setup process."
 
@@ -23,3 +24,7 @@ setup-jetbrains:
   tar zxf jetbrains-toolbox-"${BUILD_VERSION}".tar.gz
   echo "Launching JetBrains Toolbox"
   ./jetbrains-toolbox-"${BUILD_VERSION}"/jetbrains-toolbox
+
+setup-nordvpn:
+  @echo "Adding user to nordvpn group..."
+  @bash -c "sudo usermod -aG nordvpn $(whoami)"
