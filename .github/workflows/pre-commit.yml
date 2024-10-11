@@ -2,15 +2,9 @@ name: Pre-Commit CI
 
 on:
   pull_request:
-    paths:
-      - .pre-commit-config.yml
-      - .github/workflows/pre-commit.yml
   push:
     branches:
       - main
-    paths:
-      - .pre-commit-config.yml
-      - .github/workflows/pre-commit.yml
 
 jobs:
   check:

@@ -36,7 +36,7 @@ Key features of this image include:
 
 #### Usage
 
-You can either setup Lumina by installing the ISO (linked in the table above) or rebase through an existing Fedora Atomic Desktop installation. 
+You can either setup Lumina by installing the ISO (linked in the table above) or rebase through an existing Fedora Atomic Desktop installation.
 To rebase to the image, you will need to have pre-installed a Fedora Atomic Desktop and run the following commands:
 
 ```bash
