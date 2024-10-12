@@ -4,6 +4,7 @@ experimental-features=["scale-monitor-framebuffer", "xwayland-native-scaling"]
 [org/gnome/desktop/interface]
 enable-hot-corners=false
 color-scheme='prefer-dark'
+gtk-theme='adw-gtk3-dark'
 font-antialiasing='rgba'
 
 [org/gnome/desktop/sound]
