@@ -6,16 +6,6 @@ binding='<Control><Alt>t'
 command='/usr/bin/ptyxis --new-window'
 name='Host Ptyxis'
 
-[org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1]
-binding='<Control><Alt>u'
-command='/usr/bin/ptyxis --new-window -- distrobox enter ubuntu'
-name='Container Ubuntu'
-
-[org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2]
-binding='<Control><Alt>f'
-command='/usr/bin/ptyxis --new-window -- distrobox enter fedora'
-name='Container Fedora'
-
 [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3]
 binding='<Control><Shift>Escape'
 command="flatpak run io.missioncenter.MissionCenter"
