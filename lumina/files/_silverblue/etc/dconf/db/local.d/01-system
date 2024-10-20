@@ -3,15 +3,18 @@ experimental-features=["scale-monitor-framebuffer", "xwayland-native-scaling"]
 
 [org/gnome/desktop/interface]
 enable-hot-corners=false
+clock-show-weekday=true
 color-scheme='prefer-dark'
+gtk-theme='adw-gtk3-dark'
 font-antialiasing='rgba'
+accent-color="slate"
 
 [org/gnome/desktop/sound]
 allow-volume-above-100-percent=true
 
 [org/gnome/desktop/wm/preferences]
 button-layout=':minimize,maximize,close'
-num-workspaces='10'
+num-workspaces='4'
 
 [org/gnome/desktop/wm/keybindings]
 switch-input-source = ['<Shift><Super>space']
