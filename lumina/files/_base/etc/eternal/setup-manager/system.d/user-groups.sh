@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 wheelarray=($(getent group wheel | cut -d ":" -f 4 | tr  ',' '\n'))
-groups=(docker)
+groups=(docker nordvpn)
 
 for user in $wheelarray
 do
