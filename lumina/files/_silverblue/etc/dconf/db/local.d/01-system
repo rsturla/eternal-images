@@ -7,7 +7,7 @@ clock-show-weekday=true
 color-scheme='prefer-dark'
 gtk-theme='adw-gtk3-dark'
 font-antialiasing='rgba'
-accent-color="slate"
+accent-color="purple"
 
 [org/gnome/desktop/sound]
 allow-volume-above-100-percent=true
