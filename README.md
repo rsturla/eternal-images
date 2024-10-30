@@ -1,4 +1,4 @@
-# Eternal Images
+# Eternal Linux Images
 
 > [!NOTE]
 > This project should not be consumed directly by anyone.  It should be used as a reference when building your own images.
