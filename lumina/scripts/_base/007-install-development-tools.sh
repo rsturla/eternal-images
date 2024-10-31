@@ -24,7 +24,8 @@ EOF
 rpm-ostree install \
   code \
   $(curl https://api.github.com/repos/wagoodman/dive/releases/latest | jq -r '.assets[] | select(.name| test(".*_linux_amd64.rpm$")).browser_download_url') \
-  gh
+  gh \
+  git-credential-oauth
 
 curl -Lo /tmp/devbox https://releases.jetpack.io/devbox
 install -c -m 0755 /tmp/devbox /usr/bin/devbox
