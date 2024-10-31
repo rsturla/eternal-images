@@ -8,6 +8,7 @@
 
 A collection of Immutable Linux Desktop images from the Eternal Linux project.  All images provided are highly opinionated and represent my personal preferences for a Linux desktop. Feel free to clone and modify these images to suit your own needs.
 
+
 ## Images
 
 ### Lumina
