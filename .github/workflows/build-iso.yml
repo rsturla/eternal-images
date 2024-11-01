@@ -28,7 +28,7 @@ concurrency:
 
 jobs:
   build-lumina:
-    uses: rsturla/eternal-main/.github/workflows/_build-iso.yml@main
+    uses: rsturla/eternal-main/.github/workflows/_build-iso.yml@cloudflare-iso-upload
     strategy:
       fail-fast: false
       matrix:
