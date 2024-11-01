@@ -40,6 +40,7 @@ jobs:
           - stable-nvidia
           - 41
           - 41-nvidia
+    secrets: inherit
     with:
       image-name: ${{ matrix.image-name }}
       image-registry: ghcr.io/rsturla/eternal-linux
