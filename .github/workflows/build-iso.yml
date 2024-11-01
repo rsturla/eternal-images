@@ -32,6 +32,8 @@ jobs:
         image-tag:
           - stable
           - stable-nvidia
+          - 41
+          - 41-nvidia
     with:
       image-name: ${{ matrix.image-name }}
       image-registry: ghcr.io/rsturla/eternal-linux
@@ -39,4 +41,4 @@ jobs:
       flatpak-manifest-lists: |
         lumina/flatpaks/base
         lumina/flatpaks/${{ matrix.image-name }}
-      installer-version: 40
+      installer-version: 41
