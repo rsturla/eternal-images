@@ -15,6 +15,12 @@ on:
     # Every week at midnight on Monday
     - cron: "0 0 * * 1"
   workflow_dispatch:
+    inputs:
+      upload-to-cloudflare:
+        description: "Upload to Cloudflare"
+        required: false
+        default: false
+        type: boolean
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref || github.run_id }}-iso
@@ -42,3 +48,4 @@ jobs:
         lumina/flatpaks/base
         lumina/flatpaks/${{ matrix.image-name }}
       installer-version: 41
+      upload-to-cloudflare: ${{ github.event.inputs.upload-to-cloudflare || github.event_name == 'pull_request' }}
