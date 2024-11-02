@@ -28,19 +28,17 @@ concurrency:
 
 jobs:
   build-lumina:
-    uses: rsturla/eternal-main/.github/workflows/_build-iso.yml@cloudflare-iso-upload
+    uses: rsturla/eternal-main/.github/workflows/_build-iso.yml@main
+    secrets: inherit
     strategy:
       fail-fast: false
       matrix:
         image-name:
           - lumina
-          - lumina-cosmic
+          - cosmic
         image-tag:
           - stable
           - stable-nvidia
-          - 41
-          - 41-nvidia
-    secrets: inherit
     with:
       image-name: ${{ matrix.image-name }}
       image-registry: ghcr.io/rsturla/eternal-linux
@@ -49,5 +47,5 @@ jobs:
         lumina/flatpaks/base
         lumina/flatpaks/${{ matrix.image-name }}
       installer-version: 41
-      upload-to-cloudflare: ${{ github.event.inputs.upload-to-cloudflare || github.event_name == 'pull_request' }}
+      upload-to-cloudflare: ${{ github.event.inputs.upload-to-cloudflare }}
       r2-bucket: ${{ vars.R2_BUCKET_NAME }}
