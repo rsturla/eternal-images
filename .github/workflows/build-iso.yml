@@ -29,7 +29,6 @@ concurrency:
 jobs:
   build-lumina:
     uses: rsturla/eternal-main/.github/workflows/_build-iso.yml@cloudflare-iso-upload
-    secrets: inherit
     strategy:
       fail-fast: false
       matrix:
@@ -41,6 +40,7 @@ jobs:
           - stable-nvidia
           - 41
           - 41-nvidia
+    secrets: inherit
     with:
       image-name: ${{ matrix.image-name }}
       image-registry: ghcr.io/rsturla/eternal-linux
