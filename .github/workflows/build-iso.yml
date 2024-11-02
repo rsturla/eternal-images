@@ -47,5 +47,5 @@ jobs:
         lumina/flatpaks/base
         lumina/flatpaks/${{ matrix.image-name }}
       installer-version: 41
-      upload-to-cloudflare: ${{ github.event.inputs.upload-to-cloudflare }}
+      upload-to-cloudflare: ${{ github.event.inputs.upload-to-cloudflare && true || false }}
       r2-bucket: ${{ vars.R2_BUCKET_NAME }}
