@@ -12,12 +12,10 @@ A collection of Immutable Linux Desktop images from the Eternal Linux project.  
 
 ### Lumina
 
-<!-- Table with an overview.  Columns should be Desktop Environment | Intended Usage | Description | Is Stable -->
-
 | Desktop Environment | Intended Usage | Description | Is Stable | ISOs |
 | ------------------- | -------------- | ----------- | --------- | --- |
-| GNOME               | DevOps         | A desktop optimised for DevOps | Yes | [Regular](https://download.eternal.sturla.tech/lumina/lumina-stable-x86_64.iso) / [NVIDIA](https://download.eternal.sturla.tech/lumina/lumina-stable-nvidia-x86_64.iso) |
-| COSMIC              | DevOps         | A desktop optimised for DevOps | Yes | [Regular](https://download.eternal.sturla.tech/lumina/lumina-cosmic-stable-x86_64.iso) / [NVIDIA](https://download.eternal.sturla.tech/lumina/lumina-cosmic-stable-nvidia-x86_64.iso) |
+| GNOME               | DevOps         | A desktop optimised for DevOps | Yes | [Regular](https://download.eternal.sturla.tech/lumina-stable-x86_64.iso) / [NVIDIA](https://download.eternal.sturla.tech/lumina-stable-nvidia-x86_64.iso) |
+| COSMIC              | DevOps         | A desktop optimised for DevOps | Yes | [Regular](https://download.eternal.sturla.tech/lumina-cosmic-stable-x86_64.iso) / [NVIDIA](https://download.eternal.sturla.tech/lumina-cosmic-stable-nvidia-x86_64.iso) |
 
 ![Lumina Desktop](./_assets/lumina-desktop.png)
 > The Lumina GNOME Desktop Environment featuring Distrobox and VSCode
