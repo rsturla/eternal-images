@@ -9,12 +9,3 @@ interface-style='system'
 restore-session=false
 restore-window-size=false
 audible-bell=false
-default-profile-uuid='6bda7952f77dc37991e6318f667fbe69'
-
-[/org/gnome/Ptyxis/Profiles/6bda7952f77dc37991e6318f667fbe69]
-label='Host'
-
-[/org/gnome/Ptyxis/Profiles/7632d7d21032d8c3bf7aa2ec672cbb04]
-label='Sandbox'
-use-custom-command=true
-custom-command='/usr/bin/podmansh'
