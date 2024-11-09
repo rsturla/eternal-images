@@ -39,8 +39,8 @@ jobs:
         image-tag:
           - stable
           - stable-nvidia
-          - latest
-          - latest-nvidia
+          - 41
+          - 41-nvidia
     with:
       image-name: ${{ matrix.image-name }}
       image-registry: ghcr.io/rsturla/eternal-linux
