@@ -43,7 +43,7 @@ concurrency:
 
 jobs:
   build-single:
-    if: ${{ github.event_type == 'workflow_dispatch' }}
+    if: ${{ github.event_name == 'workflow_dispatch' }}
     uses: rsturla/eternal-main/.github/workflows/_build-iso.yml@main
     secrets: inherit
     with:
@@ -58,7 +58,7 @@ jobs:
       r2-bucket: ${{ vars.R2_BUCKET_NAME }}
 
   build-all:
-    if: ${{ github.event_type != 'workflow_dispatch' }}
+    if: ${{ github.event_name != 'workflow_dispatch' }}
     uses: rsturla/eternal-main/.github/workflows/_build-iso.yml@main
     secrets: inherit
     strategy:
@@ -80,5 +80,5 @@ jobs:
         lumina/flatpaks/base
         lumina/flatpaks/${{ matrix.image-name }}
       installer-version: 41
-      upload-to-cloudflare: ${{ github.event.inputs.upload-to-cloudflare && true || false }}
+      upload-to-cloudflare: ${{ inputs.upload-to-cloudflare && true || false }}
       r2-bucket: ${{ vars.R2_BUCKET_NAME }}
