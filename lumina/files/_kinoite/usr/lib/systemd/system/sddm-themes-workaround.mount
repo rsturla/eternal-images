@@ -1,0 +1,13 @@
+[Unit]
+Description=KDE SDDM themes workaround
+RequiresMountsFor=/usr/share/sddm/themes
+PartOf=eternal-kde-themes-workaround.target
+
+[Mount]
+Type=overlay
+What=overlay
+Where=/usr/share/sddm/themes
+Options=lowerdir=/usr/share/sddm/themes,upperdir=/var/sddm_themes/themes,workdir=/var/sddm_themes/themes.work
+
+[Install]
+WantedBy=multi-user.target
