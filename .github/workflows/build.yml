@@ -73,7 +73,7 @@ jobs:
 
       - name: Rechunk
         id: rechunk
-        if: github.event_name != 'pull_request'
+        if: false
         uses: rsturla/eternal-main/.github/actions/rechunk@main
         with:
           builder: ${{ steps.build.outputs.builder }}
@@ -164,7 +164,7 @@ jobs:
 
       - name: Rechunk
         id: rechunk
-        if: github.event_name != 'pull_request'
+        if: false
         uses: rsturla/eternal-main/.github/actions/rechunk@main
         with:
           builder: ${{ steps.build.outputs.builder }}
