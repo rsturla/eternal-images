@@ -1,6 +1,0 @@
-[org/gnome/desktop/background]
-picture-uri='file:///usr/share/backgrounds/mountain-night.jpg'
-picture-uri-dark='file:///usr/share/backgrounds/mountain-night.jpg'
-picture-options='stretched'
-primary-color='000000'
-secondary-color='FFFFFF'
