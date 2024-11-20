@@ -1,0 +1,15 @@
+[Unit]
+Description=Maybe Finance Management
+Wants=network-online.target
+After=network-online.target
+
+[Kube]
+Yaml=maybe-finance.yaml
+Network=eternal.network
+ConfigMap=maybe-finance-cm.yaml
+
+[Service]
+TimeoutStartSec=10
+
+[Install]
+WantedBy=multi-user.target

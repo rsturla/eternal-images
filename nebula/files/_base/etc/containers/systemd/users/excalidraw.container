@@ -1,0 +1,16 @@
+[Unit]
+Description=An Excalidraw container
+After=network-online.target
+
+[Container]
+Image=docker.io/excalidraw/excalidraw:latest
+AutoUpdate=registry
+ContainerName=excalidraw
+PublishPort=5000:80
+Network=eternal.network
+
+[Service]
+TimeoutStartSec=900
+
+[Install]
+WantedBy=multi-user.target

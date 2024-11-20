@@ -1,0 +1,17 @@
+[Unit]
+Description=A local NPM registry
+After=network-online.target
+
+[Container]
+Image=docker.io/verdaccio/verdaccio:latest
+AutoUpdate=registry
+ContainerName=verdaccio
+Network=eternal.network
+PublishPort=4873:4873
+Volume=verdaccio.volume:/verdaccio/storage:Z
+
+[Service]
+TimeoutStartSec=900
+
+[Install]
+WantedBy=multi-user.target

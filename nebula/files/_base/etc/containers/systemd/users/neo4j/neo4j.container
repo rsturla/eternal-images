@@ -1,0 +1,19 @@
+[Unit]
+Description=A Neo4j container
+After=network-online.target
+
+[Container]
+Image=docker.io/library/neo4j:latest
+AutoUpdate=registry
+ContainerName=neo4j
+Environment=NEO4J_AUTH=none
+PublishPort=7474:7474
+PublishPort=7687:7687
+Network=eternal.network
+Volume=neo4j.volume:/data:Z
+
+[Service]
+TimeoutStartSec=900
+
+[Install]
+WantedBy=multi-user.target

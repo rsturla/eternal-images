@@ -1,0 +1,19 @@
+[Unit]
+Description=A ScyllaDB container
+After=network-online.target
+
+[Container]
+Image=docker.io/scylladb/scylla:latest
+AutoUpdate=registry
+ContainerName=scylladb
+Exec=--developer-mode 1 --smp 1 --overprovisioned 1
+Network=eternal.network
+PublishPort=9042:9042
+PublishPort=9160:9160
+PublishPort=10000:10000
+
+[Service]
+TimeoutStartSec=900
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,23 @@
+[Unit]
+Description=A Gitness container for hosting Git repositories and CI/CD pipelines
+After=network-online.target
+Requires=podman.socket
+
+[Container]
+Image=docker.io/harness/gitness:unstable
+AutoUpdate=registry
+ContainerName=gitness
+Network=eternal.network
+Environment=GITNESS_PRINCIPAL_ADMIN_EMAIL=admin@eternal.local
+Environment=GITNESS_PRINCIPAL_ADMIN_PASSWORD=admin
+Environment=GITNESS_USER_SIGNUP_ENABLED=false
+PublishPort=3000:3000
+Volume=gitness.volume:/data:Z
+Volume=/var/run/user/%G/podman/podman.sock:/var/run/docker.sock:ro
+SecurityLabelDisable=true
+
+[Service]
+TimeoutStartSec=900
+
+[Install]
+WantedBy=multi-user.target

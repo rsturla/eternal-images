@@ -1,0 +1,17 @@
+[Unit]
+Description=A Mailpit container
+After=network-online.target
+
+[Container]
+Image=docker.io/axllent/mailpit:latest
+AutoUpdate=registry
+ContainerName=mailpit
+Network=eternal.network
+PublishPort=8025:8025
+PublishPort=1025:1025
+
+[Service]
+TimeoutStartSec=900
+
+[Install]
+WantedBy=multi-user.target

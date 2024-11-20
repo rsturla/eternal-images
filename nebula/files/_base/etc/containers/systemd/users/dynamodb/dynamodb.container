@@ -1,0 +1,19 @@
+[Unit]
+Description=A DynamoDB local container
+After=network-online.target
+
+[Container]
+Image=docker.io/amazon/dynamodb-local:latest
+AutoUpdate=registry
+ContainerName=dynamodb-local
+Exec=-jar DynamoDBLocal.jar -sharedDb -dbPath ./data
+Network=eternal.network
+PublishPort=8000:8000
+WorkingDir=/home/dynamodblocal
+Volume=dynamodb.volume:/home/dynamodblocal/data
+
+[Service]
+TimeoutStartSec=900
+
+[Install]
+WantedBy=multi-user.target

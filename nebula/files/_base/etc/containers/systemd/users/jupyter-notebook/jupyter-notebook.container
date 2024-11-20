@@ -1,0 +1,18 @@
+[Unit]
+Description=A JupyterLab Notebook container
+After=network-online.target
+
+[Container]
+Image=quay.io/jupyter/base-notebook:latest
+AutoUpdate=registry
+ContainerName=jupyter-notebook
+Exec=start-notebook.py --NotebookApp.token=''
+Network=eternal.network
+PublishPort=8888:8888
+Volume=jupyter-notebook.volume:/home/jovyan/work:Z
+
+[Service]
+TimeoutStartSec=900
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,4 @@
+/org/gnome/desktop/media-handling/autorun-never
+/org/gnome/desktop/screensaver/lock-delay
+/org/gnome/desktop/screensaver/lock-enabled
+/org/gnome/desktop/session/idle-delay

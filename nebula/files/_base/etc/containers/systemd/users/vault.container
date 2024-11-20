@@ -1,0 +1,18 @@
+[Unit]
+Description=A HashiCorp Vault development server
+After=network-online.target
+
+[Container]
+Image=docker.io/hashicorp/vault:latest
+AutoUpdate=registry
+ContainerName=vault
+Exec=server -dev
+Environment=VAULT_DEV_ROOT_TOKEN_ID=root
+Network=eternal.network
+PublishPort=8200:8200
+
+[Service]
+TimeoutStartSec=900
+
+[Install]
+WantedBy=multi-user.target

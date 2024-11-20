@@ -1,0 +1,19 @@
+[Unit]
+Description=A CockroachDB container
+After=network-online.target
+
+[Container]
+Image=docker.io/cockroachdb/cockroach:latest
+AutoUpdate=registry
+ContainerName=cockroachdb
+Exec=start-single-node --http-addr=0.0.0.0:8080 --insecure
+Network=eternal.network
+PublishPort=26257:26257
+PublishPort=8080:8080
+Volume=cockroachdb.volume:/cockroach/cockroach-data:Z
+
+[Service]
+TimeoutStartSec=900
+
+[Install]
+WantedBy=multi-user.target
