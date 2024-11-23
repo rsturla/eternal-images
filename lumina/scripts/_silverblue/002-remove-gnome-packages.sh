@@ -5,12 +5,12 @@ source /etc/os-release
 
 FEDORA_VERSION=$VERSION_ID
 
-rpm-ostree override remove \
+dnf remove -y \
   gnome-tour \
   gnome-extensions-app \
   gnome-system-monitor \
   yelp
 
 if [[ "$FEDORA_VERSION" == "40" ]]; then
-  rpm-ostree override remove gnome-terminal-nautilus
+  dnf remove -y gnome-terminal-nautilus
 fi

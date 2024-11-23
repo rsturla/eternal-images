@@ -11,6 +11,6 @@ enabled=1
 gpgcheck=0
 EOF
 
-rpm-ostree install twingate
+dnf install -y twingate
 
 rm /etc/yum.repos.d/twingate.repo

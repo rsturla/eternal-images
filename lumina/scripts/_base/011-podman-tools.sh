@@ -2,6 +2,6 @@
 
 set -euox pipefail
 
-rpm-ostree install \
+dnf install -y \
     crun-vm \
     podman-machine

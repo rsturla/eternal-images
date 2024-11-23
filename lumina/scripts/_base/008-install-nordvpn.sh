@@ -12,7 +12,7 @@ repo_gpgcheck=1
 gpgkey=https://repo.nordvpn.com/gpg/nordvpn_public.asc
 EOF
 
-rpm-ostree install nordvpn
+dnf install -y nordvpn
 systemctl enable nordvpnd
 
 rm -f /etc/yum.repos.d/nordvpn.repo
