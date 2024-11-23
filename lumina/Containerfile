@@ -17,6 +17,4 @@ RUN chmod +x /tmp/scripts/*.sh /tmp/scripts/*.sh /tmp/scripts/_${BASE_IMAGE}/*.s
   /tmp/scripts/setup.sh --base ${BASE_IMAGE} && \
   /tmp/scripts/cleanup.sh --base ${BASE_IMAGE} \
   && \
-  rpm-ostree cleanup -m && \
-  rm -rf /tmp/* /var/* && \
-  ostree container commit
+  rm -rf /tmp/* /var/*

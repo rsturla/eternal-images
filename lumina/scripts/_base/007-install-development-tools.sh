@@ -21,7 +21,7 @@ gpgkey=https://packages.microsoft.com/keys/microsoft.asc
 EOF
 
 # Install development tools
-rpm-ostree install \
+dnf install -y \
   code \
   gh \
   git-credential-oauth
