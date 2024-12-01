@@ -23,7 +23,7 @@ jobs:
       fail-fast: false
       matrix:
         fedora-version: [41, stable]
-        base-image: [silverblue, cosmic]
+        base-image: [silverblue, cosmic, kinoite]
     permissions:
       contents: read
       packages: write
@@ -73,7 +73,7 @@ jobs:
 
       - name: Rechunk
         id: rechunk
-        if: github.event_name != 'pull_request'
+        if: false
         uses: rsturla/eternal-main/.github/actions/rechunk@main
         with:
           builder: ${{ steps.build.outputs.builder }}
@@ -110,7 +110,7 @@ jobs:
       fail-fast: false
       matrix:
         fedora-version: [41, stable]
-        base-image: [silverblue, cosmic]
+        base-image: [silverblue, cosmic, kinoite]
         nvidia-type: [open]
     permissions:
       contents: read
@@ -164,7 +164,7 @@ jobs:
 
       - name: Rechunk
         id: rechunk
-        if: github.event_name != 'pull_request'
+        if: false
         uses: rsturla/eternal-main/.github/actions/rechunk@main
         with:
           builder: ${{ steps.build.outputs.builder }}

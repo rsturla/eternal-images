@@ -11,9 +11,6 @@ on:
     paths:
       - ".github/workflows/*build-iso.yml"
       - "**/flatpaks/**"
-  schedule:
-    # Every week at midnight on Monday
-    - cron: "0 0 * * 1"
   workflow_dispatch:
     inputs:
       upload-to-cloudflare:
@@ -21,13 +18,48 @@ on:
         required: false
         default: false
         type: boolean
+      image-name:
+        description: "The image name to build (e.g. lumina or lumina-<desktop>)"
+        required: true
+        default: lumina
+        type: choice
+        options:
+          - lumina
+          - lumina-cosmic
+          - lumina-kinoite
+      image-tag:
+        description: "The tag to build"
+        required: true
+        default: stable
+        type: choice
+        options:
+          - stable
+          - stable-nvidia
+          - 41
+          - 41-nvidia
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref || github.run_id }}-iso
   cancel-in-progress: true
 
 jobs:
-  build-lumina:
+  build-single:
+    if: ${{ github.event_name == 'workflow_dispatch' }}
+    uses: rsturla/eternal-main/.github/workflows/_build-iso.yml@main
+    secrets: inherit
+    with:
+      image-name: ${{ inputs.image-name }}
+      image-registry: ghcr.io/rsturla/eternal-linux
+      image-tag: ${{ inputs.image-tag }}
+      flatpak-manifest-lists: |
+        lumina/flatpaks/base
+        lumina/flatpaks/${{ inputs.image-name }}
+      installer-version: 41
+      upload-to-cloudflare: ${{ inputs.upload-to-cloudflare && true || false }}
+      r2-bucket: ${{ vars.R2_BUCKET_NAME }}
+
+  build-all:
+    if: ${{ github.event_name != 'workflow_dispatch' }}
     uses: rsturla/eternal-main/.github/workflows/_build-iso.yml@main
     secrets: inherit
     strategy:
@@ -36,9 +68,12 @@ jobs:
         image-name:
           - lumina
           - lumina-cosmic
+          - lumina-kinoite
         image-tag:
           - stable
           - stable-nvidia
+          - 41
+          - 41-nvidia
     with:
       image-name: ${{ matrix.image-name }}
       image-registry: ghcr.io/rsturla/eternal-linux
@@ -47,5 +82,5 @@ jobs:
         lumina/flatpaks/base
         lumina/flatpaks/${{ matrix.image-name }}
       installer-version: 41
-      upload-to-cloudflare: ${{ github.event.inputs.upload-to-cloudflare && true || false }}
+      upload-to-cloudflare: ${{ inputs.upload-to-cloudflare && true || false }}
       r2-bucket: ${{ vars.R2_BUCKET_NAME }}

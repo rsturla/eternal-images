@@ -3,7 +3,7 @@
 set -euox pipefail
 
 # Install Brew dependencies
-rpm-ostree install procps-ng curl file git gcc
+dnf install -y procps-ng curl file git gcc
 
 # Convince the installer we are in CI
 touch /.dockerenv

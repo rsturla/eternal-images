@@ -2,7 +2,7 @@
 
 set -euox pipefail
 
-rpm-ostree install \
+dnf install -y \
   libvirt \
   virt-manager \
   edk2-ovmf
