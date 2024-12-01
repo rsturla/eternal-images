@@ -9,3 +9,5 @@ if [[ "$FEDORA_VERSION" == "40" ]]; then
   # Install the package
   dnf install -y ptyxis
 fi
+
+rpm-ostree install podmansh

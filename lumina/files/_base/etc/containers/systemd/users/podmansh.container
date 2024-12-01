@@ -1,0 +1,18 @@
+[Unit]
+Description=The podmansh container
+After=local-fs.target
+
+[Container]
+Image=docker.io/library/fedora:latest
+ContainerName=podmansh
+RemapUsers=keep-id
+RunInit=yes
+
+Volume=%h/sandbox:%h:Z
+Exec=sleep infinity
+
+[Service]
+ExecStartPre=/usr/bin/mkdir -p %h/sandbox
+
+[Install]
+RequiredBy=default.target
