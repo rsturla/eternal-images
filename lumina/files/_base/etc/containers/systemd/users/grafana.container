@@ -8,7 +8,7 @@ AutoUpdate=registry
 ContainerName=grafana
 Network=eternal.network
 Volume=grafana.volume:/var/lib/grafana
-Volume=../_config/grafana.ini:/etc/grafana/grafana.ini:ro
+Volume=./_config/grafana.ini:/etc/grafana/grafana.ini:ro
 Environment=GF_INSTALL_PLUGINS=aws-datasource-provisioner-app
 PublishPort=3000:3000
 
