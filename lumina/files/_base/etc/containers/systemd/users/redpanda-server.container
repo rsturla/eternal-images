@@ -13,7 +13,7 @@ PublishPort=8082:18082
 PublishPort=9092:19092
 PublishPort=9644:9644
 Volume=redpanda.volume:/var/lib/redpanda/data:Z
-Volume=../_config/redpanda-server.yml:/etc/redpanda/config/redpanda-server.yml:ro
+Volume=./_config/redpanda-server.yml:/etc/redpanda/config/redpanda-server.yml:ro
 UserNS=keep-id:uid=101,gid=101
 
 [Service]

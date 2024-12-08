@@ -21,7 +21,7 @@ PublishPort=19530:19530
 PublishPort=9091:9091
 PublishPort=2379:2379
 Volume=milvus.volume:/var/lib/milvus:Z
-Volume=../_config/milvus-etcd.yaml:/milvus/configs/embedEtcd.yaml:ro
+Volume=./_config/milvus-etcd.yaml:/milvus/configs/embedEtcd.yaml:ro
 AddDevice=nvidia.com/gpu=all
 SecurityLabelDisable=true
 SeccompProfile=unconfined
