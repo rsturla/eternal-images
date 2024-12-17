@@ -4,7 +4,6 @@ set -euox pipefail
 
 dnf install -y \
   libvirt \
-  virt-manager \
   edk2-ovmf
 
 systemctl enable swtpm-workaround.service
