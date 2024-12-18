@@ -1,5 +1,5 @@
 [Unit]
-Description=A Gitness container for hosting Git repositories and CI/CD pipelines
+Description=A Gitness container for hosting Git repositories and CI/CD pipelines - http://localhost:3000
 After=network-online.target
 Requires=podman.socket
 

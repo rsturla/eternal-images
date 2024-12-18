@@ -1,5 +1,5 @@
 [Unit]
-Description=A JupyterLab Notebook container
+Description=A JupyterLab Notebook container - http://localhost:8888
 After=network-online.target
 
 [Container]

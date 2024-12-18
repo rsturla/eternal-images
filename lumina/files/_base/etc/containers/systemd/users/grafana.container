@@ -1,5 +1,5 @@
 [Unit]
-Description=A Grafana container
+Description=A Grafana container - http://localhost:3000
 After=network-online.target
 
 [Container]

@@ -1,5 +1,5 @@
 [Unit]
-Description=A local NPM registry
+Description=A local NPM registry container - http://localhost:4873
 After=network-online.target
 
 [Container]

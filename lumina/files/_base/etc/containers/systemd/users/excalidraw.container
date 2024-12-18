@@ -1,5 +1,5 @@
 [Unit]
-Description=An Excalidraw container
+Description=An Excalidraw container - http://localhost:5000
 After=network-online.target
 
 [Container]

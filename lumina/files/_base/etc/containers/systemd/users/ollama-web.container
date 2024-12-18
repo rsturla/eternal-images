@@ -1,5 +1,5 @@
 [Unit]
-Description=An Ollama WebUI container
+Description=An Ollama WebUI container - http://localhost:8080
 After=network-online.target ollama.service
 Requires=ollama.service
 

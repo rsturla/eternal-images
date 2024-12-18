@@ -1,5 +1,5 @@
 [Unit]
-Description=A Glance feed container
+Description=A Glance feed container - http://localhost:8080
 After=local-fs.target network-online.target
 
 [Container]

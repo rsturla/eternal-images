@@ -1,5 +1,5 @@
 [Unit]
-Description=A Flipt feature flagging server
+Description=A Flipt feature flagging server container - http://localhost:8080
 After=network-online.target
 
 [Container]

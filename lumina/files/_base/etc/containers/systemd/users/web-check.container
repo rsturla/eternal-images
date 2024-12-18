@@ -1,5 +1,5 @@
 [Unit]
-Description=A Web-Check container (https://github.com/Lissy93/web-check)
+Description=A Web-Check container (https://github.com/Lissy93/web-check) - http://localhost:3000
 After=network-online.target
 
 [Container]
