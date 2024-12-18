@@ -1,5 +1,5 @@
 [Unit]
-Description=A Zot registry container
+Description=A Zot registry container - http://localhost:5000
 After=network-online.target
 
 [Container]

@@ -1,5 +1,5 @@
 [Unit]
-Description=An InvokeAI container
+Description=An InvokeAI container - http://localhost:9090
 After=network-online.target
 
 [Container]

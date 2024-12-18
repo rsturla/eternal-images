@@ -1,5 +1,5 @@
 [Unit]
-Description=A minio server contaienr for local S3 compatible storage
+Description=A minio server contaienr for local S3 compatible storage - http://localhost:9000
 After=local-fs.target network-online.target
 Requires=prometheus.service
 

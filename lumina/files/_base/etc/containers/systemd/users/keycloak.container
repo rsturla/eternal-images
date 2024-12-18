@@ -1,5 +1,5 @@
 [Unit]
-Description=A Keycloak container for identity and access management
+Description=A Keycloak container for identity and access management - http://localhost:8080
 After=network-online.target
 
 [Container]

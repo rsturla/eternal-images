@@ -1,5 +1,5 @@
 [Unit]
-Description=A RedPanda console container
+Description=A RedPanda console container - http://localhost:8080
 After=local-fs.target network-online.target redpanda-server.service
 Requires=redpanda-server.service
 

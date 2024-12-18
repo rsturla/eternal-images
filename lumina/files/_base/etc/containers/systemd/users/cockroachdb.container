@@ -1,5 +1,5 @@
 [Unit]
-Description=A CockroachDB container
+Description=A CockroachDB container - http://localhost:8080
 After=network-online.target
 
 [Container]

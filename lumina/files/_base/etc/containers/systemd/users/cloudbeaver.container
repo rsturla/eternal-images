@@ -1,5 +1,5 @@
 [Unit]
-Description=A CloudBeaver container
+Description=A CloudBeaver container - http://localhost:8978
 After=local-fs.target network-online.target
 
 [Container]
