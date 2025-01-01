@@ -1,0 +1,29 @@
+# Download settings
+--format bestvideo+bestaudio/best
+--merge-output-format mp4
+
+# Embed subtitles, metadata, and thumbnail
+#--write-sub
+--sub-lang en.*             # Download English subtitles (change or add more languages)
+--embed-subs
+--embed-metadata
+#--write-thumbnail
+--embed-thumbnail
+
+# SponsorBlock integration
+--sponsorblock-mark all      # Mark all sponsor segments
+--sponsorblock-remove all    # Remove all sponsor segments
+
+# File naming template
+-o "~/Videos/YouTube/%(uploader)s/%(title)s.%(ext)s"
+
+# Connection and retries
+--retries 5
+--fragment-retries 5
+--no-part                  # Avoid creating temporary .part files
+--progress                 # Show download progress
+
+# Other options
+--concurrent-fragments 5   # Increase download speed with concurrent downloads
+--add-metadata
+--compat-options no-youtube-unavailable-videos   # Skip unavailable videos
