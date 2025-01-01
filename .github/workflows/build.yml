@@ -196,7 +196,7 @@ jobs:
           private-key-passphrase: ${{ secrets.ETERNAL_LINUX_SIGNING_KEY_PASSPHRASE }}
 
   check:
-    needs: [build-lumina, build-lumina-nvidia]
+    needs: [build-lumina-nvidia]
     if: always()
     runs-on: ubuntu-latest
     steps:
