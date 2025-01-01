@@ -17,92 +17,92 @@ env:
   IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
 
 jobs:
-  build-lumina:
-    runs-on: ubuntu-24.04
-    strategy:
-      fail-fast: false
-      matrix:
-        fedora-version: [41, stable]
-        base-image: [silverblue, cosmic, kinoite]
-    permissions:
-      contents: read
-      packages: write
-      id-token: write
-    env:
-      IMAGE_NAME: ""
-    steps:
-      - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+  # build-lumina:
+  #   runs-on: ubuntu-24.04
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       fedora-version: [41, stable]
+  #       base-image: [silverblue, cosmic, kinoite]
+  #   permissions:
+  #     contents: read
+  #     packages: write
+  #     id-token: write
+  #   env:
+  #     IMAGE_NAME: ""
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
-      - name: Maximize build space
-        uses: ublue-os/remove-unwanted-software@517622d6452028f266b7ba4cc9a123b5f58a6b53 # v7
-        with:
-          remove-codeql: true
+  #     - name: Maximize build space
+  #       uses: ublue-os/remove-unwanted-software@517622d6452028f266b7ba4cc9a123b5f58a6b53 # v7
+  #       with:
+  #         remove-codeql: true
 
-      - name: Setup Environment Variables
-        env:
-          BASE_IMAGE: ${{ matrix.base-image }}
-        run: |
-          if [ "${BASE_IMAGE}" == "silverblue" ]; then
-            echo "IMAGE_NAME=eternal-linux/lumina" >> $GITHUB_ENV
-          else
-            echo "IMAGE_NAME=eternal-linux/lumina-${BASE_IMAGE}" >> $GITHUB_ENV
-          fi
+  #     - name: Setup Environment Variables
+  #       env:
+  #         BASE_IMAGE: ${{ matrix.base-image }}
+  #       run: |
+  #         if [ "${BASE_IMAGE}" == "silverblue" ]; then
+  #           echo "IMAGE_NAME=eternal-linux/lumina" >> $GITHUB_ENV
+  #         else
+  #           echo "IMAGE_NAME=eternal-linux/lumina-${BASE_IMAGE}" >> $GITHUB_ENV
+  #         fi
 
-      - name: Generate Image Tags
-        uses: rsturla/eternal-main/.github/actions/generate-image-tags@main
-        id: generate-image-tags
-        with:
-          image-name: ${{ env.IMAGE_REGISTRY}}/${{ env.IMAGE_NAME }}
-          major-version: ${{ matrix.fedora-version }}
-          is-release: ${{ github.event_name != 'pull_request' }}
+  #     - name: Generate Image Tags
+  #       uses: rsturla/eternal-main/.github/actions/generate-image-tags@main
+  #       id: generate-image-tags
+  #       with:
+  #         image-name: ${{ env.IMAGE_REGISTRY}}/${{ env.IMAGE_NAME }}
+  #         major-version: ${{ matrix.fedora-version }}
+  #         is-release: ${{ github.event_name != 'pull_request' }}
 
-      - name: Build Image
-        id: build
-        uses: rsturla/eternal-main/.github/actions/build-image@main
-        with:
-          builder: docker
-          context: lumina/.
-          dockerfile: lumina/Containerfile
-          image-name: ${{ env.IMAGE_NAME }}
-          image-tags: |
-            ${{ steps.generate-image-tags.outputs.tags }}
-          build-args: |
-            BASE_TAG=${{ matrix.fedora-version }}
-            BASE_IMAGE=${{ matrix.base-image }}
+  #     - name: Build Image
+  #       id: build
+  #       uses: rsturla/eternal-main/.github/actions/build-image@main
+  #       with:
+  #         builder: docker
+  #         context: lumina/.
+  #         dockerfile: lumina/Containerfile
+  #         image-name: ${{ env.IMAGE_NAME }}
+  #         image-tags: |
+  #           ${{ steps.generate-image-tags.outputs.tags }}
+  #         build-args: |
+  #           BASE_TAG=${{ matrix.fedora-version }}
+  #           BASE_IMAGE=${{ matrix.base-image }}
 
-      - name: Rechunk
-        id: rechunk
-        if: false
-        uses: rsturla/eternal-main/.github/actions/rechunk@main
-        with:
-          builder: ${{ steps.build.outputs.builder }}
-          ref: ${{ steps.build.outputs.image }}:${{ steps.generate-image-tags.outputs.stable-tag }}
-          prev-ref: ${{ env.IMAGE_REGISTRY }}/${{ steps.build.outputs.image }}:${{ steps.generate-image-tags.outputs.stable-tag }}
-          tags: ${{ steps.build.outputs.tags }}
+  #     - name: Rechunk
+  #       id: rechunk
+  #       if: false
+  #       uses: rsturla/eternal-main/.github/actions/rechunk@main
+  #       with:
+  #         builder: ${{ steps.build.outputs.builder }}
+  #         ref: ${{ steps.build.outputs.image }}:${{ steps.generate-image-tags.outputs.stable-tag }}
+  #         prev-ref: ${{ env.IMAGE_REGISTRY }}/${{ steps.build.outputs.image }}:${{ steps.generate-image-tags.outputs.stable-tag }}
+  #         tags: ${{ steps.build.outputs.tags }}
 
-      - name: Push Image
-        id: push
-        uses: rsturla/eternal-main/.github/actions/push-image@main
-        with:
-          builder: ${{ steps.build.outputs.builder }}
-          image-name: ${{ steps.build.outputs.image }}
-          image-tags: ${{ steps.build.outputs.tags }}
-          image-registry: ${{ env.IMAGE_REGISTRY }}
-          registry-username: ${{ github.actor }}
-          registry-password: ${{ secrets.GITHUB_TOKEN }}
+  #     - name: Push Image
+  #       id: push
+  #       uses: rsturla/eternal-main/.github/actions/push-image@main
+  #       with:
+  #         builder: ${{ steps.build.outputs.builder }}
+  #         image-name: ${{ steps.build.outputs.image }}
+  #         image-tags: ${{ steps.build.outputs.tags }}
+  #         image-registry: ${{ env.IMAGE_REGISTRY }}
+  #         registry-username: ${{ github.actor }}
+  #         registry-password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Sign Image
-        uses: rsturla/eternal-main/.github/actions/sign-image@main
-        if: github.event_name != 'pull_request'
-        with:
-          registry: ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}
-          registry-provider: ghcr.io
-          registry-username: ${{ github.actor }}
-          registry-password: ${{ secrets.GITHUB_TOKEN }}
-          digest: ${{ steps.push.outputs.digest }}
-          private-key: ${{ secrets.ETERNAL_LINUX_SIGNING_KEY }}
-          private-key-passphrase: ${{ secrets.ETERNAL_LINUX_SIGNING_KEY_PASSPHRASE }}
+  #     - name: Sign Image
+  #       uses: rsturla/eternal-main/.github/actions/sign-image@main
+  #       if: github.event_name != 'pull_request'
+  #       with:
+  #         registry: ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}
+  #         registry-provider: ghcr.io
+  #         registry-username: ${{ github.actor }}
+  #         registry-password: ${{ secrets.GITHUB_TOKEN }}
+  #         digest: ${{ steps.push.outputs.digest }}
+  #         private-key: ${{ secrets.ETERNAL_LINUX_SIGNING_KEY }}
+  #         private-key-passphrase: ${{ secrets.ETERNAL_LINUX_SIGNING_KEY_PASSPHRASE }}
 
   build-lumina-nvidia:
     runs-on: ubuntu-24.04
