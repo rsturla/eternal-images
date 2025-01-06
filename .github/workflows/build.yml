@@ -57,6 +57,11 @@ jobs:
           major-version: ${{ matrix.fedora-version }}
           is-release: ${{ github.event_name != 'pull_request' }}
 
+      - name: Login to GHCR
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+          echo "${{ secrets.GITHUB_TOKEN }}" | podman login ghcr.io -u ${{ github.actor }} --password-stdin
+
       - name: Build Image
         id: build
         uses: rsturla/eternal-main/.github/actions/build-image@main
@@ -89,8 +94,6 @@ jobs:
           image-name: ${{ steps.build.outputs.image }}
           image-tags: ${{ steps.build.outputs.tags }}
           image-registry: ${{ env.IMAGE_REGISTRY }}
-          registry-username: ${{ github.actor }}
-          registry-password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Sign Image
         uses: rsturla/eternal-main/.github/actions/sign-image@main
@@ -98,8 +101,6 @@ jobs:
         with:
           registry: ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}
           registry-provider: ghcr.io
-          registry-username: ${{ github.actor }}
-          registry-password: ${{ secrets.GITHUB_TOKEN }}
           digest: ${{ steps.push.outputs.digest }}
           private-key: ${{ secrets.ETERNAL_LINUX_SIGNING_KEY }}
           private-key-passphrase: ${{ secrets.ETERNAL_LINUX_SIGNING_KEY_PASSPHRASE }}
@@ -147,6 +148,11 @@ jobs:
           is-nvidia: true
           nvidia-type: ${{ matrix.nvidia-type }}
 
+      - name: Login to GHCR
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+          echo "${{ secrets.GITHUB_TOKEN }}" | podman login ghcr.io -u ${{ github.actor }} --password-stdin
+
       - name: Build Image
         id: build
         uses: rsturla/eternal-main/.github/actions/build-image@main
@@ -180,8 +186,6 @@ jobs:
           image-name: ${{ steps.build.outputs.image }}
           image-tags: ${{ steps.build.outputs.tags }}
           image-registry: ${{ env.IMAGE_REGISTRY }}
-          registry-username: ${{ github.actor }}
-          registry-password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Sign Image
         uses: rsturla/eternal-main/.github/actions/sign-image@main
@@ -189,8 +193,6 @@ jobs:
         with:
           registry: ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}
           registry-provider: ghcr.io
-          registry-username: ${{ github.actor }}
-          registry-password: ${{ secrets.GITHUB_TOKEN }}
           digest: ${{ steps.push.outputs.digest }}
           private-key: ${{ secrets.ETERNAL_LINUX_SIGNING_KEY }}
           private-key-passphrase: ${{ secrets.ETERNAL_LINUX_SIGNING_KEY_PASSPHRASE }}
