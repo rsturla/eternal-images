@@ -10,7 +10,3 @@ dnf remove -y \
   gnome-extensions-app \
   gnome-system-monitor \
   yelp
-
-if [[ "$FEDORA_VERSION" == "40" ]]; then
-  dnf remove -y gnome-terminal-nautilus
-fi
