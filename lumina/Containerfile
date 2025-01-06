@@ -14,7 +14,7 @@ COPY files/_${BASE_IMAGE} /
 COPY scripts/ /tmp/scripts/
 
 RUN chmod +x /tmp/scripts/*.sh /tmp/scripts/*.sh /tmp/scripts/_${BASE_IMAGE}/*.sh && \
-  /tmp/scripts/setup.sh --base ${BASE_IMAGE} && \
-  /tmp/scripts/cleanup.sh --base ${BASE_IMAGE} \
+  /tmp/scripts/setup.sh && \
+  /tmp/scripts/cleanup.sh \
   && \
   bootc container lint
