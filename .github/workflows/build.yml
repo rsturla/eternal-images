@@ -24,6 +24,9 @@ jobs:
       matrix:
         fedora-version: [41, stable]
         base-image: [silverblue, cosmic, kinoite]
+        exclude:
+          - fedora-version: 41
+            base-image: cosmic
     permissions:
       contents: read
       packages: write
@@ -113,6 +116,9 @@ jobs:
         fedora-version: [41, stable]
         base-image: [silverblue, cosmic, kinoite]
         nvidia-type: [open]
+        exclude:
+          - fedora-version: 41
+            base-image: cosmic
     permissions:
       contents: read
       packages: write
