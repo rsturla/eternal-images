@@ -4,7 +4,7 @@ ARG BASE_TAG=41
 ARG FEDORA_VERSION=${BASE_TAG}
 
 
-FROM ${BASE_REGISTRY}:${BASE_TAG}
+FROM ${BASE_REGISTRY}:${BASE_TAG} AS rootfs
 
 ARG FEDORA_VERSION
 ARG BASE_IMAGE
@@ -21,7 +21,7 @@ RUN chmod +x /tmp/scripts/*.sh /tmp/scripts/*.sh /tmp/scripts/_${BASE_IMAGE}/*.s
 
 # This builder image can be anything as long as it has a new enough
 # rpm-ostree.
-FROM quay.io/fedora/fedora-bootc:rawhide as builder
+FROM quay.io/fedora/fedora-bootc:rawhide AS builder
 RUN --mount=type=bind,rw=true,src=.,dst=/buildcontext,bind-propagation=shared \
     --mount=from=rootfs,dst=/rootfs <<EORUN
 set -xeuo pipefail
