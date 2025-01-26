@@ -18,3 +18,23 @@ RUN chmod +x /tmp/scripts/*.sh /tmp/scripts/*.sh /tmp/scripts/_${BASE_IMAGE}/*.s
   /tmp/scripts/cleanup.sh \
   && \
   bootc container lint
+
+# This builder image can be anything as long as it has a new enough
+# rpm-ostree.
+FROM quay.io/fedora/fedora-bootc:rawhide as builder
+RUN --mount=type=bind,rw=true,src=.,dst=/buildcontext,bind-propagation=shared \
+    --mount=from=rootfs,dst=/rootfs <<EORUN
+set -xeuo pipefail
+rm /buildcontext/out.oci -rf
+rpm-ostree experimental compose build-chunked-oci --bootc --format-version=1 \
+           --rootfs=/rootfs --output /buildcontext/out.oci
+EORUN
+
+# Finally, output the OCI archive back into our final container image. Here we
+# can add labels and other metadata - note that no metadata was inherited from
+# the source image - only the root filesystem!
+FROM oci:./out.oci
+# Need to reference builder here to force ordering. But since we have to run
+# something anyway, we might as well cleanup after ourselves.
+RUN --mount=type=bind,from=builder,src=.,target=/var/tmp \
+    --mount=type=bind,rw=true,src=.,dst=/buildcontext,bind-propagation=shared rm /buildcontext/out.oci -rf
