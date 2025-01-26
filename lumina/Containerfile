@@ -23,12 +23,10 @@ RUN chmod +x /tmp/scripts/*.sh /tmp/scripts/*.sh /tmp/scripts/_${BASE_IMAGE}/*.s
 # rpm-ostree.
 FROM quay.io/fedora/fedora-bootc:rawhide AS builder
 RUN --mount=type=bind,rw=true,src=.,dst=/buildcontext,bind-propagation=shared \
-    --mount=from=rootfs,dst=/rootfs <<EORUN
-set -xeuo pipefail
-rm /buildcontext/out.oci -rf
-rpm-ostree experimental compose build-chunked-oci --bootc --format-version=1 \
+    --mount=from=rootfs,dst=/rootfs \
+    rm -rf /buildcontext/out.oci && \
+    rpm-ostree experimental compose build-chunked-oci --bootc --format-version=1 \
            --rootfs=/rootfs --output /buildcontext/out.oci
-EORUN
 
 # Finally, output the OCI archive back into our final container image. Here we
 # can add labels and other metadata - note that no metadata was inherited from
@@ -37,4 +35,5 @@ FROM oci:./out.oci
 # Need to reference builder here to force ordering. But since we have to run
 # something anyway, we might as well cleanup after ourselves.
 RUN --mount=type=bind,from=builder,src=.,target=/var/tmp \
-    --mount=type=bind,rw=true,src=.,dst=/buildcontext,bind-propagation=shared rm /buildcontext/out.oci -rf
+    --mount=type=bind,rw=true,src=.,dst=/buildcontext,bind-propagation=shared \
+    rm -rf /buildcontext/out.oci
