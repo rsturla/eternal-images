@@ -28,7 +28,6 @@ FROM quay.io/fedora/fedora-bootc:rawhide AS builder
 RUN --mount=type=bind,rw=true,src=.,dst=/buildcontext,bind-propagation=shared \
     --mount=from=rootfs,dst=/rootfs \
     rm -rf /buildcontext/out.oci && \
-    ls -la / && \
     rpm-ostree experimental compose build-chunked-oci --bootc --format-version=1 \
            --rootfs=/rootfs --output /buildcontext/out.oci
 
