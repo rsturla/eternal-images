@@ -14,6 +14,3 @@ EOF
 dnf install -y twingate
 
 rm /etc/yum.repos.d/twingate.repo
-
-echo "LOOKGING FOR ERRRO.LOG"
-ls -la /

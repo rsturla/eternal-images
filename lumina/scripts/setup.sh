@@ -10,6 +10,9 @@ for script in /tmp/scripts/_base/*.sh; do
     echo "::group::===$(basename "$script")==="
     bash "$script"
     echo "::endgroup::"
+
+    echo "LOOKGING FOR ERRRO.LOG"
+    ls -la /
   fi
 done
 
@@ -18,5 +21,8 @@ for script in /tmp/scripts/_$BASE_IMAGE/*.sh; do
     echo "::group::===$(basename "$script")==="
     bash "$script"
     echo "::endgroup::"
+
+    echo "LOOKGING FOR ERRRO.LOG"
+    ls -la /
   fi
 done

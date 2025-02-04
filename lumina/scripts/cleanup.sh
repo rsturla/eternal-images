@@ -6,6 +6,3 @@ sed -i 's/enabled=1/enabled=0/g' /etc/yum.repos.d/rpmfusion-{free,nonfree}{,-upd
 
 # Clear out unsupported directories
 rm -rf /tmp/* /var/*
-
-echo "LOOKGING FOR ERRRO.LOG"
-ls -la /

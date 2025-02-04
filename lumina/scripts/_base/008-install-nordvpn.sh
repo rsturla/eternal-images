@@ -16,6 +16,3 @@ dnf install -y nordvpn
 systemctl enable nordvpnd
 
 rm -f /etc/yum.repos.d/nordvpn.repo
-
-echo "LOOKGING FOR ERRRO.LOG"
-ls -la /
