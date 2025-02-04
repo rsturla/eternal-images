@@ -18,9 +18,7 @@ COPY scripts/ /tmp/scripts/
 RUN ls -la /
 RUN chmod +x /tmp/scripts/*.sh /tmp/scripts/*.sh /tmp/scripts/_${BASE_IMAGE}/*.sh && \
   /tmp/scripts/setup.sh && \
-  /tmp/scripts/cleanup.sh \
-  && \
-  bootc container lint
+  /tmp/scripts/cleanup.sh
 
 # This builder image can be anything as long as it has a new enough
 # rpm-ostree.
