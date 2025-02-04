@@ -9,13 +9,10 @@ FROM ${BASE_REGISTRY}:${BASE_TAG} AS rootfs
 ARG FEDORA_VERSION
 ARG BASE_IMAGE
 
-RUN ls -la /
-
 COPY files/_base /
-COPY files/_${BASE_IMAGE} /
+COPY files/_${BASE_IMAGE}* /
 COPY scripts/ /tmp/scripts/
 
-RUN ls -la /
 RUN chmod +x /tmp/scripts/*.sh /tmp/scripts/*.sh /tmp/scripts/_${BASE_IMAGE}/*.sh && \
   /tmp/scripts/setup.sh && \
   /tmp/scripts/cleanup.sh
