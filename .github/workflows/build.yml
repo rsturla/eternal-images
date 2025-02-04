@@ -81,7 +81,6 @@ jobs:
 
       - name: Rechunk
         id: rechunk
-        if: false
         uses: rsturla/eternal-main/.github/actions/rechunk@main
         with:
           builder: ${{ steps.build.outputs.builder }}
@@ -176,7 +175,6 @@ jobs:
 
       - name: Rechunk
         id: rechunk
-        if: false
         uses: rsturla/eternal-main/.github/actions/rechunk@main
         with:
           builder: ${{ steps.build.outputs.builder }}
