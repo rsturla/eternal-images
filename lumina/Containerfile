@@ -9,8 +9,7 @@ FROM ${BASE_REGISTRY}:${BASE_TAG}
 ARG FEDORA_VERSION
 ARG BASE_IMAGE
 
-COPY files/_base /
-COPY files/_${BASE_IMAGE}* /
+COPY files/_base files/_${BASE_IMAGE}* /
 COPY scripts/ /tmp/scripts/
 
 RUN chmod +x /tmp/scripts/*.sh /tmp/scripts/*.sh /tmp/scripts/_${BASE_IMAGE}/*.sh && \
