@@ -41,5 +41,5 @@ EOF
 
 # Workaround to remove Google Chrome profile locks
 cat >/usr/share/user-tmpfiles.d/eternal-google-locks.conf <<EOF
-r  %h/.config/google-chrome/Singleton  -  -  -  -  -
+r  %h/.config/google-chrome/Singleton*  -  -  -  -  -
 EOF
