@@ -4,20 +4,9 @@ set -euo pipefail
 
 append_group() {
   local group_name="$1"
-
-  # Check if the group exists in /etc/group
-  if ! getent group "$group_name" > /dev/null; then
+  if ! grep -q "^$group_name:" /etc/group; then
     echo "Appending $group_name to /etc/group"
-
-    # Try to append the group if it exists in system defaults
-    if grep -q "^$group_name:" /usr/lib/group 2>/dev/null; then
-      grep "^$group_name:" /usr/lib/group >> /etc/group
-      echo "$group_name successfully appended."
-    else
-      echo "Warning: Group $group_name not found in system defaults, skipping." >&2
-    fi
-  else
-    echo "Group $group_name already exists in /etc/group, skipping."
+    grep "^$group_name:" /usr/lib/group | tee -a /etc/group > /dev/null
   fi
 }
 
