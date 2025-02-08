@@ -26,7 +26,10 @@ dnf install -y \
   gh \
   git-credential-oauth
 
-curl -Lo /tmp/devbox https://releases.jetpack.io/devbox
+curl --retry 3 -Lo /tmp/kind https://github.com/kubernetes-sigs/kind/releases/latest/download/kind-linux-amd64
+install -c -m 0755 /tmp/kind /usr/bin/kind
+
+curl --retry 3 -Lo /tmp/devbox https://releases.jetpack.io/devbox
 install -c -m 0755 /tmp/devbox /usr/bin/devbox
 
 rm -f /etc/yum.repos.d/github.repo
