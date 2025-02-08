@@ -28,5 +28,7 @@
   // Devbox settings
   "devbox.autoShellOnTerminal": false,
   // Disable telemetry
-  "telemetry.telemetryLevel": "off"
+  "telemetry.telemetryLevel": "off",
+  // Disable automated updates
+  "update.mode": "none"
 }
