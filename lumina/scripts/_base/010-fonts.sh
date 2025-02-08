@@ -4,7 +4,7 @@ set -euox pipefail
 
 # GitHub Monaspace
 DOWNLOAD_URL=$(curl https://api.github.com/repos/githubnext/monaspace/releases/latest | jq -r '.assets[] | select(.name| test(".*.zip$")).browser_download_url')
-curl -Lo /tmp/monaspace-font.zip $DOWNLOAD_URL
+curl --retry 3 -Lo /tmp/monaspace-font.zip $DOWNLOAD_URL
 
 unzip -qo /tmp/monaspace-font.zip -d /tmp/monaspace-font
 mkdir -p /usr/share/fonts/monaspace
