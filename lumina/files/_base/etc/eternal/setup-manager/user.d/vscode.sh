@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+
 # Define an array of VS Code extensions to be installed
 extensions=(
   ms-vscode-remote.vscode-remote-extensionpack
