@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+
 wheelarray=($(getent group wheel | cut -d ":" -f 4 | tr  ',' '\n'))
 groups=(docker nordvpn)
 
