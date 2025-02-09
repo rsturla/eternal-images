@@ -30,7 +30,7 @@ dnf install -y \
 curl --retry 3 -Lo /tmp/kind https://github.com/kubernetes-sigs/kind/releases/latest/download/kind-linux-amd64
 install -c -m 0755 /tmp/kind /usr/bin/kind
 DOWNLOAD_URL=$(curl https://api.github.com/repos/kubernetes-sigs/cloud-provider-kind/releases/latest | jq -r '.assets[] | select(.name| test("_linux_amd64.tar.gz$")).browser_download_url')
-curl --retry 3 -Lo /tmp/cloud-provider-kind $DOWNLOAD_URL
+curl --retry 3 -Lo /tmp/cloud-provider-kind.tar.gz $DOWNLOAD_URL
 tar -xzf /tmp/cloud-provider-kind.tar.gz -C /tmp
 install -c -m 0755 /tmp/cloud-provider-kind /usr/bin/cloud-provider-kind
 
