@@ -3,6 +3,7 @@
 set -euox pipefail
 
 dnf install -y \
+  qemu \
   libvirt \
   edk2-ovmf
 
