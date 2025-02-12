@@ -19,6 +19,8 @@ num-workspaces='4'
 [org/gnome/desktop/wm/keybindings]
 switch-input-source = ['<Shift><Super>space']
 switch-input-source-backward = ['']
+switch-to-workspace-up = ['<Control><Super>Up']
+switch-to-workspace-down = ['<Control><Super>Down']
 
 [org/gnome/software]
 allow-updates=false

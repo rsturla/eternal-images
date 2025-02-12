@@ -8,11 +8,10 @@ dnf install -y \
   gnome-shell-extension-appindicator \
   gnome-shell-extension-dash-to-dock \
   gnome-shell-extension-blur-my-shell \
-  gnome-shell-extension-search-light \
+  gnome-shell-extension-vertical-workspaces \
   gnome-shell-extension-caffeine \
   gnome-shell-extension-just-perfection \
   gnome-tweaks \
-  libcanberra-gtk3 \
-  nautilus-open-any-terminal
+  libcanberra-gtk3
 
 rm -rf /etc/yum.repos.d/_copr_ublue-os_staging.repo
