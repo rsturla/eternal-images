@@ -8,5 +8,5 @@ name='Host Ptyxis'
 
 [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3]
 binding='<Control><Shift>Escape'
-command="flatpak run io.missioncenter.MissionCenter"
-name='mission-center'
+command="flatpak run net.nokyan.Resources"
+name='resources'
