@@ -16,9 +16,6 @@ repo_gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-google
 EOF
 
-# Prepare alternatives directory
-mkdir -p /var/lib/alternatives
-
 # Import signing key
 curl --retry 3 --retry-delay 2 --retry-all-errors -sL \
   -o /etc/pki/rpm-gpg/RPM-GPG-KEY-google \
