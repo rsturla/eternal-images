@@ -174,14 +174,14 @@ jobs:
           path: |
             /tmp/outputs/digests/*
 
-  manifest-base:
-    needs: 
-      - build-base
+  manifest:
+    needs:
+      - build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-    
+
       - name: Determine Build Output Name
         id: artifact-prefix
         env:

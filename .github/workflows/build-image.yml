@@ -36,7 +36,7 @@ jobs:
       build-context: ./lumina
       containerfile: ./lumina/Containerfile
       source-image: ghcr.io/rsturla/eternal-linux/main/silverblue
-  
+
   build-gnome-nvidia:
     uses: ./.github/workflows/_build-image.yml
     strategy:
