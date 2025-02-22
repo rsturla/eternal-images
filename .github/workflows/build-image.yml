@@ -42,7 +42,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        major-version: [41-nvidia]
+        major-version: [41]
         kernel-flavor: [default, stable]
     secrets: inherit
     with:
@@ -81,7 +81,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        major-version: [41-nvidia]
+        major-version: [41]
         kernel-flavor: [default, stable]
     secrets: inherit
     with:
@@ -101,7 +101,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        major-version: [41-nvidia]
+        major-version: [41]
         kernel-flavor: [default, stable]
     secrets: inherit
     with:

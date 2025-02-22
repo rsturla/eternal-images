@@ -134,7 +134,7 @@ jobs:
           image-name: ${{ inputs.image-name }}
           image-tag: local
           build-args: |
-            MAJOR_VERSION=${{ inputs.kernel-flavor != 'default' && inputs.kernel-flavor || inputs.major-version }}
+            MAJOR_VERSION=${{ inputs.kernel-flavor != 'default' && inputs.kernel-flavor || inputs.major-version }}${{ inputs.is-nvidia && '-nvidia-open' || '' }}
             DESKTOP_ENVIRONMENT=${{ inputs.desktop-environment }}
             ${{ inputs.source-image != '' && format('SOURCE_IMAGE={0}', inputs.source-image) || '' }}
           rechunk: ${{ inputs.rechunk }}
