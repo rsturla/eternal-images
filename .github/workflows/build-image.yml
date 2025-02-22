@@ -33,6 +33,8 @@ jobs:
       is-release: ${{ (github.event_name == 'schedule' || github.event_name == 'push') && startsWith(github.ref, 'refs/heads/main') }}
       platforms: amd64 arm64
       kernel-flavor: ${{ matrix.kernel-flavor }}
+      build-context: ./lumina
+      containerfile: ./lumina/Containerfile
 
   build-cosmic:
     uses: ./.github/workflows/_build-image.yml
@@ -49,6 +51,8 @@ jobs:
       is-release: ${{ (github.event_name == 'schedule' || github.event_name == 'push') && startsWith(github.ref, 'refs/heads/main') }}
       platforms: amd64 arm64
       kernel-flavor: ${{ matrix.kernel-flavor }}
+      build-context: ./lumina
+      containerfile: ./lumina/Containerfile
 
   build-kde:
     uses: ./.github/workflows/_build-image.yml
@@ -65,3 +69,5 @@ jobs:
       is-release: ${{ (github.event_name == 'schedule' || github.event_name == 'push') && startsWith(github.ref, 'refs/heads/main') }}
       platforms: amd64 arm64
       kernel-flavor: ${{ matrix.kernel-flavor }}
+      build-context: ./lumina
+      containerfile: ./lumina/Containerfile

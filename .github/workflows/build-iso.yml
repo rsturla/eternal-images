@@ -1,16 +1,16 @@
 name: Build ISOs
 
 on:
-  pull_request:
-    paths:
-      - ".github/workflows/*build-iso.yml"
-      - "**/flatpaks/**"
-  push:
-    branches:
-      - main
-    paths:
-      - ".github/workflows/*build-iso.yml"
-      - "**/flatpaks/**"
+  # pull_request:
+  #   paths:
+  #     - ".github/workflows/*build-iso.yml"
+  #     - "**/flatpaks/**"
+  # push:
+  #   branches:
+  #     - main
+  #   paths:
+  #     - ".github/workflows/*build-iso.yml"
+  #     - "**/flatpaks/**"
   workflow_dispatch:
     inputs:
       upload-to-cloudflare:
