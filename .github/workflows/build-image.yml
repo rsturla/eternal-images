@@ -35,6 +35,7 @@ jobs:
       kernel-flavor: ${{ matrix.kernel-flavor }}
       build-context: ./lumina
       containerfile: ./lumina/Containerfile
+      source-image: ghcr.io/rsturla/eternal-linux/main/silverblue
 
   build-cosmic:
     uses: ./.github/workflows/_build-image.yml
@@ -53,6 +54,7 @@ jobs:
       kernel-flavor: ${{ matrix.kernel-flavor }}
       build-context: ./lumina
       containerfile: ./lumina/Containerfile
+      source-image: ghcr.io/rsturla/eternal-linux/main/cosmic
 
   build-kde:
     uses: ./.github/workflows/_build-image.yml
@@ -71,3 +73,4 @@ jobs:
       kernel-flavor: ${{ matrix.kernel-flavor }}
       build-context: ./lumina
       containerfile: ./lumina/Containerfile
+      source-image: ghcr.io/rsturla/eternal-linux/main/kinoite
