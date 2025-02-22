@@ -1,0 +1,67 @@
+name: Build Images
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  packages: write
+  id-token: write
+
+concurrency:
+  group: build-${{ github.workflow }}-${{ github.ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  build-gnome:
+    uses: ./.github/workflows/_build-image.yml
+    strategy:
+      fail-fast: false
+      matrix:
+        major-version: [41]
+        kernel-flavor: [default, stable]
+    secrets: inherit
+    with:
+      image-name: eternal-linux/lumina
+      desktop-environment: gnome
+      major-version: ${{ matrix.major-version }}
+      is-release: ${{ (github.event_name == 'schedule' || github.event_name == 'push') && startsWith(github.ref, 'refs/heads/main') }}
+      platforms: amd64 arm64
+      kernel-flavor: ${{ matrix.kernel-flavor }}
+
+  build-cosmic:
+    uses: ./.github/workflows/_build-image.yml
+    strategy:
+      fail-fast: false
+      matrix:
+        major-version: [41]
+        kernel-flavor: [default, stable]
+    secrets: inherit
+    with:
+      image-name: eternal-linux/lumina-cosmic
+      desktop-environment: cosmic
+      major-version: ${{ matrix.major-version }}
+      is-release: ${{ (github.event_name == 'schedule' || github.event_name == 'push') && startsWith(github.ref, 'refs/heads/main') }}
+      platforms: amd64 arm64
+      kernel-flavor: ${{ matrix.kernel-flavor }}
+
+  build-kde:
+    uses: ./.github/workflows/_build-image.yml
+    strategy:
+      fail-fast: false
+      matrix:
+        major-version: [41]
+        kernel-flavor: [default, stable]
+    secrets: inherit
+    with:
+      image-name: eternal-linux/lumina-kinoite
+      desktop-environment: kde
+      major-version: ${{ matrix.major-version }}
+      is-release: ${{ (github.event_name == 'schedule' || github.event_name == 'push') && startsWith(github.ref, 'refs/heads/main') }}
+      platforms: amd64 arm64
+      kernel-flavor: ${{ matrix.kernel-flavor }}

@@ -119,13 +119,6 @@ jobs:
           is-release: ${{ inputs.is-release }}
           arch: ${{ matrix.platform }}
 
-      - name: Get CoreOS Kernel Information
-        if: inputs.kernel-flavor != 'default'
-        uses: rsturla/eternal-main/.github/actions/get-coreos-kernel@main
-        id: get-coreos-kernel
-        with:
-          coreos-stream: ${{ inputs.kernel-flavor }}
-
       - name: Build Image
         id: build
         uses: rsturla/eternal-main/.github/actions/build-image@main
@@ -135,10 +128,8 @@ jobs:
           image-name: ${{ inputs.image-name }}
           image-tag: local
           build-args: |
-            MAJOR_VERSION=${{ inputs.major-version }}
+            MAJOR_VERSION=${{ inputs.kernel-flavor != 'default' && inputs.kernel-flavor || inputs.major-version }}
             DESKTOP_ENVIRONMENT=${{ inputs.desktop-environment }}
-            ${{ inputs.kernel-flavor != 'default' && format('COREOS_KERNEL={0}', steps.get-coreos-kernel.outputs.coreos-kernel-release) || '' }}
-            ${{ inputs.source-image != '' && format('IMAGE_REGISTRY={0}', inputs.source-image) || '' }}
           rechunk: ${{ inputs.rechunk }}
           rechunk-prev-ref: ${{ env.IMAGE_REGISTRY }}/${{ inputs.image-name }}:${{ steps.generate-image-tags.outputs.stable-tag }}
 
@@ -277,199 +268,199 @@ jobs:
           private-key: ${{ secrets.ETERNAL_LINUX_SIGNING_KEY }}
           private-key-passphrase: ${{ secrets.ETERNAL_LINUX_SIGNING_KEY_PASSPHRASE }}
 
-  build-nvidia:
-    runs-on: ${{ matrix.platform == 'amd64' && 'ubuntu-24.04' || 'ubuntu-24.04-arm' }}
-    needs:
-      - generate-matrix
-    permissions:
-      contents: read
-      packages: write
-      id-token: write
-    strategy:
-      fail-fast: false
-      matrix: ${{fromJson(needs.generate-matrix.outputs.MATRIX)}}
-    steps:
-      - name: Install dependencies
-        if: matrix.platform == 'arm64'
-        run: |
-          sudo apt update -y
-          sudo apt install -y \
-            podman \
-            skopeo \
-            jq
+  # build-nvidia:
+  #   runs-on: ${{ matrix.platform == 'amd64' && 'ubuntu-24.04' || 'ubuntu-24.04-arm' }}
+  #   needs:
+  #     - generate-matrix
+  #   permissions:
+  #     contents: read
+  #     packages: write
+  #     id-token: write
+  #   strategy:
+  #     fail-fast: false
+  #     matrix: ${{fromJson(needs.generate-matrix.outputs.MATRIX)}}
+  #   steps:
+  #     - name: Install dependencies
+  #       if: matrix.platform == 'arm64'
+  #       run: |
+  #         sudo apt update -y
+  #         sudo apt install -y \
+  #           podman \
+  #           skopeo \
+  #           jq
 
-      - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+  #     - name: Checkout
+  #       uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
-      - name: Maximize Build Space
-        if: inputs.maximize-build-space && matrix.platform == 'amd64'
-        uses: ublue-os/remove-unwanted-software@v8
-        with:
-          remove-codeql: true
+  #     - name: Maximize Build Space
+  #       if: inputs.maximize-build-space && matrix.platform == 'amd64'
+  #       uses: ublue-os/remove-unwanted-software@v8
+  #       with:
+  #         remove-codeql: true
 
-      - name: Login to GitHub Container Registry
-        run: |
-          echo "${{ secrets.GITHUB_TOKEN }}" | podman login ghcr.io -u ${{ github.actor }} --password-stdin
-          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+  #     - name: Login to GitHub Container Registry
+  #       run: |
+  #         echo "${{ secrets.GITHUB_TOKEN }}" | podman login ghcr.io -u ${{ github.actor }} --password-stdin
+  #         echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      - name: Generate Image Tags
-        uses: rsturla/eternal-main/.github/actions/generate-image-tags@main
-        id: generate-image-tags
-        with:
-          image-name: ${{ env.IMAGE_REGISTRY}}/${{ inputs.image-name }}
-          major-version: ${{ inputs.major-version }}
-          is-release: ${{ inputs.is-release }}
-          arch: ${{ matrix.platform }}
-          is-nvidia: true
-          nvidia-type: open
+  #     - name: Generate Image Tags
+  #       uses: rsturla/eternal-main/.github/actions/generate-image-tags@main
+  #       id: generate-image-tags
+  #       with:
+  #         image-name: ${{ env.IMAGE_REGISTRY}}/${{ inputs.image-name }}
+  #         major-version: ${{ inputs.major-version }}
+  #         is-release: ${{ inputs.is-release }}
+  #         arch: ${{ matrix.platform }}
+  #         is-nvidia: true
+  #         nvidia-type: open
 
-      - name: Build Image
-        id: build
-        uses: rsturla/eternal-main/.github/actions/build-image@main
-        with:
-          context: ${{ inputs.build-context }}
-          containerfile: ${{ inputs.containerfile }}.nvidia
-          image-name: ${{ inputs.image-name }}
-          image-tag: local
-          build-args: |
-            BASE_IMAGE_FULL=${{ env.IMAGE_REGISTRY }}/${{ inputs.image-name }}@${{ steps.load-outputs.outputs.DIGEST }}
-            MAJOR_VERSION=${{ inputs.major-version }}
-          rechunk: ${{ inputs.rechunk }}
-          rechunk-prev-ref: ${{ env.IMAGE_REGISTRY }}/${{ inputs.image-name }}:${{ steps.generate-image-tags.outputs.stable-tag }}
+  #     - name: Build Image
+  #       id: build
+  #       uses: rsturla/eternal-main/.github/actions/build-image@main
+  #       with:
+  #         context: ${{ inputs.build-context }}
+  #         containerfile: ${{ inputs.containerfile }}.nvidia
+  #         image-name: ${{ inputs.image-name }}
+  #         image-tag: local
+  #         build-args: |
+  #           BASE_IMAGE_FULL=${{ env.IMAGE_REGISTRY }}/${{ inputs.image-name }}@${{ steps.load-outputs.outputs.DIGEST }}
+  #           MAJOR_VERSION=${{ inputs.major-version }}
+  #         rechunk: ${{ inputs.rechunk }}
+  #         rechunk-prev-ref: ${{ env.IMAGE_REGISTRY }}/${{ inputs.image-name }}:${{ steps.generate-image-tags.outputs.stable-tag }}
 
-      - name: Push Image
-        id: push
-        uses: rsturla/eternal-main/.github/actions/push-image@main
-        with:
-          image-ref: ${{ steps.build.outputs.image }}:${{ steps.build.outputs.tag }}
-          image-name: ${{ steps.build.outputs.image }}
-          image-tags: ${{ steps.generate-image-tags.outputs.primary-tag }}
-          image-registry: ${{ env.IMAGE_REGISTRY }}
+  #     - name: Push Image
+  #       id: push
+  #       uses: rsturla/eternal-main/.github/actions/push-image@main
+  #       with:
+  #         image-ref: ${{ steps.build.outputs.image }}:${{ steps.build.outputs.tag }}
+  #         image-name: ${{ steps.build.outputs.image }}
+  #         image-tags: ${{ steps.generate-image-tags.outputs.primary-tag }}
+  #         image-registry: ${{ env.IMAGE_REGISTRY }}
 
-      - name: Create Job Outputs
-        id: create-job-outputs
-        env:
-          IMAGE_NAME: ${{ inputs.image-name }}
-          DIGEST: ${{ steps.push.outputs.digest }}
-          PLATFORM: ${{ matrix.platform }}
-          MAJOR_VERSION: ${{ inputs.major-version }}
-          KERNEL_FLAVOR: ${{ inputs.kernel-flavor }}
-        run: |
-          OUTPUT_ARTIFACT_NAME=$(echo "$IMAGE_NAME-$MAJOR_VERSION-$KERNEL_FLAVOR-nvidia-$PLATFORM" | tr '/' '-')
+  #     - name: Create Job Outputs
+  #       id: create-job-outputs
+  #       env:
+  #         IMAGE_NAME: ${{ inputs.image-name }}
+  #         DIGEST: ${{ steps.push.outputs.digest }}
+  #         PLATFORM: ${{ matrix.platform }}
+  #         MAJOR_VERSION: ${{ inputs.major-version }}
+  #         KERNEL_FLAVOR: ${{ inputs.kernel-flavor }}
+  #       run: |
+  #         OUTPUT_ARTIFACT_NAME=$(echo "$IMAGE_NAME-$MAJOR_VERSION-$KERNEL_FLAVOR-nvidia-$PLATFORM" | tr '/' '-')
 
-          mkdir -p /tmp/outputs/digests
-          echo "${DIGEST}" > /tmp/outputs/digests/${PLATFORM}
+  #         mkdir -p /tmp/outputs/digests
+  #         echo "${DIGEST}" > /tmp/outputs/digests/${PLATFORM}
 
-          echo "OUTPUT_ARTIFACT_NAME=${OUTPUT_ARTIFACT_NAME}" >> $GITHUB_OUTPUT
+  #         echo "OUTPUT_ARTIFACT_NAME=${OUTPUT_ARTIFACT_NAME}" >> $GITHUB_OUTPUT
 
-      - name: Upload Output Artifacts
-        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4
-        with:
-          name: ${{ steps.create-job-outputs.outputs.OUTPUT_ARTIFACT_NAME }}
-          retention-days: 1
-          if-no-files-found: error
-          path: |
-            /tmp/outputs/digests/*
+  #     - name: Upload Output Artifacts
+  #       uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4
+  #       with:
+  #         name: ${{ steps.create-job-outputs.outputs.OUTPUT_ARTIFACT_NAME }}
+  #         retention-days: 1
+  #         if-no-files-found: error
+  #         path: |
+  #           /tmp/outputs/digests/*
 
-  manifest-nvidia:
-    needs: 
-      - build-nvidia
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+  # manifest-nvidia:
+  #   needs: 
+  #     - build-nvidia
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
     
-      - name: Determine Build Output Name
-        id: artifact-prefix
-        env:
-          IMAGE_NAME: ${{ inputs.image-name }}
-          MAJOR_VERSION: ${{ inputs.major-version }}
-          KERNEL_FLAVOR: ${{ inputs.kernel-flavor }}
-        run: |
-          OUTPUT_ARTIFACT_PREFIX=$(echo "$IMAGE_NAME-$MAJOR_VERSION-$KERNEL_FLAVOR-nvidia-" | tr '/' '-')
-          echo "OUTPUT_ARTIFACT_PREFIX=${OUTPUT_ARTIFACT_PREFIX}" >> $GITHUB_OUTPUT
+  #     - name: Determine Build Output Name
+  #       id: artifact-prefix
+  #       env:
+  #         IMAGE_NAME: ${{ inputs.image-name }}
+  #         MAJOR_VERSION: ${{ inputs.major-version }}
+  #         KERNEL_FLAVOR: ${{ inputs.kernel-flavor }}
+  #       run: |
+  #         OUTPUT_ARTIFACT_PREFIX=$(echo "$IMAGE_NAME-$MAJOR_VERSION-$KERNEL_FLAVOR-nvidia-" | tr '/' '-')
+  #         echo "OUTPUT_ARTIFACT_PREFIX=${OUTPUT_ARTIFACT_PREFIX}" >> $GITHUB_OUTPUT
 
-      - name: Fetch Build Outputs
-        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
-        with:
-          pattern: ${{ steps.artifact-prefix.outputs.OUTPUT_ARTIFACT_PREFIX }}*
-          merge-multiple: true
-          path: /tmp/artifacts
+  #     - name: Fetch Build Outputs
+  #       uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
+  #       with:
+  #         pattern: ${{ steps.artifact-prefix.outputs.OUTPUT_ARTIFACT_PREFIX }}*
+  #         merge-multiple: true
+  #         path: /tmp/artifacts
 
-      - name: Load Outputs
-        id: load-outputs
-        run: |
-          DIGESTS_JSON=$(jq -n '{}')
-          for digest_file in /tmp/artifacts/*; do
-            # Extract the platform from the file name
-            PLATFORM=$(basename $digest_file)
-            DIGEST=$(cat $digest_file)
-            # Add the platform and digest to the JSON object
-            DIGESTS_JSON=$(echo "$DIGESTS_JSON" | jq --arg key "$PLATFORM" --arg value "$DIGEST" '. + {($key): $value}')
-          done
-          echo "DIGESTS_JSON=$(echo $DIGESTS_JSON | jq -c '.')"
-          echo "DIGESTS_JSON=$(echo $DIGESTS_JSON | jq -c '.')" >> $GITHUB_OUTPUT
+  #     - name: Load Outputs
+  #       id: load-outputs
+  #       run: |
+  #         DIGESTS_JSON=$(jq -n '{}')
+  #         for digest_file in /tmp/artifacts/*; do
+  #           # Extract the platform from the file name
+  #           PLATFORM=$(basename $digest_file)
+  #           DIGEST=$(cat $digest_file)
+  #           # Add the platform and digest to the JSON object
+  #           DIGESTS_JSON=$(echo "$DIGESTS_JSON" | jq --arg key "$PLATFORM" --arg value "$DIGEST" '. + {($key): $value}')
+  #         done
+  #         echo "DIGESTS_JSON=$(echo $DIGESTS_JSON | jq -c '.')"
+  #         echo "DIGESTS_JSON=$(echo $DIGESTS_JSON | jq -c '.')" >> $GITHUB_OUTPUT
 
-      - name: Generate Image Tags
-        uses: rsturla/eternal-main/.github/actions/generate-image-tags@main
-        id: generate-image-tags
-        with:
-          image-name: ${{ env.IMAGE_REGISTRY}}/${{ inputs.image-name }}
-          major-version: ${{ inputs.major-version }}
-          is-release: ${{ inputs.is-release }}
-          is-nvidia: true
-          nvidia-type: open
+  #     - name: Generate Image Tags
+  #       uses: rsturla/eternal-main/.github/actions/generate-image-tags@main
+  #       id: generate-image-tags
+  #       with:
+  #         image-name: ${{ env.IMAGE_REGISTRY}}/${{ inputs.image-name }}
+  #         major-version: ${{ inputs.major-version }}
+  #         is-release: ${{ inputs.is-release }}
+  #         is-nvidia: true
+  #         nvidia-type: open
 
-      - name: Create Manifest
-        id: create-manifest
-        run: |
-          podman manifest create ${{ env.IMAGE_REGISTRY }}/${{ inputs.image-name }}
-          echo "MANIFEST=${{ env.IMAGE_REGISTRY }}/${{ inputs.image-name }}" >> $GITHUB_OUTPUT
+  #     - name: Create Manifest
+  #       id: create-manifest
+  #       run: |
+  #         podman manifest create ${{ env.IMAGE_REGISTRY }}/${{ inputs.image-name }}
+  #         echo "MANIFEST=${{ env.IMAGE_REGISTRY }}/${{ inputs.image-name }}" >> $GITHUB_OUTPUT
 
-      - name: Populate Manifest
-        env:
-          IMAGE_NAME: ${{ inputs.image-name }}
-          IMAGE_REGISTRY: ${{ env.IMAGE_REGISTRY }}
-          MANIFEST: ${{ steps.create-manifest.outputs.MANIFEST }}
-          DIGESTS_JSON: ${{ steps.load-outputs.outputs.DIGESTS_JSON }}
-          PLATFORMS: ${{ inputs.platforms }}
-        run: |
-          DIGESTS=$(echo "$DIGESTS_JSON" | jq -c '.')
-          # turn the comma separated string into a list
-          platforms=()
-          IFS=',' read -r -a platforms <<< "${PLATFORMS}"
-          for platform in ${platforms[@]}; do
-            digest=$(echo $DIGESTS | jq -r ".$platform")
-            echo "Adding ${IMAGE_REGISTRY}/${IMAGE_NAME}@$digest for $platform"
-            podman manifest add $MANIFEST ${IMAGE_REGISTRY}/${IMAGE_NAME}@$digest --arch $platform
-          done
+  #     - name: Populate Manifest
+  #       env:
+  #         IMAGE_NAME: ${{ inputs.image-name }}
+  #         IMAGE_REGISTRY: ${{ env.IMAGE_REGISTRY }}
+  #         MANIFEST: ${{ steps.create-manifest.outputs.MANIFEST }}
+  #         DIGESTS_JSON: ${{ steps.load-outputs.outputs.DIGESTS_JSON }}
+  #         PLATFORMS: ${{ inputs.platforms }}
+  #       run: |
+  #         DIGESTS=$(echo "$DIGESTS_JSON" | jq -c '.')
+  #         # turn the comma separated string into a list
+  #         platforms=()
+  #         IFS=',' read -r -a platforms <<< "${PLATFORMS}"
+  #         for platform in ${platforms[@]}; do
+  #           digest=$(echo $DIGESTS | jq -r ".$platform")
+  #           echo "Adding ${IMAGE_REGISTRY}/${IMAGE_NAME}@$digest for $platform"
+  #           podman manifest add $MANIFEST ${IMAGE_REGISTRY}/${IMAGE_NAME}@$digest --arch $platform
+  #         done
 
-      - name: Login to GHCR
-        run: |
-          echo ${{ secrets.GITHUB_TOKEN }} | podman login -u ${{ github.actor }} --password-stdin ghcr.io
-          echo ${{ secrets.GITHUB_TOKEN }} | docker login -u ${{ github.actor }} --password-stdin ghcr.io
+  #     - name: Login to GHCR
+  #       run: |
+  #         echo ${{ secrets.GITHUB_TOKEN }} | podman login -u ${{ github.actor }} --password-stdin ghcr.io
+  #         echo ${{ secrets.GITHUB_TOKEN }} | docker login -u ${{ github.actor }} --password-stdin ghcr.io
 
-      - name: Push Manifest
-        id: push-manifest
-        env:
-          MANIFEST: ${{ steps.create-manifest.outputs.MANIFEST }}
-          TAGS: ${{ steps.generate-image-tags.outputs.tags }}
-          IMAGE_REGISTRY: ${{ env.IMAGE_REGISTRY }}
-          IMAGE_NAME: ${{ inputs.image-name }}
-        run: |
-          while IFS=' ' read -ra tag; do
-            podman manifest push --all=false --digestfile=/tmp/digestfile $MANIFEST $IMAGE_REGISTRY/$IMAGE_NAME:$tag
-          done <<< "$TAGS"
+  #     - name: Push Manifest
+  #       id: push-manifest
+  #       env:
+  #         MANIFEST: ${{ steps.create-manifest.outputs.MANIFEST }}
+  #         TAGS: ${{ steps.generate-image-tags.outputs.tags }}
+  #         IMAGE_REGISTRY: ${{ env.IMAGE_REGISTRY }}
+  #         IMAGE_NAME: ${{ inputs.image-name }}
+  #       run: |
+  #         while IFS=' ' read -ra tag; do
+  #           podman manifest push --all=false --digestfile=/tmp/digestfile $MANIFEST $IMAGE_REGISTRY/$IMAGE_NAME:$tag
+  #         done <<< "$TAGS"
 
-          DIGEST=$(cat /tmp/digestfile)
-          echo "DIGEST=$DIGEST" >> $GITHUB_OUTPUT
-          echo "IMAGE=$IMAGE_REGISTRY/$IMAGE_NAME" >> $GITHUB_OUTPUT
+  #         DIGEST=$(cat /tmp/digestfile)
+  #         echo "DIGEST=$DIGEST" >> $GITHUB_OUTPUT
+  #         echo "IMAGE=$IMAGE_REGISTRY/$IMAGE_NAME" >> $GITHUB_OUTPUT
 
-      - name: Sign Manifest
-        uses: rsturla/eternal-main/.github/actions/sign-image@main
-        if: inputs.is-release
-        with:
-          registry: ${{ steps.push-manifest.outputs.IMAGE }}
-          digest: ${{ steps.push-manifest.outputs.digest }}
-          private-key: ${{ secrets.ETERNAL_LINUX_SIGNING_KEY }}
-          private-key-passphrase: ${{ secrets.ETERNAL_LINUX_SIGNING_KEY_PASSPHRASE }}
+  #     - name: Sign Manifest
+  #       uses: rsturla/eternal-main/.github/actions/sign-image@main
+  #       if: inputs.is-release
+  #       with:
+  #         registry: ${{ steps.push-manifest.outputs.IMAGE }}
+  #         digest: ${{ steps.push-manifest.outputs.digest }}
+  #         private-key: ${{ secrets.ETERNAL_LINUX_SIGNING_KEY }}
+  #         private-key-passphrase: ${{ secrets.ETERNAL_LINUX_SIGNING_KEY_PASSPHRASE }}
