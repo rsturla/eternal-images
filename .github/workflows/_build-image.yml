@@ -130,6 +130,7 @@ jobs:
           build-args: |
             MAJOR_VERSION=${{ inputs.kernel-flavor != 'default' && inputs.kernel-flavor || inputs.major-version }}
             DESKTOP_ENVIRONMENT=${{ inputs.desktop-environment }}
+            ${{ inputs.source-image != '' && format('IMAGE_REGISTRY={0}', inputs.source-image) || '' }}
           rechunk: ${{ inputs.rechunk }}
           rechunk-prev-ref: ${{ env.IMAGE_REGISTRY }}/${{ inputs.image-name }}:${{ steps.generate-image-tags.outputs.stable-tag }}
 
