@@ -15,4 +15,4 @@ RUN chmod +x /tmp/scripts/*.sh /tmp/scripts/*.sh /tmp/scripts/_${DESKTOP_ENVIRON
   /tmp/scripts/setup.sh && \
   /tmp/scripts/cleanup.sh
 
-RUN tree /usr/lib/modules
+RUN tree -L 2 /usr/lib/modules
