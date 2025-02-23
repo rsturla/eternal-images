@@ -1,18 +1,18 @@
 #!/usr/bin/env sh
 
+set -ouex pipefail
+
 # Extract the architecture from the kernel package
 arch=$(rpm -q kernel --qf "%{ARCH}\n" | head -n1)
 
 # Check if the architecture is aarch64
 if [[ "$arch" == "aarch64" ]]; then
-    echo "1Password does not create aarch64 packages" 
+    echo "1Password does not create aarch64 packages"
     exit 0
 fi
 
 # Thanks to bri for the inspiration! My script is mostly based on this example:
 # https://github.com/briorg/bluefin/blob/c62c30a04d42fd959ea770722c6b51216b4ec45b/scripts/1password.sh
-
-set -ouex pipefail
 
 echo "Installing 1Password"
 

@@ -2,6 +2,15 @@
 
 set -euox pipefail
 
+# Extract the architecture from the kernel package
+arch=$(rpm -q kernel --qf "%{ARCH}\n" | head -n1)
+
+# Check if the architecture is aarch64
+if [[ "$arch" == "aarch64" ]]; then
+    echo "Homebrew does not support aarch64"
+    exit 0
+fi
+
 # Install Brew dependencies
 dnf install -y procps-ng curl file git gcc
 
