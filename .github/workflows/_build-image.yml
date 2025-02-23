@@ -157,8 +157,14 @@ jobs:
           PLATFORM: ${{ matrix.platform }}
           MAJOR_VERSION: ${{ inputs.major-version }}
           KERNEL_FLAVOR: ${{ inputs.kernel-flavor }}
+          IS_NVIDIA: ${{ inputs.is-nvidia }}
         run: |
-          OUTPUT_ARTIFACT_NAME=$(echo "$IMAGE_NAME-$MAJOR_VERSION-$KERNEL_FLAVOR-$PLATFORM" | tr '/' '-')
+          NVIDIA_PART=""
+          if [[ "$IS_NVIDIA" == true ]]; then
+            NVIDIA_PART="-nvidia"
+          fi
+
+          OUTPUT_ARTIFACT_NAME=$(echo "${IMAGE_NAME}-${MAJOR_VERSION}-${KERNEL_FLAVOR}${NVIDIA_PART}-${PLATFORM}" | tr '/' '-')
 
           mkdir -p /tmp/outputs/digests
           echo "${DIGEST}" > /tmp/outputs/digests/${PLATFORM}
@@ -188,8 +194,14 @@ jobs:
           IMAGE_NAME: ${{ inputs.image-name }}
           MAJOR_VERSION: ${{ inputs.major-version }}
           KERNEL_FLAVOR: ${{ inputs.kernel-flavor }}
+          IS_NVIDIA: ${{ inputs.is-nvidia }}
         run: |
-          OUTPUT_ARTIFACT_PREFIX=$(echo "$IMAGE_NAME-$MAJOR_VERSION-$KERNEL_FLAVOR-" | tr '/' '-')
+          NVIDIA_PART=""
+          if [[ "$IS_NVIDIA" == true ]]; then
+            NVIDIA_PART="-nvidia"
+          fi
+          
+          OUTPUT_ARTIFACT_PREFIX=$(echo "${IMAGE_NAME}-${MAJOR_VERSION}-${KERNEL_FLAVOR}${NVIDIA_PART}-" | tr '/' '-')
           echo "OUTPUT_ARTIFACT_PREFIX=${OUTPUT_ARTIFACT_PREFIX}" >> $GITHUB_OUTPUT
 
       - name: Fetch Build Outputs
