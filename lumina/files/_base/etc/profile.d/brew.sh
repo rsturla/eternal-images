@@ -1,7 +1,4 @@
 #!/usr/bin/env bash
-
-
-
 [[ -d /home/linuxbrew/.linuxbrew && $- == *i* ]] && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
 # Check for interactive bash and that we haven't already been sourced.
