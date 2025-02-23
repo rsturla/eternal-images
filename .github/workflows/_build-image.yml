@@ -204,7 +204,7 @@ jobs:
           else
             NVIDIA_PART="nvidia-false"
           fi
-          
+
           OUTPUT_ARTIFACT_PREFIX=$(echo "${IMAGE_NAME}-${MAJOR_VERSION}-${KERNEL_FLAVOR}-${NVIDIA_PART}-" | tr '/' '-')
           echo "OUTPUT_ARTIFACT_PREFIX=${OUTPUT_ARTIFACT_PREFIX}" >> $GITHUB_OUTPUT
 
