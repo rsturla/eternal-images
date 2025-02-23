@@ -1,17 +1,16 @@
 ARG BASE_IMAGE=silverblue
-ARG BASE_REGISTRY=ghcr.io/rsturla/eternal-linux/main/${BASE_IMAGE}
-ARG BASE_TAG=41
-ARG FEDORA_VERSION=${BASE_TAG}
+ARG SOURCE_IMAGE=ghcr.io/rsturla/eternal-linux/main/${BASE_IMAGE}
+ARG MAJOR_VERSION=${MAJOR_VERSION}
+ARG DESKTOP_ENVIRONMENT=gnome
 
+FROM ${SOURCE_IMAGE}:${MAJOR_VERSION}
 
-FROM ${BASE_REGISTRY}:${BASE_TAG}
+ARG MAJOR_VERSION
+ARG DESKTOP_ENVIRONMENT
 
-ARG FEDORA_VERSION
-ARG BASE_IMAGE
-
-COPY files/_base files/_${BASE_IMAGE}* /
+COPY files/_base files/_${DESKTOP_ENVIRONMENT}* /
 COPY scripts/ /tmp/scripts/
 
-RUN chmod +x /tmp/scripts/*.sh /tmp/scripts/*.sh /tmp/scripts/_${BASE_IMAGE}/*.sh && \
+RUN chmod +x /tmp/scripts/*.sh /tmp/scripts/*.sh /tmp/scripts/_${DESKTOP_ENVIRONMENT}/*.sh && \
   /tmp/scripts/setup.sh && \
   /tmp/scripts/cleanup.sh

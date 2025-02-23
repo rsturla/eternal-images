@@ -1,0 +1,122 @@
+name: Build Images
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  packages: write
+  id-token: write
+
+concurrency:
+  group: build-${{ github.workflow }}-${{ github.ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  build-gnome:
+    uses: ./.github/workflows/_build-image.yml
+    strategy:
+      fail-fast: false
+      matrix:
+        major-version: [41]
+        kernel-flavor: [default, stable]
+    secrets: inherit
+    with:
+      image-name: eternal-linux/lumina
+      desktop-environment: gnome
+      major-version: ${{ matrix.major-version }}
+      is-release: ${{ (github.event_name == 'schedule' || github.event_name == 'push') && startsWith(github.ref, 'refs/heads/main') }}
+      platforms: amd64 arm64
+      rechunk: true
+      kernel-flavor: ${{ matrix.kernel-flavor }}
+      build-context: ./lumina
+      containerfile: ./lumina/Containerfile
+      source-image: ghcr.io/rsturla/eternal-linux/main/silverblue
+
+  build-gnome-nvidia:
+    uses: ./.github/workflows/_build-image.yml
+    strategy:
+      fail-fast: false
+      matrix:
+        major-version: [41]
+        kernel-flavor: [default, stable]
+    secrets: inherit
+    with:
+      image-name: eternal-linux/lumina
+      desktop-environment: gnome
+      major-version: ${{ matrix.major-version }}
+      is-release: ${{ (github.event_name == 'schedule' || github.event_name == 'push') && startsWith(github.ref, 'refs/heads/main') }}
+      platforms: amd64 arm64
+      rechunk: true
+      kernel-flavor: ${{ matrix.kernel-flavor }}
+      build-context: ./lumina
+      containerfile: ./lumina/Containerfile
+      source-image: ghcr.io/rsturla/eternal-linux/main/silverblue
+      is-nvidia: true
+
+  build-cosmic:
+    uses: ./.github/workflows/_build-image.yml
+    strategy:
+      fail-fast: false
+      matrix:
+        major-version: [41]
+        kernel-flavor: [default, stable]
+    secrets: inherit
+    with:
+      image-name: eternal-linux/lumina-cosmic
+      desktop-environment: cosmic
+      major-version: ${{ matrix.major-version }}
+      is-release: ${{ (github.event_name == 'schedule' || github.event_name == 'push') && startsWith(github.ref, 'refs/heads/main') }}
+      platforms: amd64 arm64
+      rechunk: true
+      kernel-flavor: ${{ matrix.kernel-flavor }}
+      build-context: ./lumina
+      containerfile: ./lumina/Containerfile
+      source-image: ghcr.io/rsturla/eternal-linux/main/cosmic
+
+  build-cosmic-nvidia:
+    uses: ./.github/workflows/_build-image.yml
+    strategy:
+      fail-fast: false
+      matrix:
+        major-version: [41]
+        kernel-flavor: [default, stable]
+    secrets: inherit
+    with:
+      image-name: eternal-linux/lumina-cosmic
+      desktop-environment: cosmic
+      major-version: ${{ matrix.major-version }}
+      is-release: ${{ (github.event_name == 'schedule' || github.event_name == 'push') && startsWith(github.ref, 'refs/heads/main') }}
+      platforms: amd64 arm64
+      rechunk: true
+      kernel-flavor: ${{ matrix.kernel-flavor }}
+      build-context: ./lumina
+      containerfile: ./lumina/Containerfile
+      source-image: ghcr.io/rsturla/eternal-linux/main/cosmic
+      is-nvidia: true
+
+  build-kde-nvidia:
+    uses: ./.github/workflows/_build-image.yml
+    strategy:
+      fail-fast: false
+      matrix:
+        major-version: [41]
+        kernel-flavor: [default, stable]
+    secrets: inherit
+    with:
+      image-name: eternal-linux/lumina-kinoite
+      desktop-environment: kde
+      major-version: ${{ matrix.major-version }}
+      is-release: ${{ (github.event_name == 'schedule' || github.event_name == 'push') && startsWith(github.ref, 'refs/heads/main') }}
+      platforms: amd64 arm64
+      rechunk: true
+      kernel-flavor: ${{ matrix.kernel-flavor }}
+      build-context: ./lumina
+      containerfile: ./lumina/Containerfile
+      source-image: ghcr.io/rsturla/eternal-linux/main/kinoite
+      is-nvidia: true

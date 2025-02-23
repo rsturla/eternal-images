@@ -2,5 +2,10 @@
 
 set -euox pipefail
 
+# Extract the architecture from the kernel package
+arch=$(rpm -q kernel --qf "%{ARCH}\n" | head -n1)
+
+# Fetch the latest release and install the corresponding RPM package
 dnf install -y \
-  $(curl https://api.github.com/repos/charmbracelet/mods/releases/latest | jq -r '.assets[] | select(.name| test(".*.x86_64.rpm$")).browser_download_url')
+  $(curl -s https://api.github.com/repos/charmbracelet/mods/releases/latest | \
+  jq -r --arg arch "$arch" '.assets[] | select(.name | test(".*\\." + $arch + "\\.rpm$")).browser_download_url')

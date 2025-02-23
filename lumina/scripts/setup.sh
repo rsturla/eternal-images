@@ -2,8 +2,8 @@
 
 set -euo pipefail
 
-BASE_IMAGE=$BASE_IMAGE
-FEDORA_VERSION=$FEDORA_VERSION
+DESKTOP_ENVIRONMENT=$DESKTOP_ENVIRONMENT
+MAJOR_VERSION=$MAJOR_VERSION
 
 for script in /tmp/scripts/_base/*.sh; do
   if [[ -f "$script" ]]; then
@@ -13,7 +13,7 @@ for script in /tmp/scripts/_base/*.sh; do
   fi
 done
 
-for script in /tmp/scripts/_$BASE_IMAGE/*.sh; do
+for script in /tmp/scripts/_$DESKTOP_ENVIRONMENT/*.sh; do
   if [[ -f "$script" ]]; then
     echo "::group::===$(basename "$script")==="
     bash "$script"
