@@ -161,10 +161,12 @@ jobs:
         run: |
           NVIDIA_PART=""
           if [[ "$IS_NVIDIA" == true ]]; then
-            NVIDIA_PART="-nvidia"
+            NVIDIA_PART="nvidia-true"
+          else
+            NVIDIA_PART="nvidia-false"
           fi
 
-          OUTPUT_ARTIFACT_NAME=$(echo "${IMAGE_NAME}-${MAJOR_VERSION}-${KERNEL_FLAVOR}${NVIDIA_PART}-${PLATFORM}" | tr '/' '-')
+          OUTPUT_ARTIFACT_NAME=$(echo "${IMAGE_NAME}-${MAJOR_VERSION}-${KERNEL_FLAVOR}-${NVIDIA_PART}-${PLATFORM}" | tr '/' '-')
 
           mkdir -p /tmp/outputs/digests
           echo "${DIGEST}" > /tmp/outputs/digests/${PLATFORM}
@@ -198,10 +200,12 @@ jobs:
         run: |
           NVIDIA_PART=""
           if [[ "$IS_NVIDIA" == true ]]; then
-            NVIDIA_PART="-nvidia"
+            NVIDIA_PART="nvidia-true"
+          else
+            NVIDIA_PART="nvidia-false"
           fi
           
-          OUTPUT_ARTIFACT_PREFIX=$(echo "${IMAGE_NAME}-${MAJOR_VERSION}-${KERNEL_FLAVOR}${NVIDIA_PART}-" | tr '/' '-')
+          OUTPUT_ARTIFACT_PREFIX=$(echo "${IMAGE_NAME}-${MAJOR_VERSION}-${KERNEL_FLAVOR}-${NVIDIA_PART}-" | tr '/' '-')
           echo "OUTPUT_ARTIFACT_PREFIX=${OUTPUT_ARTIFACT_PREFIX}" >> $GITHUB_OUTPUT
 
       - name: Fetch Build Outputs
