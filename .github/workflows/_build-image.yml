@@ -119,7 +119,7 @@ jobs:
         id: generate-image-tags
         with:
           image-name: ${{ env.IMAGE_REGISTRY}}/${{ inputs.image-name }}
-          major-version: ${{ inputs.major-version }}
+          major-version: ${{ inputs.kernel-flavor == 'default' && inputs.major-version || inputs.kernel-flavor }}
           is-release: ${{ inputs.is-release }}
           arch: ${{ matrix.platform }}
           is-nvidia: ${{ inputs.is-nvidia }}
@@ -218,7 +218,7 @@ jobs:
         id: generate-image-tags
         with:
           image-name: ${{ env.IMAGE_REGISTRY}}/${{ inputs.image-name }}
-          major-version: ${{ inputs.major-version }}
+          major-version: ${{ inputs.kernel-flavor == 'default' && inputs.major-version || inputs.kernel-flavor }}
           is-release: ${{ inputs.is-release }}
 
       - name: Create Manifest
