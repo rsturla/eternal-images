@@ -1,12 +1,17 @@
 name: Build Images
 
 on:
-  pull_request:
-    branches:
-      - main
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
+    paths-ignore:
+      - ".github/workflows/build-iso.yml"
+  schedule:
+    - cron: "0 1 */2 * *" # Every other day at 1am
+  workflow_dispatch:
 
 permissions:
   contents: read
