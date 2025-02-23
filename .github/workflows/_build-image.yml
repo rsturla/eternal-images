@@ -236,6 +236,8 @@ jobs:
           image-name: ${{ env.IMAGE_REGISTRY}}/${{ inputs.image-name }}
           major-version: ${{ inputs.kernel-flavor == 'default' && inputs.major-version || inputs.kernel-flavor }}
           is-release: ${{ inputs.is-release }}
+          is-nvidia: ${{ inputs.is-nvidia }}
+          nvidia-type: open
 
       - name: Create Manifest
         id: create-manifest
