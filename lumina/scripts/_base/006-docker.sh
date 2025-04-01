@@ -2,6 +2,12 @@
 
 set -euox pipefail
 
+FEDORA_VERSION=$(rpm -E %fedora)
+if [[ "$FEDORA_VERSION" -eq 42 ]]; then
+    echo "Docker is not currently building for this version"
+    exit 0
+fi
+
 # Setup repo
 cat << EOF > /etc/yum.repos.d/docker-ce.repo
 [docker-ce-stable]
