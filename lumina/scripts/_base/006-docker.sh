@@ -2,6 +2,11 @@
 
 set -euox pipefail
 
+if [[ "$MAJOR_VERSION" -eq 42 ]]; then
+    echo "Docker is not currently building for this version"
+    exit 0
+fi
+
 # Setup repo
 cat << EOF > /etc/yum.repos.d/docker-ce.repo
 [docker-ce-stable]
