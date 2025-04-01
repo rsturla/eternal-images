@@ -2,7 +2,8 @@
 
 set -euox pipefail
 
-if [[ "$MAJOR_VERSION" -eq 42 ]]; then
+FEDORA_VERSION=$(rpm -E %fedora)
+if [[ "$FEDORA_VERSION" -eq 42 ]]; then
     echo "Docker is not currently building for this version"
     exit 0
 fi
