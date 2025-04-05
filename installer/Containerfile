@@ -1,0 +1,18 @@
+ARG BASE_IMAGE=silverblue
+ARG SOURCE_IMAGE=ghcr.io/rsturla/eternal-linux/main/${BASE_IMAGE}
+ARG MAJOR_VERSION=41
+ARG DESKTOP_ENVIRONMENT=gnome
+
+FROM ${SOURCE_IMAGE}:${MAJOR_VERSION}
+
+ARG MAJOR_VERSION
+ARG DESKTOP_ENVIRONMENT
+
+COPY files/ /
+COPY scripts/ /tmp/scripts/
+
+RUN chmod +x /tmp/scripts/*.sh /tmp/scripts/*.sh && \
+  /tmp/scripts/setup.sh && \
+  /tmp/scripts/cleanup.sh
+
+COPY files/ /
