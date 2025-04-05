@@ -14,6 +14,7 @@ rootfs() {
 
   mkdir -p ./.build/rootfs
   tar -xf ./.build/ostreecontainer.tar -C ./.build/rootfs
+  rm -f ./.build/ostreecontainer.tar
 
   for file in usr/bin/sudo usr/lib/polkit-1/polkit-agent-helper-1 usr/bin/passwd usr/bin/pkexec usr/bin/fusermount3; do
     chmod u+s ./.build/rootfs/$file
@@ -40,6 +41,7 @@ load_container() {
     --format oci-dir \
     --output ./.build/rootfs/usr/lib/ostreecontainer \
     ghcr.io/rsturla/eternal-linux/lumina:41
+  podman image rm ghcr.io/rsturla/eternal-linux/lumina:41
 }
 
 load_flatpaks() {
@@ -80,14 +82,15 @@ squashfs() {
     dnf install -y squashfs-tools
     mksquashfs /build/rootfs /build/squashfs.img -all-root -noappend
   '
+  sudo rm -rf ./.build/rootfs
 }
 
 iso() {
   mkdir -p ./.build/iso/boot/grub ./.build/iso/LiveOS
-  cp ./.build/rootfs/lib/modules/*/vmlinuz ./.build/iso/boot
-  cp ./.build/initramfs.img ./.build/iso/boot
+  mv ./.build/rootfs/lib/modules/*/vmlinuz ./.build/iso/boot
+  mv ./.build/initramfs.img ./.build/iso/boot
   cp src/grub.cfg ./.build/iso/boot/grub
-  cp ./.build/squashfs.img ./.build/iso/LiveOS/squashfs.img
+  mv ./.build/squashfs.img ./.build/iso/LiveOS/squashfs.img
 
   sudo podman run --rm --privileged --volume ./.build:/build registry.fedoraproject.org/fedora:41 sh -c '
     set -euox pipefail
