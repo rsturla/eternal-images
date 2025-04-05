@@ -82,7 +82,6 @@ squashfs() {
     dnf install -y squashfs-tools
     mksquashfs /build/rootfs /build/squashfs.img -all-root -noappend
   '
-  sudo rm -rf ./.build/rootfs
 }
 
 iso() {
@@ -92,6 +91,7 @@ iso() {
   cp src/grub.cfg ./.build/iso/boot/grub
   mv ./.build/squashfs.img ./.build/iso/LiveOS/squashfs.img
 
+  sudo rm -rf ./.build/rootfs
   sudo podman run --rm --privileged --volume ./.build:/build registry.fedoraproject.org/fedora:41 sh -c '
     set -euox pipefail
 
