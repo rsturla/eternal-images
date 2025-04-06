@@ -13,4 +13,6 @@ COPY scripts/ /tmp/scripts/
 
 RUN chmod +x /tmp/scripts/*.sh /tmp/scripts/*.sh /tmp/scripts/_${DESKTOP_ENVIRONMENT}/*.sh && \
   /tmp/scripts/setup.sh && \
-  /tmp/scripts/cleanup.sh
+  /tmp/scripts/cleanup.sh \
+  && \
+  bootc container lint
