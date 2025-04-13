@@ -34,9 +34,5 @@ curl --retry 3 -Lo /tmp/cloud-provider-kind.tar.gz $DOWNLOAD_URL
 tar -xzf /tmp/cloud-provider-kind.tar.gz -C /tmp
 install -c -m 0755 /tmp/cloud-provider-kind /usr/bin/cloud-provider-kind
 
-# Install Devbox
-curl --retry 3 -Lo /tmp/devbox https://releases.jetpack.io/devbox
-install -c -m 0755 /tmp/devbox /usr/bin/devbox
-
 rm -f /etc/yum.repos.d/github.repo
 rm -f /etc/yum.repos.d/vscode.repo
