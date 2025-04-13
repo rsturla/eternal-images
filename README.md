@@ -27,7 +27,7 @@ This image is perfect for any DevOps professionals who want to get up and runnin
 Key features of this image include:
 - Containerisation with Docker, Podman and Distrobox
 - Virtualization using QEMU/KVM with virt-manager
-- Development through DevContianers and Nix
+- Development through DevContianers
 - Local AI inference with Ollama
 - Visual Studio Code
 - Google Chrome & 1Password
