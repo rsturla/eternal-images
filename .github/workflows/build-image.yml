@@ -28,7 +28,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        major-version: [41, 42]
+        major-version: [42]
         kernel-flavor: [default, stable]
         exclude:
           - major-version: 42
@@ -51,7 +51,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        major-version: [41, 42]
+        major-version: [42]
         kernel-flavor: [default, stable]
         exclude:
           - major-version: 42
@@ -75,7 +75,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        major-version: [41, 42]
+        major-version: [42]
         kernel-flavor: [default, stable]
         exclude:
           - major-version: 42
@@ -98,7 +98,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        major-version: [41, 42]
+        major-version: [42]
         kernel-flavor: [default, stable]
         exclude:
           - major-version: 42
@@ -122,7 +122,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        major-version: [41, 42]
+        major-version: [42]
         kernel-flavor: [default, stable]
         exclude:
           - major-version: 42
