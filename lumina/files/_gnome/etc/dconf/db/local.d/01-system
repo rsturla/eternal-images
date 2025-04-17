@@ -1,5 +1,5 @@
 [org/gnome/mutter]
-experimental-features=["scale-monitor-framebuffer", "xwayland-native-scaling"]
+experimental-features=["variable-refresh-rate", "scale-monitor-framebuffer", "xwayland-native-scaling"]
 
 [org/gnome/desktop/interface]
 enable-hot-corners=false
