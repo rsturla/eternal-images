@@ -20,10 +20,10 @@ gpgkey=https://download.docker.com/linux/fedora/gpg
 EOF
 
 DOCKER_REPO=stable
-FEDORA_VERSION=$(rpm -E %fedora)
-if [[ "$FEDORA_VERSION" -eq 42 ]]; then
-    DOCKER_REPO=testing
-fi
+#FEDORA_VERSION=$(rpm -E %fedora)
+#if [[ "$FEDORA_VERSION" -eq 42 ]]; then
+#    DOCKER_REPO=testing
+#fi
 
 dnf install -y --enablerepo=docker-ce-$DOCKER_REPO \
   docker-ce \
