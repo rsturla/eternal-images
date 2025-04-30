@@ -38,8 +38,8 @@ jobs:
       image-name: eternal-linux/lumina
       desktop-environment: gnome
       major-version: ${{ matrix.major-version }}
-      is-release: ${{ (github.event_name == 'schedule' || github.event_name == 'push') && startsWith(github.ref, 'refs/heads/main') }}
-      platforms: amd64 arm64
+      is-release: ${{ (github.event_name == 'schedule' || github.event_name == 'push' || github.event_name == 'workflow_dispatch') && startsWith(github.ref, 'refs/heads/main') }}
+      platforms: amd64
       rechunk: true
       kernel-flavor: ${{ matrix.kernel-flavor }}
       build-context: ./lumina
@@ -61,8 +61,8 @@ jobs:
       image-name: eternal-linux/lumina
       desktop-environment: gnome
       major-version: ${{ matrix.major-version }}
-      is-release: ${{ (github.event_name == 'schedule' || github.event_name == 'push') && startsWith(github.ref, 'refs/heads/main') }}
-      platforms: amd64 arm64
+      is-release: ${{ (github.event_name == 'schedule' || github.event_name == 'push' || github.event_name == 'workflow_dispatch') && startsWith(github.ref, 'refs/heads/main') }}
+      platforms: amd64
       rechunk: true
       kernel-flavor: ${{ matrix.kernel-flavor }}
       build-context: ./lumina
@@ -85,8 +85,8 @@ jobs:
       image-name: eternal-linux/lumina-cosmic
       desktop-environment: cosmic
       major-version: ${{ matrix.major-version }}
-      is-release: ${{ (github.event_name == 'schedule' || github.event_name == 'push') && startsWith(github.ref, 'refs/heads/main') }}
-      platforms: amd64 arm64
+      is-release: ${{ (github.event_name == 'schedule' || github.event_name == 'push' || github.event_name == 'workflow_dispatch') && startsWith(github.ref, 'refs/heads/main') }}
+      platforms: amd64
       rechunk: true
       kernel-flavor: ${{ matrix.kernel-flavor }}
       build-context: ./lumina
@@ -108,8 +108,8 @@ jobs:
       image-name: eternal-linux/lumina-cosmic
       desktop-environment: cosmic
       major-version: ${{ matrix.major-version }}
-      is-release: ${{ (github.event_name == 'schedule' || github.event_name == 'push') && startsWith(github.ref, 'refs/heads/main') }}
-      platforms: amd64 arm64
+      is-release: ${{ (github.event_name == 'schedule' || github.event_name == 'push' || github.event_name == 'workflow_dispatch') && startsWith(github.ref, 'refs/heads/main') }}
+      platforms: amd64
       rechunk: true
       kernel-flavor: ${{ matrix.kernel-flavor }}
       build-context: ./lumina
@@ -132,8 +132,8 @@ jobs:
       image-name: eternal-linux/lumina-kinoite
       desktop-environment: kde
       major-version: ${{ matrix.major-version }}
-      is-release: ${{ (github.event_name == 'schedule' || github.event_name == 'push') && startsWith(github.ref, 'refs/heads/main') }}
-      platforms: amd64 arm64
+      is-release: ${{ (github.event_name == 'schedule' || github.event_name == 'push' || github.event_name == 'workflow_dispatch') && startsWith(github.ref, 'refs/heads/main') }}
+      platforms: amd64
       rechunk: true
       kernel-flavor: ${{ matrix.kernel-flavor }}
       build-context: ./lumina
