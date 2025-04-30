@@ -39,7 +39,7 @@ jobs:
       desktop-environment: gnome
       major-version: ${{ matrix.major-version }}
       is-release: ${{ (github.event_name == 'schedule' || github.event_name == 'push' || github.event_name == 'workflow_dispatch') && startsWith(github.ref, 'refs/heads/main') }}
-      platforms: amd64 arm64
+      platforms: amd64
       rechunk: true
       kernel-flavor: ${{ matrix.kernel-flavor }}
       build-context: ./lumina
@@ -62,7 +62,7 @@ jobs:
       desktop-environment: gnome
       major-version: ${{ matrix.major-version }}
       is-release: ${{ (github.event_name == 'schedule' || github.event_name == 'push' || github.event_name == 'workflow_dispatch') && startsWith(github.ref, 'refs/heads/main') }}
-      platforms: amd64 arm64
+      platforms: amd64
       rechunk: true
       kernel-flavor: ${{ matrix.kernel-flavor }}
       build-context: ./lumina
@@ -86,7 +86,7 @@ jobs:
       desktop-environment: cosmic
       major-version: ${{ matrix.major-version }}
       is-release: ${{ (github.event_name == 'schedule' || github.event_name == 'push' || github.event_name == 'workflow_dispatch') && startsWith(github.ref, 'refs/heads/main') }}
-      platforms: amd64 arm64
+      platforms: amd64
       rechunk: true
       kernel-flavor: ${{ matrix.kernel-flavor }}
       build-context: ./lumina
@@ -109,7 +109,7 @@ jobs:
       desktop-environment: cosmic
       major-version: ${{ matrix.major-version }}
       is-release: ${{ (github.event_name == 'schedule' || github.event_name == 'push' || github.event_name == 'workflow_dispatch') && startsWith(github.ref, 'refs/heads/main') }}
-      platforms: amd64 arm64
+      platforms: amd64
       rechunk: true
       kernel-flavor: ${{ matrix.kernel-flavor }}
       build-context: ./lumina
@@ -133,7 +133,7 @@ jobs:
       desktop-environment: kde
       major-version: ${{ matrix.major-version }}
       is-release: ${{ (github.event_name == 'schedule' || github.event_name == 'push' || github.event_name == 'workflow_dispatch') && startsWith(github.ref, 'refs/heads/main') }}
-      platforms: amd64 arm64
+      platforms: amd64
       rechunk: true
       kernel-flavor: ${{ matrix.kernel-flavor }}
       build-context: ./lumina
