@@ -9,6 +9,13 @@ dnf install -y \
 
 systemctl enable swtpm-workaround.service
 
+cat >/usr/lib/sysusers.d/eternal-libvirt.conf <<EOF
+g kvm 36
+g qemu 107
+u qemu 107:qemu "qemu user" - -
+m qemu kvm
+EOF
+
 # Register path symlink
 # We do this via tmpfiles.d so that it is created by the live system.
 cat >/usr/lib/tmpfiles.d/eternal-libvirt.conf <<EOF
