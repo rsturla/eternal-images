@@ -35,3 +35,7 @@ dnf install -y --enablerepo=docker-ce-$DOCKER_REPO \
 systemctl enable docker.socket
 
 rm -f /etc/yum.repos.d/docker-ce.repo
+
+cat >/usr/lib/sysusers.d/eternal-docker.conf <<EOF
+g docker -
+EOF
