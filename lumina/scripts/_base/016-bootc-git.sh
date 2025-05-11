@@ -2,5 +2,9 @@
 
 set -euox pipefail
 
-dnf copr enable rhcontainerbot/bootc
-dnf install -y bootc
+dnf copr enable -y rhcontainerbot/bootc
+dnf -y swap \
+    --repo=copr:copr.fedorainfracloud.org:rhcontainerbot:bootc \
+    bootc bootc
+
+dnf copr remove -y rhcontainerbot/bootc

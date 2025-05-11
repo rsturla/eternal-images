@@ -2,7 +2,7 @@
 
 set -euox pipefail
 
-dnf copr enable ublue-os/staging
+dnf copr enable -y ublue-os/staging
 
 dnf install -y \
   gnome-shell-extension-appindicator \
@@ -14,4 +14,4 @@ dnf install -y \
   gnome-tweaks \
   libcanberra-gtk3
 
-rm -rf /etc/yum.repos.d/_copr_ublue-os_staging.repo
+dnf copr remove -y ublue-os/staging
