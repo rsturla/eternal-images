@@ -70,13 +70,16 @@ jobs:
         image-tag:
           - 42
           - 42-nvidia
+        arch:
+          - amd64
+          - aarch64
     with:
       image-name: ${{ matrix.image-name }}
       image-registry: ghcr.io/rsturla/eternal-linux
       image-tag: ${{ matrix.image-tag }}
+      rootfs-setup-hook-template: ./iso/lumina/configure.sh.tmpl
       flatpak-manifest-lists: |
         iso/lumina/flatpaks/base
         iso/lumina/flatpaks/${{ matrix.image-name }}
-      installer-version: 42
       upload-to-cloudflare: ${{ inputs.upload-to-cloudflare && true || false }}
       r2-bucket: ${{ vars.R2_BUCKET_NAME }}
