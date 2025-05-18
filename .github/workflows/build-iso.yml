@@ -35,6 +35,14 @@ on:
         options:
           - 42
           - 42-nvidia
+      architecture:
+        description: "The architecture to build"
+        required: true
+        default: amd64
+        type: choice
+        options:
+          - amd64
+          - aarch64
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref || github.run_id }}-iso
@@ -49,11 +57,12 @@ jobs:
       image-name: ${{ inputs.image-name }}
       image-registry: ghcr.io/rsturla/eternal-linux
       image-tag: ${{ inputs.image-tag }}
+      rootfs-setup-hook-template: ./iso/lumina/configure.sh.tmpl
       flatpak-manifest-lists: |
         iso/lumina/flatpaks/base
         iso/lumina/flatpaks/${{ inputs.image-name }}
-      installer-version: 42
       upload-to-cloudflare: ${{ inputs.upload-to-cloudflare && true || false }}
+      arch: ${{ inputs.architecture }}
       r2-bucket: ${{ vars.R2_BUCKET_NAME }}
 
   build-all:
@@ -82,4 +91,5 @@ jobs:
         iso/lumina/flatpaks/base
         iso/lumina/flatpaks/${{ matrix.image-name }}
       upload-to-cloudflare: ${{ inputs.upload-to-cloudflare && true || false }}
+      arch: ${{ matrix.architecture }}
       r2-bucket: ${{ vars.R2_BUCKET_NAME }}
