@@ -50,8 +50,8 @@ jobs:
       image-registry: ghcr.io/rsturla/eternal-linux
       image-tag: ${{ inputs.image-tag }}
       flatpak-manifest-lists: |
-        lumina/flatpaks/base
-        lumina/flatpaks/${{ inputs.image-name }}
+        iso/lumina/flatpaks/base
+        iso/lumina/flatpaks/${{ inputs.image-name }}
       installer-version: 42
       upload-to-cloudflare: ${{ inputs.upload-to-cloudflare && true || false }}
       r2-bucket: ${{ vars.R2_BUCKET_NAME }}
@@ -75,8 +75,8 @@ jobs:
       image-registry: ghcr.io/rsturla/eternal-linux
       image-tag: ${{ matrix.image-tag }}
       flatpak-manifest-lists: |
-        lumina/flatpaks/base
-        lumina/flatpaks/${{ matrix.image-name }}
+        iso/lumina/flatpaks/base
+        iso/lumina/flatpaks/${{ matrix.image-name }}
       installer-version: 42
       upload-to-cloudflare: ${{ inputs.upload-to-cloudflare && true || false }}
       r2-bucket: ${{ vars.R2_BUCKET_NAME }}
