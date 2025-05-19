@@ -91,5 +91,5 @@ jobs:
         lumina/iso/flatpaks/base
         lumina/iso/flatpaks/${{ matrix.image-name }}
       upload-to-cloudflare: ${{ inputs.upload-to-cloudflare && true || false }}
-      arch: ${{ matrix.architecture }}
+      arch: ${{ matrix.arch }}
       r2-bucket: ${{ vars.R2_BUCKET_NAME }}
