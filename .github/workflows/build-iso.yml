@@ -35,7 +35,7 @@ on:
         options:
           - 42
           - 42-nvidia
-      architecture:
+      arch:
         description: "The architecture to build"
         required: true
         default: amd64
@@ -62,7 +62,7 @@ jobs:
         lumina/iso/flatpaks/base
         lumina/iso/flatpaks/${{ inputs.image-name }}
       upload-to-cloudflare: ${{ inputs.upload-to-cloudflare && true || false }}
-      arch: ${{ inputs.architecture }}
+      arch: ${{ inputs.arch }}
       r2-bucket: ${{ vars.R2_BUCKET_NAME }}
 
   build-all:
@@ -75,7 +75,6 @@ jobs:
         image-name:
           - lumina
           - lumina-cosmic
-          - lumina-kinoite
         image-tag:
           - 42
           - 42-nvidia-open
