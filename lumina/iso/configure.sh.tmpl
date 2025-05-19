@@ -4,6 +4,7 @@ set -euo pipefail
 
 IMAGE_NAME={{IMAGE_NAME}}
 IMAGE_REF={{IMAGE_REF}}
+SECUREBOOT_KEY_URL="https://github.com/rsturla/akmods/raw/refs/heads/main/_certs/public_key.der"
 SECUREBOOT_ENROLLMENT_PASSWORD={{SECUREBOOT_ENROLLMENT_PASSWORD}}
 
 # Setup dock
@@ -44,7 +45,7 @@ dnf install -y \
     rsync
 
 tee /etc/anaconda/profile.d/eternal-liunx.conf <<'EOF'
-# Anaconda configuration file for Bluefin
+# Anaconda configuration file for Eternal Linux
 
 [Profile]
 profile_id = eternal-linux
@@ -106,6 +107,9 @@ mkdir -p "\$target"
 rsync -aAXUHKP /var/lib/flatpak "\$target"
 %end
 EOF
+
+# Fetch the Secureboot Public Key
+curl --retry 15 -Lo /etc/sb_pubkey.der "$SECUREBOOT_KEY_URL"
 
 # Enroll Secureboot Key
 tee /usr/share/anaconda/post-scripts/secureboot-enroll-key.ks <<EOF
