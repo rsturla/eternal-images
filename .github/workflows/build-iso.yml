@@ -59,8 +59,8 @@ jobs:
       image-tag: ${{ inputs.image-tag }}
       rootfs-setup-hook-template: ./iso/lumina/configure.sh.tmpl
       flatpak-manifest-lists: |
-        iso/lumina/flatpaks/base
-        iso/lumina/flatpaks/${{ inputs.image-name }}
+        lumina/iso/flatpaks/base
+        lumina/iso/flatpaks/${{ inputs.image-name }}
       upload-to-cloudflare: ${{ inputs.upload-to-cloudflare && true || false }}
       arch: ${{ inputs.architecture }}
       r2-bucket: ${{ vars.R2_BUCKET_NAME }}
@@ -88,8 +88,8 @@ jobs:
       image-tag: ${{ matrix.image-tag }}
       rootfs-setup-hook-template: ./iso/lumina/configure.sh.tmpl
       flatpak-manifest-lists: |
-        iso/lumina/flatpaks/base
-        iso/lumina/flatpaks/${{ matrix.image-name }}
+        lumina/iso/flatpaks/base
+        lumina/iso/flatpaks/${{ matrix.image-name }}
       upload-to-cloudflare: ${{ inputs.upload-to-cloudflare && true || false }}
       arch: ${{ matrix.architecture }}
       r2-bucket: ${{ vars.R2_BUCKET_NAME }}
