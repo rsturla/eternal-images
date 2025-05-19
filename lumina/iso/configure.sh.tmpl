@@ -1,0 +1,131 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+IMAGE_NAME={{IMAGE_NAME}}
+IMAGE_REF={{IMAGE_REF}}
+SECUREBOOT_ENROLLMENT_PASSWORD={{SECUREBOOT_ENROLLMENT_PASSWORD}}
+
+# Setup dock
+tee /usr/share/glib-2.0/schemas/zz2-org.gnome.shell.gschema.override <<EOF
+[org.gnome.shell]
+welcome-dialog-last-shown-version='4294967295'
+favorite-apps = ['anaconda.desktop', 'org.mozilla.firefox.desktop', 'org.gnome.Nautilus.desktop']
+EOF
+
+# Don't autostart gnome-software session service
+rm -f /etc/xdg/autostart/org.gnome.Software.desktop
+
+# Disable the gnome-software shell search provider
+tee /usr/share/gnome-shell/search-providers/org.gnome.Software-search-provider.ini <<EOF
+DefaultDisabled=true
+EOF
+
+glib-compile-schemas /usr/share/glib-2.0/schemas
+
+systemctl disable rpm-ostree-countme.service
+systemctl disable bootloader-update.service
+systemctl disable brew-upgrade.timer
+systemctl disable brew-update.timer
+systemctl disable brew-setup.service
+systemctl disable rpm-ostreed-automatic.timer
+systemctl disable setup-system-manager.service
+systemctl disable flatpak-system-update.service
+systemctl --global disable podman-auto-update.timer
+systemctl --global disable setup-user-manager.service
+systemctl --global disable flatpak-user-update.service
+
+dnf install -y \
+    anaconda-live \
+    anaconda-webui \
+    libblockdev-btrfs \
+    libblockdev-lvm \
+    libblockdev-dm \
+    rsync
+
+tee /etc/anaconda/profile.d/eternal-liunx.conf <<'EOF'
+# Anaconda configuration file for Bluefin
+
+[Profile]
+profile_id = eternal-linux
+
+[Profile Detection]
+os_id = eternal-linux
+
+[Network]
+default_on_boot = FIRST_WIRED_WITH_LINK
+
+[Bootloader]
+efi_dir = fedora
+menu_auto_hide = True
+
+[Storage]
+default_scheme = BTRFS
+btrfs_compression = zstd:1
+default_partitioning =
+    /     (min 1 GiB, max 70 GiB)
+    /home (min 500 MiB, free 50 GiB)
+    /var  (btrfs)
+
+[User Interface]
+custom_stylesheet = /usr/share/anaconda/pixmaps/silverblue/fedora-silverblue.css
+hidden_spokes =
+    NetworkSpoke
+    PasswordSpoke
+    UserSpoke
+hidden_webui_pages =
+    anaconda-screen-accounts
+
+[Localization]
+use_geolocation = False
+EOF
+
+sed -i 's/^ID=.*/ID=eternal-linux/' /usr/lib/os-release
+
+# Interactive Kickstart
+tee -a /usr/share/anaconda/interactive-defaults.ks <<EOF
+ostreecontainer --url=$IMAGE_REF --transport=containers-storage --no-signature-verification
+%include /usr/share/anaconda/post-scripts/install-configure-upgrade.ks
+%include /usr/share/anaconda/post-scripts/install-flatpaks.ks
+%include /usr/share/anaconda/post-scripts/secureboot-enroll-key.ks
+EOF
+
+# Signed Images
+tee /usr/share/anaconda/post-scripts/install-configure-upgrade.ks <<EOF
+%post --erroronfail
+bootc switch --mutate-in-place --enforce-container-sigpolicy --transport registry $IMAGE_REF
+%end
+EOF
+
+# Install Flatpaks
+tee /usr/share/anaconda/post-scripts/install-flatpaks.ks <<EOF
+%post --erroronfail --nochroot
+deployment="\$(ostree rev-parse --repo=/mnt/sysimage/ostree/repo ostree/0/1/0)"
+target="/mnt/sysimage/ostree/deploy/default/deploy/\$deployment.0/var/lib/"
+mkdir -p "\$target"
+rsync -aAXUHKP /var/lib/flatpak "\$target"
+%end
+EOF
+
+# Enroll Secureboot Key
+tee /usr/share/anaconda/post-scripts/secureboot-enroll-key.ks <<EOF
+%post --erroronfail --nochroot
+set -oue pipefail
+
+readonly ENROLLMENT_PASSWORD="$SECUREBOOT_ENROLLMENT_PASSWORD"
+readonly SECUREBOOT_KEY="/etc/sb_pubkey.der"
+
+if [[ ! -d "/sys/firmware/efi" ]]; then
+    echo "EFI mode not detected. Skipping key enrollment."
+    exit 0
+fi
+
+if [[ ! -f "\$SECUREBOOT_KEY" ]]; then
+    echo "Secure boot key not provided: \$SECUREBOOT_KEY"
+    exit 0
+fi
+
+mokutil --timeout -1 || :
+echo -e "\$ENROLLMENT_PASSWORD\n\$ENROLLMENT_PASSWORD" | mokutil --import "\$SECUREBOOT_KEY" || :
+%end
+EOF

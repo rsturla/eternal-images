@@ -1,16 +1,16 @@
 name: Build ISOs
 
 on:
-  # pull_request:
-  #   paths:
-  #     - ".github/workflows/*build-iso.yml"
-  #     - "**/flatpaks/**"
+  pull_request:
+    paths:
+      - ".github/workflows/*build-iso.yml"
+      - "**/iso/**"
   # push:
   #   branches:
   #     - main
   #   paths:
   #     - ".github/workflows/*build-iso.yml"
-  #     - "**/flatpaks/**"
+  #     - "**/iso/**"
   workflow_dispatch:
     inputs:
       upload-to-cloudflare:
@@ -35,6 +35,14 @@ on:
         options:
           - 42
           - 42-nvidia
+      arch:
+        description: "The architecture to build"
+        required: true
+        default: amd64
+        type: choice
+        options:
+          - amd64
+          - aarch64
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref || github.run_id }}-iso
@@ -49,11 +57,12 @@ jobs:
       image-name: ${{ inputs.image-name }}
       image-registry: ghcr.io/rsturla/eternal-linux
       image-tag: ${{ inputs.image-tag }}
+      rootfs-setup-hook-template: ./lumina/iso/configure.sh.tmpl
       flatpak-manifest-lists: |
-        lumina/flatpaks/base
-        lumina/flatpaks/${{ inputs.image-name }}
-      installer-version: 42
+        lumina/iso/flatpaks/base
+        lumina/iso/flatpaks/${{ inputs.image-name }}
       upload-to-cloudflare: ${{ inputs.upload-to-cloudflare && true || false }}
+      arch: ${{ inputs.arch }}
       r2-bucket: ${{ vars.R2_BUCKET_NAME }}
 
   build-all:
@@ -66,17 +75,20 @@ jobs:
         image-name:
           - lumina
           - lumina-cosmic
-          - lumina-kinoite
         image-tag:
           - 42
-          - 42-nvidia
+          - 42-nvidia-open
+        arch:
+          - amd64
+          - aarch64
     with:
       image-name: ${{ matrix.image-name }}
       image-registry: ghcr.io/rsturla/eternal-linux
       image-tag: ${{ matrix.image-tag }}
+      rootfs-setup-hook-template: ./lumina/iso/configure.sh.tmpl
       flatpak-manifest-lists: |
-        lumina/flatpaks/base
-        lumina/flatpaks/${{ matrix.image-name }}
-      installer-version: 42
+        lumina/iso/flatpaks/base
+        lumina/iso/flatpaks/${{ matrix.image-name }}
       upload-to-cloudflare: ${{ inputs.upload-to-cloudflare && true || false }}
+      arch: ${{ matrix.arch }}
       r2-bucket: ${{ vars.R2_BUCKET_NAME }}
