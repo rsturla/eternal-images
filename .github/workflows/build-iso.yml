@@ -78,7 +78,7 @@ jobs:
           - lumina-kinoite
         image-tag:
           - 42
-          - 42-nvidia
+          - 42-nvidia-open
         arch:
           - amd64
           - aarch64
