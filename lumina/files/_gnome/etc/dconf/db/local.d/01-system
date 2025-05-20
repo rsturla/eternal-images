@@ -35,3 +35,4 @@ sort-directories-first=true
 
 [org/gnome/shell/extensions/just-perfection]
 window-demands-attention-focus=true
+support-notifier-type=0
