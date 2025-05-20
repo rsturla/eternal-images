@@ -131,6 +131,7 @@ EOF
 
 sed -i 's/^ID=.*/ID=eternal-linux/' /usr/lib/os-release
 echo "Eternal Linux" > /etc/system-release
+sed -i "s|^PRETTY_NAME=.*|PRETTY_NAME=\"Eternal Linux (${IMAGE_REF})\"|" /usr/lib/os-release
 
 # Interactive Kickstart
 tee -a /usr/share/anaconda/interactive-defaults.ks <<EOF
