@@ -56,12 +56,7 @@ case "$DESKTOP_ENVIRONMENT" in
     gnome)
         echo "Applying GNOME-specific configuration..."
 
-        tee /usr/share/glib-2.0/schemas/zz2-org.gnome.shell.gschema.override > /dev/null <<EOF
-[org.gnome.shell]
-welcome-dialog-last-shown-version='4294967295'
-favorite-apps = ['anaconda.desktop', 'org.mozilla.firefox.desktop', 'org.gnome.Nautilus.desktop']
-EOF
-
+        sed -i "s|^favorite-apps *=.*|favorite-apps = ['anaconda.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Ptyxis.desktop', 'org.mozilla.firefox.desktop']|" /etc/dconf/db/local.d/03-favorites
         rm -f /etc/xdg/autostart/org.gnome.Software.desktop
 
         tee /usr/share/gnome-shell/search-providers/org.gnome.Software-search-provider.ini > /dev/null <<EOF
