@@ -123,7 +123,6 @@ jobs:
           is-release: ${{ inputs.is-release }}
           arch: ${{ matrix.platform }}
           is-nvidia: ${{ inputs.is-nvidia }}
-          nvidia-type: open
 
       - name: Build Image
         id: build
@@ -134,7 +133,7 @@ jobs:
           image-name: ${{ inputs.image-name }}
           image-tag: local
           build-args: |
-            MAJOR_VERSION=${{ inputs.kernel-flavor != 'default' && inputs.kernel-flavor || inputs.major-version }}${{ inputs.is-nvidia && '-nvidia-open' || '' }}
+            MAJOR_VERSION=${{ inputs.kernel-flavor != 'default' && inputs.kernel-flavor || inputs.major-version }}${{ inputs.is-nvidia && '-nvidia' || '' }}
             DESKTOP_ENVIRONMENT=${{ inputs.desktop-environment }}
             ${{ inputs.source-image != '' && format('SOURCE_IMAGE={0}', inputs.source-image) || '' }}
           rechunk: ${{ inputs.rechunk }}
@@ -237,7 +236,6 @@ jobs:
           major-version: ${{ inputs.kernel-flavor == 'default' && inputs.major-version || inputs.kernel-flavor }}
           is-release: ${{ inputs.is-release }}
           is-nvidia: ${{ inputs.is-nvidia }}
-          nvidia-type: open
 
       - name: Create Manifest
         id: create-manifest
