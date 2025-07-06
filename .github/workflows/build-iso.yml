@@ -77,7 +77,7 @@ jobs:
           - lumina-cosmic
         image-tag:
           - 42
-          - 42-nvidia-open
+          - 42-nvidia
         arch:
           - amd64
           - aarch64
