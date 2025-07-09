@@ -50,9 +50,6 @@ jobs:
       matrix:
         major-version: [42]
         kernel-flavor: [default, stable]
-        exclude:
-          - major-version: 42
-            kernel-flavor: stable
     secrets: inherit
     with:
       image-name: eternal-linux/lumina
