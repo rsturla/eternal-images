@@ -2,6 +2,9 @@
 
 set -euo pipefail
 
+# Add helpers directory to PATH for all scripts to use
+export PATH="/tmp/scripts/helpers:$PATH"
+
 DESKTOP_ENVIRONMENT=$DESKTOP_ENVIRONMENT
 MAJOR_VERSION=$MAJOR_VERSION
 
