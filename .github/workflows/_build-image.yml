@@ -126,7 +126,7 @@ jobs:
 
       - name: Build Image
         id: build
-        uses: rsturla/eternal-main/.github/actions/build-image@main
+        uses: rsturla/eternal-main/.github/actions/build-image@support-secrets-build
         with:
           context: ${{ inputs.build-context }}
           containerfile: ${{ inputs.containerfile }}
@@ -136,6 +136,8 @@ jobs:
             MAJOR_VERSION=${{ inputs.kernel-flavor != 'default' && inputs.kernel-flavor || inputs.major-version }}${{ inputs.is-nvidia && '-nvidia' || '' }}
             DESKTOP_ENVIRONMENT=${{ inputs.desktop-environment }}
             ${{ inputs.source-image != '' && format('SOURCE_IMAGE={0}', inputs.source-image) || '' }}
+          secrets: |
+            GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
           rechunk: ${{ inputs.rechunk }}
           rechunk-prev-ref: ${{ env.IMAGE_REGISTRY }}/${{ inputs.image-name }}:${{ steps.generate-image-tags.outputs.stable-tag }}
 
