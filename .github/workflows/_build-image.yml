@@ -128,15 +128,16 @@ jobs:
         id: generate-containerfile
         env:
           DESKTOP_ENVIRONMENT: ${{ inputs.desktop-environment }}
+          BUILD_CONTEXT: ${{ inputs.build-context }}
         run: |
-          ./generate.sh $DESKTOP_ENVIRONMENT
+          ${BUILD_CONTEXT}/generate.sh ${DESKTOP_ENVIRONMENT}
 
       - name: Build Image
         id: build
         uses: rsturla/eternal-main/.github/actions/build-image@main
         with:
           context: ${{ inputs.build-context }}
-          containerfile: ${{ inputs.containerfile }}
+          containerfile: ./Containerfile.gen
           image-name: ${{ inputs.image-name }}
           image-tag: local
           build-args: |
