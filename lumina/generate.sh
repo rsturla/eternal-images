@@ -41,6 +41,7 @@ for script in scripts/_base/*.sh; do
   echo "    --mount=type=cache,target=/var/log \\" >> "$OUTPUT"
   echo "    --mount=type=cache,target=/var/tmp \\" >> "$OUTPUT"
   echo "    --mount=type=tmpfs,target=/tmp \\" >> "$OUTPUT"
+  echo "    --mount=type=secret,id=GITHUB_TOKEN \\" >> "$OUTPUT"
   echo "    /bin/bash /scripts/${filename}" >> "$OUTPUT"
   echo "" >> "$OUTPUT"
 done
@@ -55,6 +56,7 @@ if [[ "$DESKTOP_ENVIRONMENT" != "base" ]]; then
     echo "    --mount=type=cache,target=/var/log \\" >> "$OUTPUT"
     echo "    --mount=type=cache,target=/var/tmp \\" >> "$OUTPUT"
     echo "    --mount=type=tmpfs,target=/tmp \\" >> "$OUTPUT"
+    echo "    --mount=type=secret,id=GITHUB_TOKEN \\" >> "$OUTPUT"
     echo "    /bin/bash /scripts/${filename}" >> "$OUTPUT"
     echo "" >> "$OUTPUT"
   done
@@ -67,6 +69,7 @@ echo "    --mount=type=cache,target=/var/lib \\" >> "$OUTPUT"
 echo "    --mount=type=cache,target=/var/log \\" >> "$OUTPUT"
 echo "    --mount=type=cache,target=/var/tmp \\" >> "$OUTPUT"
 echo "    --mount=type=tmpfs,target=/tmp \\" >> "$OUTPUT"
+echo "    --mount=type=secret,id=GITHUB_TOKEN \\" >> "$OUTPUT"
 echo "    /bin/bash /scripts/cleanup.sh --base ${DESKTOP_ENVIRONMENT}" >> "$OUTPUT"
 
 echo ""
