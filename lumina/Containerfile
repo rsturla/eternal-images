@@ -12,7 +12,7 @@ COPY files/_base files/_${DESKTOP_ENVIRONMENT}* /
 COPY scripts/ /tmp/scripts/
 
 RUN --mount=type=secret,id=GITHUB_TOKEN \
-  chmod +x /tmp/scripts/*.sh /tmp/scripts/*.sh /tmp/scripts/_${DESKTOP_ENVIRONMENT}/*.sh && \
+  chmod +x /tmp/scripts/*.sh /tmp/scripts/_${DESKTOP_ENVIRONMENT}/*.sh && \
   /tmp/scripts/setup.sh && \
   /tmp/scripts/cleanup.sh \
   && \
