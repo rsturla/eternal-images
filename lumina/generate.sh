@@ -35,7 +35,7 @@ COPY --from=ctx files/_${DESKTOP_ENVIRONMENT}* /
 
 EOF
 
-echo "COPY --from=ctx --chmod=755 /scripts/helpers/* /buildcontext/scripts/helpers/" >> "$OUTPUT"
+# echo "COPY --from=ctx --chmod=755 /scripts/helpers/* /buildcontext/scripts/helpers/" >> "$OUTPUT"
 echo "ENV PATH=\"/buildcontext/scripts/helpers/:\$PATH\"" >> "$OUTPUT"
 
 # Add base scripts
@@ -46,7 +46,8 @@ for script in scripts/_base/*.sh; do
   echo "    --mount=type=cache,target=/var/log \\" >> "$OUTPUT"
   echo "    --mount=type=cache,target=/var/tmp \\" >> "$OUTPUT"
   echo "    --mount=type=tmpfs,target=/tmp \\" >> "$OUTPUT"
-  echo "    --mount=type=bind,from=ctx,src=/scripts/_base,dst=/buildcontext/scripts/_base \\" >> "$OUTPUT"
+  echo "    --mount=type=bind,from=ctx,src=/scripts/_base,dst=/buildcontext/scripts/ \\" >> "$OUTPUT"
+  echo "    --mount=type=bind,from=ctx,src=/scripts/helpers,dst=/buildcontext/scripts/helpers/ \\" >> "$OUTPUT"
   echo "    --mount=type=secret,id=GITHUB_TOKEN \\" >> "$OUTPUT"
   echo "    /bin/bash /buildcontext/scripts/${filename}" >> "$OUTPUT"
   echo "" >> "$OUTPUT"
@@ -61,7 +62,8 @@ if [[ "$DESKTOP_ENVIRONMENT" != "base" ]]; then
     echo "    --mount=type=cache,target=/var/log \\" >> "$OUTPUT"
     echo "    --mount=type=cache,target=/var/tmp \\" >> "$OUTPUT"
     echo "    --mount=type=tmpfs,target=/tmp \\" >> "$OUTPUT"
-    echo "    --mount=type=bind,from=ctx,src=/scripts/_${DESKTOP_ENVIRONMENT},dst=/buildcontext/scripts/_${DESKTOP_ENVIRONMENT} \\" >> "$OUTPUT"
+    echo "    --mount=type=bind,from=ctx,src=/scripts/_${DESKTOP_ENVIRONMENT},dst=/buildcontext/scripts/ \\" >> "$OUTPUT"
+    echo "    --mount=type=bind,from=ctx,src=/scripts/helpers,dst=/buildcontext/scripts/helpers/ \\" >> "$OUTPUT"
     echo "    --mount=type=secret,id=GITHUB_TOKEN \\" >> "$OUTPUT"
     echo "    /bin/bash /buildcontext/scripts/${filename}" >> "$OUTPUT"
     echo "" >> "$OUTPUT"
@@ -74,8 +76,9 @@ echo "    --mount=type=cache,target=/var/lib \\" >> "$OUTPUT"
 echo "    --mount=type=cache,target=/var/log \\" >> "$OUTPUT"
 echo "    --mount=type=cache,target=/var/tmp \\" >> "$OUTPUT"
 echo "    --mount=type=tmpfs,target=/tmp \\" >> "$OUTPUT"
+echo "    --mount=type=bind,from=ctx,src=/scripts/cleanup.sh,dst=/buildcontext/scripts/ \\" >> "$OUTPUT"
+echo "    --mount=type=bind,from=ctx,src=/scripts/helpers,dst=/buildcontext/scripts/helpers/ \\" >> "$OUTPUT"
 echo "    --mount=type=secret,id=GITHUB_TOKEN \\" >> "$OUTPUT"
-echo "    --mount=type=bind,from=ctx,src=/scripts/cleanup.sh,dst=/buildcontext/scripts/cleanup.sh \\" >> "$OUTPUT"
 echo "    /bin/bash /buildcontext/scripts/cleanup.sh --base ${DESKTOP_ENVIRONMENT}" >> "$OUTPUT"
 
 echo ""
