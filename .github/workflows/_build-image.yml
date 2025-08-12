@@ -151,6 +151,7 @@ jobs:
           cache-ttl: 24h
           rechunk: ${{ inputs.rechunk }}
           rechunk-prev-ref: ${{ env.IMAGE_REGISTRY }}/${{ inputs.image-name }}:${{ steps.generate-image-tags.outputs.stable-tag }}
+          rechunk-max-layers: 256
 
       - name: Push Image
         id: push
