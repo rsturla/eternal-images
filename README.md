@@ -30,7 +30,7 @@ Key features of this image include:
 - Development through DevContianers
 - Local AI inference with Ollama
 - Visual Studio Code
-- Google Chrome & 1Password
+- 1Password
 - Additional CLI tools
 
 #### Usage

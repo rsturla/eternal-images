@@ -14,4 +14,6 @@ dnf install -y \
   gnome-tweaks \
   libcanberra-gtk3
 
+dnf remove -y gnome-software
+
 dnf copr remove -y ublue-os/staging
