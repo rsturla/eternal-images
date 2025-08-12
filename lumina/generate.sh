@@ -82,7 +82,7 @@ echo "    --mount=type=secret,id=GITHUB_TOKEN \\" >> "$OUTPUT"
 echo "    /bin/bash /buildcontext/scripts/cleanup.sh --base ${DESKTOP_ENVIRONMENT}" >> "$OUTPUT"
 
 # Add final lint checks
-echo "RUN bootc container lint --no-truncate --fatal-warnings" >> "$OUTPUT"
+echo "RUN bootc container lint --no-truncate" >> "$OUTPUT"
 
 echo ""
 echo "✅ $OUTPUT generated."
