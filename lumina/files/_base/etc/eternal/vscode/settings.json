@@ -28,5 +28,10 @@
   // Disable telemetry
   "telemetry.telemetryLevel": "off",
   // Disable automated updates
-  "update.mode": "none"
+  "update.mode": "none",
+  // Language-specific configuration
+  "[json]": {
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true
+  }
 }
