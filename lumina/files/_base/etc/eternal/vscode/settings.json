@@ -33,5 +33,9 @@
   "[json]": {
     "files.insertFinalNewline": true,
     "files.trimFinalNewlines": true
+  },
+  "[jsonc]": {
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true
   }
 }
