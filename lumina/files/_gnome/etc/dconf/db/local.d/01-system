@@ -9,6 +9,9 @@ gtk-theme='adw-gtk3-dark'
 font-antialiasing='rgba'
 accent-color="purple"
 
+[org/gnome/desktop/peripherals/mouse]
+accel-profile="flat"
+
 [org/gnome/desktop/sound]
 allow-volume-above-100-percent=true
 
