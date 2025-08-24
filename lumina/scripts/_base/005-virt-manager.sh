@@ -36,4 +36,6 @@ d /var/log/pcp/sa 0775 pcp pcp -
 
 C /usr/local/bin/.swtpm - - - - /usr/bin/swtpm
 d /var/lib/swtpm-localca 0750 tss tss - -
+
+d /var/log/libvirt 0750 - - - -
 EOF
