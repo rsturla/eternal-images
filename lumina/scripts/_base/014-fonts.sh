@@ -24,7 +24,7 @@ mkdir -p "$FONT_DIR"
 get_download_url() {
     local pkg="$1"
     ghcurl "https://api.github.com/repos/githubnext/monaspace/releases/latest" \
-        | jq -r --arg pkg "$pkg" '.assets[] | select(.name| test($pkg".*\\.zip$")) .browser_download_url'
+        | jq -r --arg pkg "$pkg" '.assets[] | select(.name | contains($pkg) and endswith(".zip")) | .browser_download_url'
 }
 
 # Download and install selected packages
