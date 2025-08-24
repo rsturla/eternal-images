@@ -18,7 +18,10 @@ while IFS=',' read -ra users; do
   done
 done < <(getent group wheel | cut -d ":" -f 4)
 
-groups=(docker)
+groups=(
+  docker
+  libvirt
+)
 
 # Ensure groups exist
 for group in "${groups[@]}"; do
