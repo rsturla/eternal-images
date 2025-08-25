@@ -37,13 +37,8 @@ for pkg in "${PACKAGES[@]}"; do
     echo "Unpacking $pkg..."
     unzip -qo "$ZIP_FILE" -d "$TMP_DIR/$pkg"
 
-    # Move OTF and variable fonts to the system font directory
-    if [ -d "$TMP_DIR/$pkg/monaspace-v*/fonts/otf" ]; then
-        mv "$TMP_DIR/$pkg/monaspace-v*/fonts/otf/"* "$FONT_DIR/"
-    fi
-    if [ -d "$TMP_DIR/$pkg/monaspace-v*/fonts/variable" ]; then
-        mv "$TMP_DIR/$pkg/monaspace-v*/fonts/variable/"* "$FONT_DIR/"
-    fi
+    # Move OTF and TTF fonts into the font directory
+    find "$TMP_DIR/$pkg" -type f \( -name "*.otf" -o -name "*.ttf" \) -exec mv {} "$FONT_DIR/" \;
 done
 
 # Refresh font cache
