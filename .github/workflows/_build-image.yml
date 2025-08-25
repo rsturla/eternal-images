@@ -146,9 +146,9 @@ jobs:
             ${{ inputs.source-image != '' && format('SOURCE_IMAGE={0}', inputs.source-image) || '' }}
           secrets: |
             GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
-          cache-to: ghcr.io/${{ github.repository_owner }}/cache
-          cache-from: ghcr.io/${{ github.repository_owner }}/cache
-          cache-ttl: 24h
+          # cache-to: ghcr.io/${{ github.repository_owner }}/cache
+          # cache-from: ghcr.io/${{ github.repository_owner }}/cache
+          # cache-ttl: 24h
           rechunk: ${{ inputs.rechunk }}
           rechunk-prev-ref: ${{ env.IMAGE_REGISTRY }}/${{ inputs.image-name }}:${{ steps.generate-image-tags.outputs.stable-tag }}
           rechunk-max-layers: 256
