@@ -7,6 +7,7 @@ dnf install -y \
   libvirt \
   edk2-ovmf
 
+systemctl enable libvirtd.socket
 systemctl enable swtpm-workaround.service
 
 cat >/usr/lib/sysusers.d/eternal-libvirt.conf <<EOF
