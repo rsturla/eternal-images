@@ -26,6 +26,11 @@ dnf install -y \
   gh \
   git-credential-oauth
 
+dnf install -y \
+  flatpak-builder \
+  ccache \
+  fusermount
+
 # Install Kind
 ghcurl "https://github.com/kubernetes-sigs/kind/releases/latest/download/kind-linux-amd64" --retry 3 -o /tmp/kind
 install -c -m 0755 /tmp/kind /usr/bin/kind
