@@ -30,7 +30,8 @@ dnf install -y --enablerepo=docker-ce-$DOCKER_REPO \
   docker-ce-cli \
   containerd.io \
   docker-buildx-plugin \
-  docker-compose-plugin
+  docker-compose-plugin \
+  docker-model-plugin
 
 systemctl enable docker.socket
 
