@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-BASE_IMAGE=silverblue
-SOURCE_IMAGE=ghcr.io/rsturla/eternal-linux/main/${BASE_IMAGE}
-MAJOR_VERSION=42
-# Accept desktop environment as argument, default to 'gnome' if not provided
-DESKTOP_ENVIRONMENT="${1:-gnome}"
+# Allow overrides from environment variables, but provide defaults
+BASE_IMAGE="${BASE_IMAGE:-silverblue}"
+SOURCE_IMAGE="${SOURCE_IMAGE:-ghcr.io/rsturla/eternal-linux/main/${BASE_IMAGE}}"
+MAJOR_VERSION="${MAJOR_VERSION:-42}"
+DESKTOP_ENVIRONMENT="${DESKTOP_ENVIRONMENT:-gnome}"
 
 OUTPUT="Containerfile.gen"
 
@@ -62,7 +62,7 @@ if [[ "$DESKTOP_ENVIRONMENT" != "base" ]]; then
     echo "    --mount=type=cache,target=/var/log \\" >> "$OUTPUT"
     echo "    --mount=type=cache,target=/var/tmp \\" >> "$OUTPUT"
     echo "    --mount=type=tmpfs,target=/tmp \\" >> "$OUTPUT"
-    echo "    --mount=type=bind,from=ctx,src=/scripts/_${DESKTOP_ENVIRONMENT},dst=/buildcontext/scripts/ \\" >> "$OUTPUT"
+    echo "    --mount=type=bind,from=ctx,src=/scripts/_\${DESKTOP_ENVIRONMENT},dst=/buildcontext/scripts/ \\" >> "$OUTPUT"
     echo "    --mount=type=bind,from=ctx,src=/scripts/helpers,dst=/buildcontext/scripts/helpers/ \\" >> "$OUTPUT"
     echo "    --mount=type=secret,id=GITHUB_TOKEN \\" >> "$OUTPUT"
     echo "    /bin/bash /buildcontext/scripts/${filename}" >> "$OUTPUT"
@@ -79,7 +79,7 @@ echo "    --mount=type=tmpfs,target=/tmp \\" >> "$OUTPUT"
 echo "    --mount=type=bind,from=ctx,src=/scripts/cleanup.sh,dst=/buildcontext/scripts/cleanup.sh \\" >> "$OUTPUT"
 echo "    --mount=type=bind,from=ctx,src=/scripts/helpers,dst=/buildcontext/scripts/helpers/ \\" >> "$OUTPUT"
 echo "    --mount=type=secret,id=GITHUB_TOKEN \\" >> "$OUTPUT"
-echo "    /bin/bash /buildcontext/scripts/cleanup.sh --base ${DESKTOP_ENVIRONMENT}" >> "$OUTPUT"
+echo "    /bin/bash /buildcontext/scripts/cleanup.sh --base \${DESKTOP_ENVIRONMENT}" >> "$OUTPUT"
 
 # Add final lint checks
 echo "RUN bootc container lint --no-truncate" >> "$OUTPUT"
