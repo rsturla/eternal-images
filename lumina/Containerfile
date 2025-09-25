@@ -25,5 +25,6 @@ RUN --mount=type=cache,target=/var/cache \
     --mount=type=bind,from=ctx,src=/scripts/helpers,dst=/buildcontext/scripts/helpers/ \
     --mount=type=secret,id=GITHUB_TOKEN \
     bash /buildcontext/scripts/setup.sh && \
-    bash /buildcontext/scripts/cleanup.sh && \
-    bootc container lint
+    bash /buildcontext/scripts/cleanup.sh
+
+RUN bootc container lint
