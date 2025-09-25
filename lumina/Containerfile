@@ -15,14 +15,13 @@ ARG DESKTOP_ENVIRONMENT
 
 COPY --from=ctx files/_base/ /
 COPY --from=ctx files/_${DESKTOP_ENVIRONMENT}* /
-COPY --from=ctx scripts/ /tmp/scripts/
 
 RUN --mount=type=cache,target=/var/cache \
     --mount=type=cache,target=/var/lib \
     --mount=type=cache,target=/var/log \
     --mount=type=cache,target=/var/tmp \
     --mount=type=tmpfs,target=/tmp \
-    --mount=type=bind,from=ctx,src=/scripts/_${DESKTOP_ENVIRONMENT},dst=/buildcontext/scripts/ \
+    --mount=type=bind,from=ctx,src=/scripts,dst=/buildcontext/scripts/ \
     --mount=type=bind,from=ctx,src=/scripts/helpers,dst=/buildcontext/scripts/helpers/ \
     --mount=type=secret,id=GITHUB_TOKEN \
     bash /buildcontext/scripts/setup.sh && \
