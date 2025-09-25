@@ -3,17 +3,28 @@ ARG SOURCE_IMAGE=ghcr.io/rsturla/eternal-linux/main/${BASE_IMAGE}
 ARG MAJOR_VERSION=42
 ARG DESKTOP_ENVIRONMENT=gnome
 
+FROM scratch AS ctx
+
+COPY ./scripts /scripts
+COPY ./files /files
+
 FROM ${SOURCE_IMAGE}:${MAJOR_VERSION}
 
 ARG MAJOR_VERSION
 ARG DESKTOP_ENVIRONMENT
 
-COPY files/_base files/_${DESKTOP_ENVIRONMENT}* /
-COPY scripts/ /tmp/scripts/
+COPY --from=ctx files/_base/ /
+COPY --from=ctx files/_${DESKTOP_ENVIRONMENT}* /
+COPY --from=ctx scripts/ /tmp/scripts/
 
-RUN --mount=type=secret,id=GITHUB_TOKEN \
-  chmod +x /tmp/scripts/*.sh /tmp/scripts/_${DESKTOP_ENVIRONMENT}/*.sh && \
-  /tmp/scripts/setup.sh && \
-  /tmp/scripts/cleanup.sh \
-  && \
-  bootc container lint
+RUN --mount=type=cache,target=/var/cache \
+    --mount=type=cache,target=/var/lib \
+    --mount=type=cache,target=/var/log \
+    --mount=type=cache,target=/var/tmp \
+    --mount=type=tmpfs,target=/tmp \
+    --mount=type=bind,from=ctx,src=/scripts/_${DESKTOP_ENVIRONMENT},dst=/buildcontext/scripts/ \
+    --mount=type=bind,from=ctx,src=/scripts/helpers,dst=/buildcontext/scripts/helpers/ \
+    --mount=type=secret,id=GITHUB_TOKEN \
+    bash /buildcontext/scripts/setup.sh && \
+    bash /buildcontext/scripts/cleanup.sh && \
+    bootc container lint
