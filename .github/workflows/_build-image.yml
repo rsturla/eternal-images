@@ -42,7 +42,7 @@ on:
       maximize-build-space:
         required: false
         type: boolean
-        default: true
+        default: false
       source-image:
         required: false
         type: string
