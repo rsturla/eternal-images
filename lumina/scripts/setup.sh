@@ -6,7 +6,7 @@ set -euo pipefail
 SCRIPT_DIR="$(dirname "${BASH_SOURCE[0]}")"
 
 # Add helpers directory to PATH for all scripts to use
-export PATH="/tmp/scripts/helpers:$PATH"
+export PATH="$SCRIPT_DIR/helpers:$PATH"
 
 DESKTOP_ENVIRONMENT=$DESKTOP_ENVIRONMENT
 MAJOR_VERSION=$MAJOR_VERSION
