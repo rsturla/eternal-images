@@ -126,7 +126,7 @@ jobs:
 
       - name: Build Image
         id: build
-        uses: rsturla/eternal-main/.github/actions/build-image@main
+        uses: rsturla/eternal-main/.github/actions/build-image@custom-rechunk-config
         with:
           context: ${{ inputs.build-context }}
           containerfile: ${{ inputs.build-context }}/Containerfile
