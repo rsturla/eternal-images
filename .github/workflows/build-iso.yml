@@ -25,6 +25,7 @@ on:
         type: choice
         options:
           - lumina
+          - lumina-cosmic
       image-tag:
         description: "The tag to build"
         required: true
@@ -72,6 +73,7 @@ jobs:
       matrix:
         image-name:
           - lumina
+          - lumina-cosmic
         image-tag:
           - 42
           - 42-nvidia
