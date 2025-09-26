@@ -41,7 +41,6 @@ on:
         type: choice
         options:
           - amd64
-          - aarch64
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref || github.run_id }}-iso
@@ -79,7 +78,6 @@ jobs:
           - 42-nvidia
         arch:
           - amd64
-          - aarch64
     with:
       image-name: ${{ matrix.image-name }}
       image-registry: ghcr.io/rsturla/eternal-linux
