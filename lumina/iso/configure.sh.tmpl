@@ -83,7 +83,14 @@ EOF
 
     cosmic)
         echo "Applying COSMIC-specific configuration..."
-        # TODO: Add COSMIC-specific tweaks here
+        DESKTOP_USER_INTERFACE_SETTINGS=$(cat <<'EOF'
+hidden_spokes =
+    NetworkSpoke
+    PasswordSpoke
+    UserSpoke
+hidden_webui_pages =
+    anaconda-screen-accounts
+EOF
         ;;
 
     budgie|xfce|mate|cinnamon|sway|unknown)
