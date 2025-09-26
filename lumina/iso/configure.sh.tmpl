@@ -121,6 +121,7 @@ default_scheme = BTRFS
 btrfs_compression = zstd:1
 default_partitioning =
     /     (min 1 GiB, max 70 GiB)
+    /boot (size 2 GiB)
     /home (min 500 MiB, free 50 GiB)
     /var  (btrfs)
 
