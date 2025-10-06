@@ -123,6 +123,12 @@ default_partitioning =
     /     (min 1 GiB, max 70 GiB)
     /home (min 500 MiB, free 50 GiB)
     /var  (btrfs)
+    /boot (min 2GiB, ext4)
+
+
+[Storage Constraints]
+req_partition_sizes =
+    /boot 2GiB
 
 [User Interface]
 custom_stylesheet = /usr/share/anaconda/pixmaps/silverblue/fedora-silverblue.css
