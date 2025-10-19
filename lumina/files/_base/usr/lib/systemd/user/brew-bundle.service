@@ -7,4 +7,4 @@ After=local-fs.target network-online.target
 ExecStart=/home/linuxbrew/.linuxbrew/bin/brew bundle install --file /etc/eternal/brew/Brewfile
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=default.target
