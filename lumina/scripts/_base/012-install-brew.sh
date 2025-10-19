@@ -22,6 +22,7 @@ tar --zstd -cvf /usr/share/homebrew.tar.zst /home/linuxbrew/.linuxbrew
 systemctl enable brew-setup.service
 systemctl enable brew-upgrade.timer
 systemctl enable brew-update.timer
+systemctl --global enable brew-bundle.service
 
 # Clean up
 rm -rf /.dockerenv /var/home /var/roothome
