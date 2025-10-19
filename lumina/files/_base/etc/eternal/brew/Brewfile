@@ -1,0 +1,8 @@
+brew "block-goose-cli"
+brew "oras"
+brew "cosign"
+brew "devcontainer"
+brew "syft"
+brew "dive"
+brew "kind"
+brew "cloud-provider-kind"

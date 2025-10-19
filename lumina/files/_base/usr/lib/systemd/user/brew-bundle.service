@@ -1,11 +1,10 @@
 [Unit]
-Description=Install brew bundle
-ConditionPathIsSymbolicLink=/home/linuxbrew/.linuxbrew/bin/brew
-After=local-fs.target
-After=network-online.target
+Description=Ensure system-wide Homebrew packages are installed from /etc/eternal/brew/Brewfile
+ConditionPathExists=/home/linuxbrewds/.linuxbrew/bin/brew
+After=local-fs.target network-online.target
 
 [Service]
-ExecStart=/home/linuxbrew/.linuxbrew/bin/brew bundle install --global --file /etc/eternal/brew/Brewfile
+ExecStart=/var/home/linuxbrew/.linuxbrew/bin/brew bundle install --file /etc/eternal/brew/Brewfile
 
 [Install]
 WantedBy=multi-user.target
