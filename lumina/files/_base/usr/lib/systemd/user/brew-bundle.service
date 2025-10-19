@@ -1,0 +1,10 @@
+[Unit]
+Description=Ensure system-wide Homebrew packages are installed from /etc/eternal/brew/Brewfile
+ConditionPathExists=/home/linuxbrewds/.linuxbrew/bin/brew
+After=local-fs.target network-online.target
+
+[Service]
+ExecStart=/var/home/linuxbrew/.linuxbrew/bin/brew bundle install --file /etc/eternal/brew/Brewfile
+
+[Install]
+WantedBy=multi-user.target
