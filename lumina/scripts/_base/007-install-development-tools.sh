@@ -29,7 +29,7 @@ dnf install -y \
 dnf install -y \
   npm
 
-npm install --global @devcontainers/cli
+NPM_CONFIG_PREFIX=/usr npm install --global @devcontainers/cli
 
 # Install Kind
 ghcurl "https://github.com/kubernetes-sigs/kind/releases/latest/download/kind-linux-amd64" --retry 3 -o /tmp/kind
