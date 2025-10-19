@@ -64,8 +64,8 @@ cat >/usr/lib/sysusers.d/onepassword-cli.conf <<EOF
 g onepassword-cli ${GID_ONEPASSWORDCLI}
 EOF
 
-systemd-sysusers --replace=/usr/lib/sysusers.d/onepassword.conf
-systemd-sysusers --replace=/usr/lib/sysusers.d/onepassword-cli.conf
+systemd-sysusers /usr/lib/sysusers.d/onepassword.conf
+systemd-sysusers /usr/lib/sysusers.d/onepassword-cli.conf
 
 # Now let's install the packages.
 dnf install -y 1password 1password-cli
