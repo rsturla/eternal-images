@@ -28,8 +28,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        major-version: [42]
+        major-version: [42, 43]
         kernel-flavor: [default, stable]
+        exclude:
+          - major-version: 43
+            kernel-flavor: stable
     secrets: inherit
     with:
       image-name: eternal-linux/lumina
@@ -48,8 +51,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        major-version: [42]
+        major-version: [42, 43]
         kernel-flavor: [default, stable]
+        exclude:
+          - major-version: 43
+            kernel-flavor: stable
     secrets: inherit
     with:
       image-name: eternal-linux/lumina
@@ -69,8 +75,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        major-version: [42]
+        major-version: [42, 43]
         kernel-flavor: [default, stable]
+        exclude:
+          - major-version: 43
+            kernel-flavor: stable
     secrets: inherit
     with:
       image-name: eternal-linux/lumina-cosmic
@@ -89,8 +98,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        major-version: [42]
+        major-version: [42, 43]
         kernel-flavor: [default, stable]
+        exclude:
+          - major-version: 43
+            kernel-flavor: stable
     secrets: inherit
     with:
       image-name: eternal-linux/lumina-cosmic

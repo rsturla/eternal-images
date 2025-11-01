@@ -1,6 +1,6 @@
 ARG BASE_IMAGE=silverblue
 ARG SOURCE_IMAGE=ghcr.io/rsturla/eternal-linux/main/${BASE_IMAGE}
-ARG MAJOR_VERSION=42
+ARG MAJOR_VERSION=43
 ARG DESKTOP_ENVIRONMENT=gnome
 
 FROM scratch AS ctx
