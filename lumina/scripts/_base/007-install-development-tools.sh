@@ -27,8 +27,8 @@ dnf install -y \
   code \
   libxcrypt-compat \
   google-cloud-cli \
-  nodejs \
-  ripgrep
+  ripgrep \
+  socat  # Required for sandboxing in Claude Code
 
 rm -f /etc/yum.repos.d/vscode.repo
 rm -f /etc/yum.repos.d/google-cloud-sdk.repo
