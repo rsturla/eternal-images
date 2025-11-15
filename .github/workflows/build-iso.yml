@@ -32,8 +32,8 @@ on:
         default: stable
         type: choice
         options:
-          - 42
-          - 42-nvidia
+          - 43
+          - 43-nvidia
       arch:
         description: "The architecture to build"
         required: true
@@ -74,8 +74,8 @@ jobs:
           - lumina
           - lumina-cosmic
         image-tag:
-          - 42
-          - 42-nvidia
+          - 43
+          - 43-nvidia
         arch:
           - amd64
     with:
