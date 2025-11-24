@@ -58,4 +58,12 @@ git -C "$GIT_DIR" config remote.origin.fetch '+refs/heads/*:refs/remotes/origin/
 git -C "$GIT_DIR" fetch -a
 git -C "$GIT_DIR" worktree add "./default/$DEFAULT_BRANCH"
 
+# Convert the worktree's .git file to use relative paths
+WORKTREE_PATH="$GIT_DIR/default/$DEFAULT_BRANCH"
+if [[ -f "$WORKTREE_PATH/.git" ]]; then
+    relative_gitdir=$(git -C "$WORKTREE_PATH" rev-parse --path-format=relative --git-common-dir)
+    worktree_name=$(basename "$(cat "$WORKTREE_PATH/.git" | cut -d' ' -f2)")
+    echo "gitdir: ${relative_gitdir}/worktrees/${worktree_name}" > "$WORKTREE_PATH/.git"
+fi
+
 echo "Cloned $GIT_SSH_URL into $GIT_DIR"
