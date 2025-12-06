@@ -3,8 +3,8 @@ global:
     evaluation_interval: 5s
 
 scrape_configs:
-  - job_name: minio-job
-    metrics_path: /minio/prometheus/metrics
+  - job_name: rustfs-job
+    metrics_path: /metrics
     scheme: http
     static_configs:
-        - targets: ['minio:9000']
+        - targets: ['rustfs:9000']

@@ -1,19 +1,21 @@
 [Unit]
-Description=A minio server contaienr for local S3 compatible storage - http://localhost:9000
+Description=A RustFS server container for local S3 compatible storage - http://localhost:9000
 After=local-fs.target network-online.target
 Requires=prometheus.service
 
 [Container]
-Image=docker.io/minio/minio:latest
+Image=docker.io/rustfs/rustfs:latest
 AutoUpdate=registry
-ContainerName=minio
-Exec=server --console-address ":9001"
-Environment=MINIO_ROOT_USER=admin
-Environment=MINIO_ROOT_PASSWORD=password
-Environment=MINIO_VOLUMES=/data
-Environment=MINIO_PROMETHEUS_URL='http://prometheus:9090'
-Environment=MINIO_PROMETHEUS_AUTH_TYPE='public'
-Environment=MINIO_PROMETHEUS_JOB_ID='minio-job'
+ContainerName=rustfs
+Environment=RUSTFS_VOLUMES=/data
+Environment=RUSTFS_ADDRESS=0.0.0.0:9000
+Environment=RUSTFS_CONSOLE_ADDRESS=0.0.0.0:9001
+Environment=RUSTFS_CONSOLE_ENABLE=true
+Environment=RUSTFS_EXTERNAL_ADDRESS=:9000
+Environment=RUSTFS_ACCESS_KEY=admin
+Environment=RUSTFS_SECRET_KEY=password
+Environment=RUSTFS_OBS_LOGGER_LEVEL=info
+Environment=RUSTFS_OBS_ENDPOINT=http://prometheus:9090
 Network=eternal.network
 PublishPort=9000:9000
 PublishPort=9001:9001
