@@ -18,7 +18,7 @@ Environment=RUSTFS_OBS_LOGGER_LEVEL=info
 Network=eternal.network
 PublishPort=9000:9000
 PublishPort=9001:9001
-Volume=minio.volume:/data:Z
+Volume=rustfs.volume:/data:Z
 
 [Service]
 TimeoutStartSec=900
