@@ -15,7 +15,6 @@ Environment=RUSTFS_EXTERNAL_ADDRESS=:9000
 Environment=RUSTFS_ACCESS_KEY=admin
 Environment=RUSTFS_SECRET_KEY=password
 Environment=RUSTFS_OBS_LOGGER_LEVEL=info
-Environment=RUSTFS_OBS_ENDPOINT=http://prometheus:9090
 Network=eternal.network
 PublishPort=9000:9000
 PublishPort=9001:9001
