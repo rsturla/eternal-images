@@ -1,7 +1,6 @@
 [Unit]
-Description=A RustFS server container for local S3 compatible storage - http://localhost:9000
+Description=A RustFS server container for local S3 compatible storage - http://localhost:9001
 After=local-fs.target network-online.target
-Requires=prometheus.service
 
 [Container]
 Image=docker.io/rustfs/rustfs:latest
