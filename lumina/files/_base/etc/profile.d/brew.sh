@@ -24,3 +24,8 @@ if [ "x${BASH_VERSION-}" != x -a "x${PS1-}" != x -a "x${BREW_BASH_COMPLETION-}" 
     BREW_BASH_COMPLETION=1
     export BREW_BASH_COMPLETION
 fi
+
+# Homebrew helper (runs as linuxbrew user)
+brewsu() {
+    (cd /tmp && sudo -u linuxbrew /home/linuxbrew/.linuxbrew/bin/brew "$@")
+}

@@ -22,15 +22,19 @@ tar --zstd -cvf /usr/share/homebrew.tar.zst /home/linuxbrew/.linuxbrew
 systemctl enable brew-setup.service
 systemctl enable brew-upgrade.timer
 systemctl enable brew-update.timer
-systemctl --global enable brew-bundle.service
+systemctl enable brew-bundle.service
 
 # Clean up
 rm -rf /.dockerenv /var/home /var/roothome
 
-# Register path symlink
-# We do this via tmpfiles.d so that it is created by the live system.
+# Create linuxbrew user/group via sysusers.d
+cat >/usr/lib/sysusers.d/linuxbrew.conf <<EOF
+u linuxbrew - "Homebrew" /var/home/linuxbrew /sbin/nologin
+EOF
+
+# Create directories via tmpfiles.d
 cat >/usr/lib/tmpfiles.d/eternal-homebrew.conf <<EOF
-d /var/lib/homebrew 0755 1000 1000 - -
-d /var/cache/homebrew 0755 1000 1000 - -
-d /var/home/linuxbrew 0755 1000 1000 - -
+d /var/lib/homebrew 0755 linuxbrew linuxbrew - -
+d /var/cache/homebrew 0755 linuxbrew linuxbrew - -
+d /var/home/linuxbrew 0755 linuxbrew linuxbrew - -
 EOF
