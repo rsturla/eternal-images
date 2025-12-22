@@ -1,0 +1,18 @@
+[Unit]
+Description=Ensure system-wide Homebrew packages are installed from /etc/eternal/brew/Brewfile
+ConditionPathExists=/etc/.linuxbrew
+Wants=network-online.target
+Wants=brew-setup.service
+After=network-online.target brew-setup.service
+
+[Service]
+Type=oneshot
+User=linuxbrew
+WorkingDirectory=/var/home/linuxbrew
+Environment=HOMEBREW_CELLAR=/var/home/linuxbrew/.linuxbrew/Cellar
+Environment=HOMEBREW_PREFIX=/var/home/linuxbrew/.linuxbrew
+Environment=HOMEBREW_REPOSITORY=/var/home/linuxbrew/.linuxbrew/Homebrew
+ExecStart=/usr/bin/bash -c "/var/home/linuxbrew/.linuxbrew/bin/brew bundle install --file /etc/eternal/brew/Brewfile"
+
+[Install]
+WantedBy=multi-user.target
