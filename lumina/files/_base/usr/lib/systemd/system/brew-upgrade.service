@@ -1,15 +1,12 @@
 [Unit]
-Description=Upgrade Brew packages
-After=local-fs.target
-After=network-online.target
+Description=Upgrade Homebrew packages
+After=local-fs.target network-online.target brew-update.service
+Wants=network-online.target brew-update.service
 ConditionPathExists=/etc/.linuxbrew
 
 [Service]
-# Override the user if different UID/User
-User=linuxbrew
 Type=oneshot
+User=linuxbrew
 WorkingDirectory=/var/home/linuxbrew
-Environment=HOMEBREW_CELLAR=/var/home/linuxbrew/.linuxbrew/Cellar
-Environment=HOMEBREW_PREFIX=/var/home/linuxbrew/.linuxbrew
-Environment=HOMEBREW_REPOSITORY=/var/home/linuxbrew/.linuxbrew/Homebrew
-ExecStart=/usr/bin/bash -c "/var/home/linuxbrew/.linuxbrew/bin/brew upgrade"
+EnvironmentFile=/etc/brew/environment
+ExecStart=/var/home/linuxbrew/.linuxbrew/bin/brew upgrade

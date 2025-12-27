@@ -20,8 +20,9 @@ tar --zstd -cvf /usr/share/homebrew.tar.zst /home/linuxbrew/.linuxbrew
 
 # Enable Systemd services
 systemctl enable brew-setup.service
-systemctl enable brew-upgrade.timer
 systemctl enable brew-update.timer
+systemctl enable brew-upgrade.timer
+systemctl enable brew-cleanup.timer
 systemctl enable brew-bundle.service
 
 # Clean up

@@ -1,0 +1,4 @@
+# Shared environment variables for Homebrew systemd services
+HOMEBREW_CELLAR=/var/home/linuxbrew/.linuxbrew/Cellar
+HOMEBREW_PREFIX=/var/home/linuxbrew/.linuxbrew
+HOMEBREW_REPOSITORY=/var/home/linuxbrew/.linuxbrew/Homebrew

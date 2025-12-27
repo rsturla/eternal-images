@@ -1,0 +1,11 @@
+[Unit]
+Description=Cleanup old Homebrew package versions
+After=local-fs.target brew-upgrade.service
+ConditionPathExists=/etc/.linuxbrew
+
+[Service]
+Type=oneshot
+User=linuxbrew
+WorkingDirectory=/var/home/linuxbrew
+EnvironmentFile=/etc/brew/environment
+ExecStart=/var/home/linuxbrew/.linuxbrew/bin/brew cleanup --prune=7

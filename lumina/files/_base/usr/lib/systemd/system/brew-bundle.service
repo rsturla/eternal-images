@@ -1,17 +1,14 @@
 [Unit]
 Description=Install Homebrew packages from system and user Brewfiles
+After=network-online.target brew-setup.service brew-update.service
+Wants=network-online.target brew-setup.service brew-update.service
 ConditionPathExists=/etc/.linuxbrew
-Wants=network-online.target
-Wants=brew-setup.service
-After=network-online.target brew-setup.service
 
 [Service]
 Type=oneshot
 User=linuxbrew
 WorkingDirectory=/var/home/linuxbrew
-Environment=HOMEBREW_CELLAR=/var/home/linuxbrew/.linuxbrew/Cellar
-Environment=HOMEBREW_PREFIX=/var/home/linuxbrew/.linuxbrew
-Environment=HOMEBREW_REPOSITORY=/var/home/linuxbrew/.linuxbrew/Homebrew
+EnvironmentFile=/etc/brew/environment
 # Install system-managed packages (read-only, part of the image)
 ExecStart=/var/home/linuxbrew/.linuxbrew/bin/brew bundle install --file /usr/share/brew/Brewfile
 # Install user-managed packages (customizable)
