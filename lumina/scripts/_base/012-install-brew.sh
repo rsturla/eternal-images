@@ -39,3 +39,7 @@ d /var/lib/homebrew 0755 linuxbrew linuxbrew - -
 d /var/cache/homebrew 0755 linuxbrew linuxbrew - -
 d /var/home/linuxbrew 0755 linuxbrew linuxbrew - -
 EOF
+
+# Set SELinux file context for homebrew directory (persistent, survives restorecon)
+# This allows systemd services (init_t) to access homebrew binaries
+semanage fcontext -a -t usr_t "/var/home/linuxbrew/.linuxbrew(/.*)?"

@@ -11,8 +11,8 @@
 
 set -euo pipefail
 
-BREW_REAL="/home/linuxbrew/.linuxbrew/bin/brew"
-BREW_PREFIX="/home/linuxbrew/.linuxbrew"
+BREW_REAL="/var/home/linuxbrew/.linuxbrew/bin/brew"
+BREW_PREFIX="/var/home/linuxbrew/.linuxbrew"
 
 # Readonly commands that are safe to run without linuxbrew user
 READONLY_COMMANDS=(

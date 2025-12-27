@@ -7,4 +7,4 @@
 # Example: brewsu install neovim
 #
 
-exec sudo -u linuxbrew /home/linuxbrew/.linuxbrew/bin/brew "$@"
+exec sudo runuser -u linuxbrew -- bash -c 'cd /var/home/linuxbrew && /var/home/linuxbrew/.linuxbrew/bin/brew "$@"' bash "$@"
