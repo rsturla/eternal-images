@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+#
+# Run brew commands as the linuxbrew user
+#
+# Usage: brewsu <brew-command> [arguments...]
+#
+# Example: brewsu install neovim
+#
+
+exec sudo -u linuxbrew /home/linuxbrew/.linuxbrew/bin/brew "$@"

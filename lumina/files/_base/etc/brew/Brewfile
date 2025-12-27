@@ -1,0 +1,14 @@
+#
+# User-managed Brewfile
+#
+# Add your custom Homebrew packages here. These will be installed
+# in addition to the system packages from /usr/share/brew/Brewfile.
+#
+# Changes will be applied on next boot or by running:
+#   sudo systemctl start brew-bundle.service
+#
+# Examples:
+#   brew "neovim"
+#   brew "ripgrep"
+#   cask "some-cask"
+#

@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
-[[ -d /home/linuxbrew/.linuxbrew && $- == *i* ]] && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+
+# Set up Homebrew environment for interactive shells
+if [[ -d /home/linuxbrew/.linuxbrew && $- == *i* ]]; then
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+    # Ensure the wrapper in /usr/bin takes precedence over the real brew
+    export PATH="/usr/bin:$PATH"
+fi
 
 # Check for interactive bash and that we haven't already been sourced.
 if [ "x${BASH_VERSION-}" != x -a "x${PS1-}" != x -a "x${BREW_BASH_COMPLETION-}" = x ]; then
@@ -24,8 +30,3 @@ if [ "x${BASH_VERSION-}" != x -a "x${PS1-}" != x -a "x${BREW_BASH_COMPLETION-}" 
     BREW_BASH_COMPLETION=1
     export BREW_BASH_COMPLETION
 fi
-
-# Homebrew helper (runs as linuxbrew user)
-brewsu() {
-    (cd /tmp && sudo -u linuxbrew /home/linuxbrew/.linuxbrew/bin/brew "$@")
-}
