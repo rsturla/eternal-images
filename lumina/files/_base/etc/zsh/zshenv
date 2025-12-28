@@ -1,0 +1,25 @@
+#!/usr/bin/env zsh
+# vim:syntax=zsh
+# vim:filetype=zsh
+
+#
+# /etc/zsh/zshenv: system-wide .zshenv file for zsh(1).
+#
+# This file is sourced on all invocations of the shell.
+# This is the zsh-native place to set up PATH and environment variables.
+#
+
+# Set up Homebrew environment for interactive zsh shells only
+if [[ -o interactive && -d /home/linuxbrew/.linuxbrew ]]; then
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+
+  # Prioritize Homebrew binaries, but keep brew wrapper accessible
+  # Remove /usr/bin from anywhere in PATH and append it to the end
+  path=("${(@)path:#/usr/bin}")  # Remove all /usr/bin entries (zsh array syntax)
+  path+=(/usr/bin)               # Append to end
+  export PATH
+
+  # Alias brew to the wrapper to enforce permission controls
+  # The real brew is in /home/linuxbrew/.linuxbrew/bin/brew but aliases take precedence
+  alias brew='/usr/libexec/brew-wrapper'
+fi
