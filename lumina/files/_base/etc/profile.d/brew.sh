@@ -1,10 +1,17 @@
 #!/usr/bin/env bash
 
-# Set up Homebrew environment for interactive shells
+# Set up Homebrew environment for interactive bash and POSIX-compatible shells
+# Note: Zsh uses /etc/zsh/zshenv for Homebrew configuration
 if [[ -d /home/linuxbrew/.linuxbrew && $- == *i* ]]; then
+    # Interactive shell: Prioritize Homebrew binaries, but keep brew wrapper accessible
     eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-    # Ensure the wrapper in /usr/bin takes precedence over the real brew
-    export PATH="/usr/bin:$PATH"
+    # Append /usr/bin to ensure the brew wrapper is still in PATH
+    # but Homebrew-managed binaries take precedence
+    export PATH="${PATH}:/usr/bin"
+
+    # Alias brew to the wrapper to enforce permission controls
+    # The real brew is in /home/linuxbrew/.linuxbrew/bin/brew but aliases take precedence
+    alias brew='/usr/libexec/brew-wrapper'
 fi
 
 # Check for interactive bash and that we haven't already been sourced.
