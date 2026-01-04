@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# Wrapper for 'git worktree add' that uses relative paths instead of absolute paths
+# in the .git file. This makes worktrees portable across different mount points.
+
+# Call the actual git worktree add command with all arguments
+git -c core.worktree= worktree add "$@"
+
+# Find the worktree path from the arguments
+# The last argument that's not a flag is typically the path
+worktree_path=""
+for arg in "$@"; do
+    if [[ ! "$arg" =~ ^- ]]; then
+        worktree_path="$arg"
+    fi
+done
+
+# If we successfully created a worktree, convert its .git file to use relative path
+if [[ -n "$worktree_path" && -f "$worktree_path/.git" ]]; then
+    # Use git rev-parse with --path-format=relative to get the relative path to the common git dir
+    relative_gitdir=$(git -C "$worktree_path" rev-parse --path-format=relative --git-common-dir)
+
+    # Extract the worktree-specific directory from the .git file
+    # The .git file contains something like: gitdir: /abs/path/.git/worktrees/name
+    worktree_name=$(basename "$(cat "$worktree_path/.git" | cut -d' ' -f2)")
+
+    # Write the new relative path to .git file
+    echo "gitdir: ${relative_gitdir}/worktrees/${worktree_name}" > "$worktree_path/.git"
+fi

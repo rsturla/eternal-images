@@ -58,6 +58,14 @@ if [[ "$WORKTREE" = true ]]; then
     echo "gitdir: ./.bare" > "$GIT_DIR/.git"
     # Add a worktree
     git -C "$GIT_DIR" worktree add --orphan "./default/$BASE_BRANCH"
+
+    # Convert the worktree's .git file to use relative paths
+    WORKTREE_PATH="$GIT_DIR/default/$BASE_BRANCH"
+    if [[ -f "$WORKTREE_PATH/.git" ]]; then
+        relative_gitdir=$(git -C "$WORKTREE_PATH" rev-parse --path-format=relative --git-common-dir)
+        worktree_name=$(basename "$(cat "$WORKTREE_PATH/.git" | cut -d' ' -f2)")
+        echo "gitdir: ${relative_gitdir}/worktrees/${worktree_name}" > "$WORKTREE_PATH/.git"
+    fi
 else
     # Initialize a regular repository
     git init "$GIT_DIR" --initial-branch="$BASE_BRANCH"

@@ -1,0 +1,146 @@
+#!/usr/bin/env bash
+#
+# Brew wrapper script for Eternal Images
+#
+# This wrapper intercepts brew commands and provides helpful guidance
+# for commands that require elevated privileges (the linuxbrew user).
+#
+# Uses an allowlist approach: only known readonly commands are permitted.
+# All other commands require the linuxbrew user.
+#
+
+set -euo pipefail
+
+BREW_REAL="/var/home/linuxbrew/.linuxbrew/bin/brew"
+BREW_PREFIX="/var/home/linuxbrew/.linuxbrew"
+
+# Readonly commands that are safe to run without linuxbrew user
+READONLY_COMMANDS=(
+    # Information & search
+    "info"
+    "search"
+    "desc"
+    "home"
+    "homepage"
+    "cat"
+    "formulae"
+    "casks"
+
+    # Listing & querying
+    "list"
+    "ls"
+    "leaves"
+    "deps"
+    "uses"
+    "outdated"
+    "log"
+    "options"
+
+    # Configuration & environment (read-only)
+    "config"
+    "shellenv"
+
+    # Help
+    "help"
+    "commands"
+
+    # Diagnostics (read-only checks)
+    "doctor"
+    "missing"
+
+    # Completions (reading only)
+    "completions"
+
+    # Analytics status (reading only)
+    "analytics"
+
+    # Tap info
+    "tap-info"
+)
+
+READONLY_FLAGS=(
+    "--version"
+    "--help"
+    "-h"
+    "--prefix"
+    "--repository"
+    "--repo"
+    "--cache"
+)
+
+show_error_message() {
+    local cmd="$1"
+    cat >&2 <<EOF
+╭─────────────────────────────────────────────────────────────────────╮
+│  ⚠️  Homebrew: Permission Required                                   │
+╰─────────────────────────────────────────────────────────────────────╯
+
+The command 'brew ${cmd}' modifies the Homebrew installation and must
+be run as the 'linuxbrew' user.
+
+Instead, use the brewsu command:
+
+    brewsu ${cmd} [arguments...]
+
+This will run the brew command with the correct permissions.
+
+Alternatively, packages can be managed via Brewfiles:
+
+    /etc/brew/Brewfile           # User-managed (editable)
+    /usr/share/brew/Brewfile     # System-managed (read-only)
+
+Changes will be applied on next boot or by running:
+
+    sudo systemctl start brew-bundle.service
+
+EOF
+    exit 1
+}
+
+# Check if brew is installed
+if [[ ! -x "$BREW_REAL" ]]; then
+    echo "Error: Homebrew is not installed at $BREW_REAL" >&2
+    exit 1
+fi
+
+# If no arguments, pass through to real brew (shows help)
+if [[ $# -eq 0 ]]; then
+    exec "$BREW_REAL"
+fi
+
+# Get the first non-flag argument (the command)
+cmd=""
+for arg in "$@"; do
+    if [[ "$arg" != -* ]]; then
+        cmd="$arg"
+        break
+    fi
+done
+
+# If only flags (like --version, --help), check those specifically
+if [[ -z "$cmd" ]]; then
+    for arg in "$@"; do
+        for readonly_flag in "${READONLY_FLAGS[@]}"; do
+            if [[ "$arg" == "$readonly_flag" ]]; then
+                exec "$BREW_REAL" "$@"
+            fi
+        done
+    done
+    # Unknown flags only - block them
+    show_error_message "$*"
+fi
+
+# Check if user has write access to brew prefix (is linuxbrew user or has permissions)
+if [[ -w "$BREW_PREFIX" ]]; then
+    exec "$BREW_REAL" "$@"
+fi
+
+# Check if the command is a readonly command (allowed)
+for readonly_cmd in "${READONLY_COMMANDS[@]}"; do
+    if [[ "$cmd" == "$readonly_cmd" ]]; then
+        exec "$BREW_REAL" "$@"
+    fi
+done
+
+# All other commands require linuxbrew user - show helpful message
+show_error_message "$*"

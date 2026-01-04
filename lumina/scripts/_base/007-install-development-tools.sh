@@ -30,5 +30,7 @@ dnf install -y \
   ripgrep \
   socat  # Required for sandboxing in Claude Code
 
+dnf install -y https://api2.cursor.sh/updates/download/golden/linux-x64-rpm/cursor/latest
+
 rm -f /etc/yum.repos.d/vscode.repo
 rm -f /etc/yum.repos.d/google-cloud-sdk.repo
