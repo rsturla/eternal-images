@@ -26,7 +26,9 @@ systemctl enable brew-cleanup.timer
 systemctl enable brew-bundle.service
 
 # Clean up
-rm -rf /.dockerenv /var/home /var/roothome
+# Only remove linuxbrew files (now tarred), preserve /var/home and /var/roothome
+# to maintain their SELinux labels from the base image
+rm -rf /.dockerenv /var/home/linuxbrew
 
 # Create linuxbrew user/group via sysusers.d
 cat >/usr/lib/sysusers.d/linuxbrew.conf <<EOF
