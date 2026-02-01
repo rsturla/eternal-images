@@ -23,8 +23,7 @@ rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-tailscale
 # Install tailscale and clipboard utilities for systray integration
 dnf install -y \
   tailscale \
-  wl-clipboard \
-  xsel
+  wl-clipboard
 
 # Enable the tailscaled service
 systemctl enable tailscaled.service

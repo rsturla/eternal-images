@@ -28,6 +28,8 @@ dnf install -y \
   libxcrypt-compat \
   google-cloud-cli \
   ripgrep \
+  strace \
+  patch \
   socat  # Required for sandboxing in Claude Code
 
 dnf install -y https://api2.cursor.sh/updates/download/golden/linux-x64-rpm/cursor/latest
