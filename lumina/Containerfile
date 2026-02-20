@@ -1,3 +1,7 @@
+# Build must use --skip-unused-stages=false for the Chunkah/oci-archive stages.
+# The build context directory must be bind-mounted at /run/src (e.g. -v $(pwd):/run/src).
+# See https://github.com/coreos/chunkah#splitting-an-image-at-build-time-buildahpodman-only
+
 ARG BASE_IMAGE=silverblue
 ARG SOURCE_IMAGE=ghcr.io/rsturla/eternal-linux/main/${BASE_IMAGE}
 ARG MAJOR_VERSION=43
@@ -8,7 +12,7 @@ FROM scratch AS ctx
 COPY ./scripts /scripts
 COPY ./files /files
 
-FROM ${SOURCE_IMAGE}:${MAJOR_VERSION}
+FROM ${SOURCE_IMAGE}:${MAJOR_VERSION} AS build
 
 ARG MAJOR_VERSION
 ARG DESKTOP_ENVIRONMENT
@@ -16,12 +20,25 @@ ARG DESKTOP_ENVIRONMENT
 COPY --from=ctx files/_base/ /
 COPY --from=ctx files/_${DESKTOP_ENVIRONMENT}* /
 
-RUN --mount=type=tmpfs,target=/var \
-    --mount=type=tmpfs,target=/tmp \
-    --mount=type=bind,from=ctx,src=/scripts,dst=/buildcontext/scripts/ \
-    --mount=type=bind,from=ctx,src=/scripts/helpers,dst=/buildcontext/scripts/helpers/ \
-    --mount=type=secret,id=GITHUB_TOKEN \
-    bash /buildcontext/scripts/setup.sh && \
-    bash /buildcontext/scripts/cleanup.sh
+RUN --mount=type=cache,target=/var \
+  --mount=type=tmpfs,target=/tmp \
+  --mount=type=tmpfs,target=/run \
+  --mount=type=bind,from=ctx,src=/scripts,dst=/buildcontext/scripts/ \
+  --mount=type=bind,from=ctx,src=/scripts/helpers,dst=/buildcontext/scripts/helpers/ \
+  --mount=type=secret,id=GITHUB_TOKEN,target=/buildcontext/secrets/GITHUB_TOKEN \
+  bash /buildcontext/scripts/setup.sh && \
+  bash /buildcontext/scripts/cleanup.sh
 
 RUN bootc container lint
+
+# Prune ostree/sysroot so they're not in the final image (same approach as chunkah FCOS e2e).
+# See https://github.com/coreos/chunkah/blob/main/tests/e2e/test-fcos.sh
+FROM quay.io/jlebon/chunkah AS chunkah
+RUN --mount=from=build,src=/,target=/chunkah,ro \
+  --mount=type=bind,target=/run/src,rw \
+  chunkah build \
+  --prune /sysroot/ \
+  --max-layers 448 \
+  > /run/src/out.ociarchive
+
+FROM oci-archive:out.ociarchive

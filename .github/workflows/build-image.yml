@@ -37,7 +37,7 @@ jobs:
       major-version: ${{ matrix.major-version }}
       is-release: ${{ (github.event_name == 'schedule' || github.event_name == 'push' || github.event_name == 'workflow_dispatch') && startsWith(github.ref, 'refs/heads/main') }}
       platforms: amd64
-      rechunk: true
+      rechunk: false
       kernel-flavor: ${{ matrix.kernel-flavor }}
       build-context: ./lumina
       containerfile: ./lumina/Containerfile
@@ -57,7 +57,7 @@ jobs:
       major-version: ${{ matrix.major-version }}
       is-release: ${{ (github.event_name == 'schedule' || github.event_name == 'push' || github.event_name == 'workflow_dispatch') && startsWith(github.ref, 'refs/heads/main') }}
       platforms: amd64
-      rechunk: true
+      rechunk: false
       kernel-flavor: ${{ matrix.kernel-flavor }}
       build-context: ./lumina
       containerfile: ./lumina/Containerfile
@@ -78,7 +78,7 @@ jobs:
       major-version: ${{ matrix.major-version }}
       is-release: ${{ (github.event_name == 'schedule' || github.event_name == 'push' || github.event_name == 'workflow_dispatch') && startsWith(github.ref, 'refs/heads/main') }}
       platforms: amd64
-      rechunk: true
+      rechunk: false
       kernel-flavor: ${{ matrix.kernel-flavor }}
       build-context: ./lumina
       containerfile: ./lumina/Containerfile
@@ -98,7 +98,7 @@ jobs:
       major-version: ${{ matrix.major-version }}
       is-release: ${{ (github.event_name == 'schedule' || github.event_name == 'push' || github.event_name == 'workflow_dispatch') && startsWith(github.ref, 'refs/heads/main') }}
       platforms: amd64
-      rechunk: true
+      rechunk: false
       kernel-flavor: ${{ matrix.kernel-flavor }}
       build-context: ./lumina
       containerfile: ./lumina/Containerfile
