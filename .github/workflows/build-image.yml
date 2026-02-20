@@ -39,7 +39,7 @@ jobs:
       platforms: amd64
       rechunk: false
       kernel-flavor: ${{ matrix.kernel-flavor }}
-      build-context: ./lumina
+      build-context: .
       containerfile: ./lumina/Containerfile
       source-image: ghcr.io/rsturla/eternal-linux/main/silverblue
 
@@ -59,7 +59,7 @@ jobs:
       platforms: amd64
       rechunk: false
       kernel-flavor: ${{ matrix.kernel-flavor }}
-      build-context: ./lumina
+      build-context: .
       containerfile: ./lumina/Containerfile
       source-image: ghcr.io/rsturla/eternal-linux/main/silverblue
       is-nvidia: true
@@ -80,7 +80,7 @@ jobs:
       platforms: amd64
       rechunk: false
       kernel-flavor: ${{ matrix.kernel-flavor }}
-      build-context: ./lumina
+      build-context: .
       containerfile: ./lumina/Containerfile
       source-image: ghcr.io/rsturla/eternal-linux/main/cosmic
 
@@ -100,7 +100,7 @@ jobs:
       platforms: amd64
       rechunk: false
       kernel-flavor: ${{ matrix.kernel-flavor }}
-      build-context: ./lumina
+      build-context: .
       containerfile: ./lumina/Containerfile
       source-image: ghcr.io/rsturla/eternal-linux/main/cosmic
       is-nvidia: true

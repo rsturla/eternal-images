@@ -1,5 +1,6 @@
 # Build must use --skip-unused-stages=false for the Chunkah/oci-archive stages.
-# The build context directory must be bind-mounted at /run/src (e.g. -v $(pwd):/run/src).
+# The build context must be the repository root so that FROM oci-archive:out.ociarchive
+# resolves correctly (the bind mount writes the archive into the build context directory).
 # See https://github.com/coreos/chunkah#splitting-an-image-at-build-time-buildahpodman-only
 
 ARG BASE_IMAGE=silverblue
@@ -9,8 +10,8 @@ ARG DESKTOP_ENVIRONMENT=gnome
 
 FROM scratch AS ctx
 
-COPY ./scripts /scripts
-COPY ./files /files
+COPY ./lumina/scripts /scripts
+COPY ./lumina/files /files
 
 FROM ${SOURCE_IMAGE}:${MAJOR_VERSION} AS build
 
