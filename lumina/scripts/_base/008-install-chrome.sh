@@ -49,3 +49,7 @@ EOF
 cat >/usr/share/user-tmpfiles.d/eternal-google-locks.conf <<EOF
 r  %h/.config/google-chrome/Singleton*  -  -  -  -  -
 EOF
+
+# Chunkah: group relocated Chrome app (not in rpmdb at final path) with its RPM component
+setfattr -n user.component -v "rpm/google-chrome-stable" /usr/lib/google
+find /usr/lib/google -mindepth 1 -exec setfattr -n user.component -v "rpm/google-chrome-stable" {} \;

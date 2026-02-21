@@ -37,9 +37,9 @@ jobs:
       major-version: ${{ matrix.major-version }}
       is-release: ${{ (github.event_name == 'schedule' || github.event_name == 'push' || github.event_name == 'workflow_dispatch') && startsWith(github.ref, 'refs/heads/main') }}
       platforms: amd64
-      rechunk: true
+      rechunk: false
       kernel-flavor: ${{ matrix.kernel-flavor }}
-      build-context: ./lumina
+      build-context: .
       containerfile: ./lumina/Containerfile
       source-image: ghcr.io/rsturla/eternal-linux/main/silverblue
 
@@ -57,9 +57,9 @@ jobs:
       major-version: ${{ matrix.major-version }}
       is-release: ${{ (github.event_name == 'schedule' || github.event_name == 'push' || github.event_name == 'workflow_dispatch') && startsWith(github.ref, 'refs/heads/main') }}
       platforms: amd64
-      rechunk: true
+      rechunk: false
       kernel-flavor: ${{ matrix.kernel-flavor }}
-      build-context: ./lumina
+      build-context: .
       containerfile: ./lumina/Containerfile
       source-image: ghcr.io/rsturla/eternal-linux/main/silverblue
       is-nvidia: true
@@ -78,9 +78,9 @@ jobs:
       major-version: ${{ matrix.major-version }}
       is-release: ${{ (github.event_name == 'schedule' || github.event_name == 'push' || github.event_name == 'workflow_dispatch') && startsWith(github.ref, 'refs/heads/main') }}
       platforms: amd64
-      rechunk: true
+      rechunk: false
       kernel-flavor: ${{ matrix.kernel-flavor }}
-      build-context: ./lumina
+      build-context: .
       containerfile: ./lumina/Containerfile
       source-image: ghcr.io/rsturla/eternal-linux/main/cosmic
 
@@ -98,9 +98,9 @@ jobs:
       major-version: ${{ matrix.major-version }}
       is-release: ${{ (github.event_name == 'schedule' || github.event_name == 'push' || github.event_name == 'workflow_dispatch') && startsWith(github.ref, 'refs/heads/main') }}
       platforms: amd64
-      rechunk: true
+      rechunk: false
       kernel-flavor: ${{ matrix.kernel-flavor }}
-      build-context: ./lumina
+      build-context: .
       containerfile: ./lumina/Containerfile
       source-image: ghcr.io/rsturla/eternal-linux/main/cosmic
       is-nvidia: true

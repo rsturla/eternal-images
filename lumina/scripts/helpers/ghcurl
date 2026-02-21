@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Check for GITHUB_TOKEN in /run/secrets/GITHUB_TOKEN (Podman secret mount)
-if [[ -f /run/secrets/GITHUB_TOKEN ]]; then
-  GITHUB_TOKEN=$(< /run/secrets/GITHUB_TOKEN)
-  echo "Using GITHUB_TOKEN from /run/secrets/GITHUB_TOKEN for authentication." >&2
+# Check for GITHUB_TOKEN in build secret mount (Containerfile mounts at /buildcontext/secrets/GITHUB_TOKEN)
+if [[ -f /buildcontext/secrets/GITHUB_TOKEN ]]; then
+  GITHUB_TOKEN=$(< /buildcontext/secrets/GITHUB_TOKEN)
+  echo "Using GITHUB_TOKEN from build secret for authentication." >&2
   AUTH_HEADER="Authorization: Bearer $GITHUB_TOKEN"
 else
   echo "GITHUB_TOKEN secret not found. Using unauthenticated requests." >&2

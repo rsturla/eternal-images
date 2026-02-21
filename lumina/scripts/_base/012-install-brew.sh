@@ -45,3 +45,8 @@ EOF
 # Set SELinux file context for homebrew directory (persistent, survives restorecon)
 # This allows systemd services (init_t) to access homebrew binaries
 semanage fcontext -a -t usr_t "/var/home/linuxbrew/.linuxbrew(/.*)?"
+
+# Chunkah: group all non-RPM homebrew files so they get their own layer
+setfattr -n user.component -v "lumina-brew" /usr/libexec/brew-wrapper /usr/bin/brewsu
+setfattr -n user.component -v "lumina-brew" /usr/share/homebrew.tar.zst /usr/share/brew
+find /usr/share/brew -mindepth 1 -exec setfattr -n user.component -v "lumina-brew" {} \;

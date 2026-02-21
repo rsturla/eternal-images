@@ -44,4 +44,8 @@ done
 # Refresh font cache
 fc-cache -f "$FONT_DIR"
 
+# Chunkah: group Monaspace fonts (non-RPM) so they get their own layer
+setfattr -n user.component -v "lumina-fonts" "$FONT_DIR"
+find "$FONT_DIR" -mindepth 1 -exec setfattr -n user.component -v "lumina-fonts" {} \;
+
 echo "Monaspace fonts installed successfully!"

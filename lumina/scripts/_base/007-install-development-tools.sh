@@ -36,3 +36,9 @@ dnf install -y https://api2.cursor.sh/updates/download/golden/linux-x64-rpm/curs
 
 rm -f /etc/yum.repos.d/vscode.repo
 rm -f /etc/yum.repos.d/google-cloud-sdk.repo
+
+# Chunkah: the .py source files are RPM-owned, but dnf generates ~239 MiB of
+# .pyc bytecode at install time which is unowned.  Tag the entire SDK tree so
+# it merges into the rpm/google-cloud-cli component.
+setfattr -n user.component -v "rpm/google-cloud-cli" /usr/lib64/google-cloud-sdk
+find /usr/lib64/google-cloud-sdk -mindepth 1 -exec setfattr -n user.component -v "rpm/google-cloud-cli" {} \;

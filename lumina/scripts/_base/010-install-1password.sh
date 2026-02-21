@@ -101,5 +101,9 @@ cat >/usr/lib/tmpfiles.d/eternal-onepassword.conf <<EOF
 L  /opt/1Password  -  -  -  -  /usr/lib/1Password
 EOF
 
+# Chunkah: group relocated 1Password app with its RPM component
+setfattr -n user.component -v "rpm/1password" /usr/lib/1Password
+find /usr/lib/1Password -mindepth 1 -exec setfattr -n user.component -v "rpm/1password" {} \;
+
 getent group onepassword
 getent group onepassword-cli
