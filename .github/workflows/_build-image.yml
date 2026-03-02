@@ -103,11 +103,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
-      - name: Maximize Build Space
-        if: inputs.maximize-build-space
-        uses: ublue-os/remove-unwanted-software@cc0becac701cf642c8f0a6613bbdaf5dc36b259e # v9
-        with:
-          remove-codeql: true
+      # - name: Maximize Build Space
+      #   if: inputs.maximize-build-space
+      #   uses: ublue-os/remove-unwanted-software@cc0becac701cf642c8f0a6613bbdaf5dc36b259e # v9
+      #   with:
+      #     remove-codeql: true
 
       - name: Login to GitHub Container Registry
         run: |
@@ -129,7 +129,7 @@ jobs:
         uses: rsturla/eternal-main/.github/actions/build-image@main
         with:
           context: ${{ inputs.build-context }}
-          containerfile: ${{ inputs.build-context }}/Containerfile
+          containerfile: ${{ inputs.containerfile }}
           image-name: ${{ inputs.image-name }}
           image-tag: local
           build-args: |
