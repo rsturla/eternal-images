@@ -5,7 +5,9 @@ set -euox pipefail
 dnf install -y \
   qemu-kvm \
   libvirt \
-  edk2-ovmf
+  edk2-ovmf \
+  genisoimage \
+  qemu-img
 
 systemctl enable libvirtd.socket
 systemctl enable swtpm-workaround.service

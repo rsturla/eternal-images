@@ -24,6 +24,7 @@ EOF
 
 # Install development tools
 dnf install -y \
+  createrepo_c \
   code \
   libxcrypt-compat \
   google-cloud-cli \
