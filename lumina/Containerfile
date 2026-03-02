@@ -43,3 +43,6 @@ RUN --mount=from=build,src=/,target=/chunkah,ro \
   > /run/src/out.ociarchive
 
 FROM oci-archive:out.ociarchive
+
+LABEL containers.bootc=1
+LABEL ostree.bootable=true
