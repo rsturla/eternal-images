@@ -30,7 +30,8 @@ RUN --mount=type=cache,target=/var \
   bash /buildcontext/scripts/setup.sh && \
   bash /buildcontext/scripts/cleanup.sh
 
-RUN bootc container lint
+RUN --network=none \
+  bootc container lint --no-truncate --fatal-warnings
 
 # Prune ostree/sysroot so they're not in the final image (same approach as chunkah FCOS e2e).
 # See https://github.com/coreos/chunkah/blob/main/tests/e2e/test-fcos.sh
