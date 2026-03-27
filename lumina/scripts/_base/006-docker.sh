@@ -29,7 +29,6 @@ dnf install -y --enablerepo=docker-ce-$DOCKER_REPO \
   docker-ce \
   docker-ce-cli \
   containerd.io \
-  docker-buildx-plugin \
   docker-compose-plugin \
   docker-model-plugin
 

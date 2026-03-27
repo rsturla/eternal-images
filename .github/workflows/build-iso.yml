@@ -76,6 +76,8 @@ jobs:
         image-tag:
           - 43
           - 43-nvidia
+          - 44
+          - 44-nvidia
         arch:
           - amd64
     with:
