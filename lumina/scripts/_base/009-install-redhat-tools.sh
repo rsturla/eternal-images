@@ -16,7 +16,9 @@ dnf install -y \
     krb5-workstation \
     beaker-client \
     conserver-client \
-    tmt \
+    tmt
+
+dnf install -y --setopt=tsflags=noscripts \
     netbird \
     netbird-ui
 
