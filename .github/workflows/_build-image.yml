@@ -46,6 +46,11 @@ on:
       source-image:
         required: false
         type: string
+      compression-format:
+        description: "The compression format to use when pushing (e.g. zstd, zstd:chunked)"
+        required: false
+        type: string
+        default: zstd
 
 env:
   IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
@@ -150,6 +155,7 @@ jobs:
           image-name: ${{ steps.build.outputs.image }}
           image-tags: ${{ steps.generate-image-tags.outputs.primary-tag }}
           image-registry: ${{ env.IMAGE_REGISTRY }}
+          compression-format: ${{ inputs.compression-format }}
 
       - name: Create Job Outputs
         id: create-job-outputs
@@ -253,15 +259,22 @@ jobs:
           MANIFEST: ${{ steps.create-manifest.outputs.MANIFEST }}
           DIGESTS_JSON: ${{ steps.load-outputs.outputs.DIGESTS_JSON }}
           PLATFORMS: ${{ inputs.platforms }}
+          COMPRESSION_FORMAT: ${{ inputs.compression-format }}
         run: |
           DIGESTS=$(echo "$DIGESTS_JSON" | jq -c '.')
+
+          ANNOTATION_ARGS=()
+          if [[ "${COMPRESSION_FORMAT}" == "zstd:chunked" ]]; then
+            ANNOTATION_ARGS+=(--annotation "io.github.containers.compression.zstd=true")
+          fi
+
           # turn the comma separated string into a list
           platforms=()
           IFS=',' read -r -a platforms <<< "${PLATFORMS}"
           for platform in ${platforms[@]}; do
             digest=$(echo $DIGESTS | jq -r ".$platform")
             echo "Adding ${IMAGE_REGISTRY}/${IMAGE_NAME}@$digest for $platform"
-            podman manifest add $MANIFEST ${IMAGE_REGISTRY}/${IMAGE_NAME}@$digest --arch $platform
+            podman manifest add $MANIFEST ${IMAGE_REGISTRY}/${IMAGE_NAME}@$digest --arch $platform "${ANNOTATION_ARGS[@]}"
           done
 
       - name: Login to GHCR
