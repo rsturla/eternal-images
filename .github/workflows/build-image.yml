@@ -42,6 +42,7 @@ jobs:
       build-context: .
       containerfile: ./lumina/Containerfile
       source-image: ghcr.io/rsturla/eternal-linux/main/silverblue
+      compression-format: "zstd:chunked"
 
   build-gnome-nvidia:
     uses: ./.github/workflows/_build-image.yml
@@ -63,6 +64,7 @@ jobs:
       containerfile: ./lumina/Containerfile
       source-image: ghcr.io/rsturla/eternal-linux/main/silverblue
       is-nvidia: true
+      compression-format: "zstd:chunked"
 
   build-cosmic:
     uses: ./.github/workflows/_build-image.yml
@@ -83,6 +85,7 @@ jobs:
       build-context: .
       containerfile: ./lumina/Containerfile
       source-image: ghcr.io/rsturla/eternal-linux/main/cosmic
+      compression-format: "zstd:chunked"
 
   build-cosmic-nvidia:
     uses: ./.github/workflows/_build-image.yml
@@ -104,6 +107,7 @@ jobs:
       containerfile: ./lumina/Containerfile
       source-image: ghcr.io/rsturla/eternal-linux/main/cosmic
       is-nvidia: true
+      compression-format: "zstd:chunked"
 
   # build-kde-nvidia:
   #   uses: ./.github/workflows/_build-image.yml
