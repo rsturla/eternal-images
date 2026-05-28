@@ -54,6 +54,7 @@ EOF
 # at 1000, so let's skip ahead and set to something higher.
 GID_ONEPASSWORD="1790"
 GID_ONEPASSWORDCLI="1791"
+GID_ONEPASSWORDMCP="1792"
 
 
 cat >/usr/lib/sysusers.d/onepassword.conf <<EOF
@@ -64,8 +65,13 @@ cat >/usr/lib/sysusers.d/onepassword-cli.conf <<EOF
 g onepassword-cli ${GID_ONEPASSWORDCLI}
 EOF
 
+cat >/usr/lib/sysusers.d/onepassword-mcp.conf <<EOF
+g onepassword-mcp ${GID_ONEPASSWORDMCP}
+EOF
+
 systemd-sysusers /usr/lib/sysusers.d/onepassword.conf
 systemd-sysusers /usr/lib/sysusers.d/onepassword-cli.conf
+systemd-sysusers /usr/lib/sysusers.d/onepassword-mcp.conf
 
 # Now let's install the packages.
 dnf install -y 1password 1password-cli
@@ -107,3 +113,4 @@ find /usr/lib/1Password -mindepth 1 -exec setfattr -n user.component -v "rpm/1pa
 
 getent group onepassword
 getent group onepassword-cli
+getent group onepassword-mcp
