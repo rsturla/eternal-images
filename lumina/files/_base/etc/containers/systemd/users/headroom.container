@@ -1,0 +1,26 @@
+[Unit]
+Description=A Headroom context compression proxy - http://localhost:8787
+After=network-online.target
+
+[Container]
+Image=ghcr.io/chopratejas/headroom:code-nonroot
+AutoUpdate=registry
+ContainerName=headroom
+Network=eternal.network
+PublishPort=8787:8787
+Volume=headroom.volume:/data
+Environment=HEADROOM_MODE=token
+Environment=HEADROOM_CODE_AWARE_ENABLED=1
+Environment=HEADROOM_LOG_LEVEL=INFO
+Environment=HEADROOM_TELEMETRY=off
+HealthCmd=curl -sf http://localhost:8787/health || exit 1
+HealthInterval=30s
+HealthRetries=3
+
+[Service]
+TimeoutStartSec=900
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
