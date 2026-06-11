@@ -6,13 +6,17 @@ After=network-online.target
 Image=ghcr.io/chopratejas/headroom:code-nonroot
 AutoUpdate=registry
 ContainerName=headroom
+UserNS=keep-id
 Network=eternal.network
 PublishPort=8787:8787
 Volume=headroom.volume:/data
+Volume=%h/.config/gcloud/application_default_credentials.json:/home/nonroot/.config/gcloud/application_default_credentials.json:ro,Z
 Environment=HEADROOM_MODE=token
 Environment=HEADROOM_CODE_AWARE_ENABLED=1
 Environment=HEADROOM_LOG_LEVEL=INFO
 Environment=HEADROOM_TELEMETRY=off
+Environment=GOOGLE_APPLICATION_CREDENTIALS=/home/nonroot/.config/gcloud/application_default_credentials.json
+Environment=VERTEX_TARGET_API_URL=https://aiplatform.googleapis.com
 HealthCmd=curl -sf http://localhost:8787/health || exit 1
 HealthInterval=30s
 HealthRetries=3
