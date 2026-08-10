@@ -28,7 +28,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        major-version: [43, 44]
+        major-version: [44]
         kernel-flavor: [default]
     secrets: inherit
     with:
@@ -49,7 +49,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        major-version: [43, 44]
+        major-version: [44]
         kernel-flavor: [default]
     secrets: inherit
     with:
@@ -71,7 +71,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        major-version: [43, 44]
+        major-version: [44]
         kernel-flavor: [default]
     secrets: inherit
     with:
@@ -92,7 +92,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        major-version: [43, 44]
+        major-version: [44]
         kernel-flavor: [default]
     secrets: inherit
     with:
@@ -114,7 +114,7 @@ jobs:
   #   strategy:
   #     fail-fast: false
   #     matrix:
-  #       major-version: [43, 44]
+  #       major-version: [44]
   #       kernel-flavor: [default]
   #   secrets: inherit
   #   with:

@@ -29,11 +29,11 @@ on:
       image-tag:
         description: "The tag to build"
         required: true
-        default: stable
+        default: "44"
         type: choice
         options:
-          - 43
-          - 43-nvidia
+          - 44
+          - 44-nvidia
       arch:
         description: "The architecture to build"
         required: true
@@ -74,8 +74,6 @@ jobs:
           - lumina
           - lumina-cosmic
         image-tag:
-          - 43
-          - 43-nvidia
           - 44
           - 44-nvidia
         arch:
