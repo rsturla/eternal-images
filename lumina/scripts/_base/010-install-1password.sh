@@ -73,6 +73,19 @@ systemd-sysusers /usr/lib/sysusers.d/onepassword.conf
 systemd-sysusers /usr/lib/sysusers.d/onepassword-cli.conf
 systemd-sysusers /usr/lib/sysusers.d/onepassword-mcp.conf
 
+# The 1Password RPM's %post scriptlet runs `mkdir -p /usr/local/bin` to expose
+# the bundled 1password-mcp binary via /usr/local/bin/1password-mcp. On ostree,
+# /usr/local is a symlink into /var (../var/usrlocal), and during the image
+# build /var is an ephemeral cache mount, so that symlink target does not exist.
+# `mkdir -p` then fails on the dangling /usr/local component with
+# "cannot create directory '/usr/local': File exists", and dnf5 treats the
+# %post failure as fatal, aborting the whole transaction.
+#
+# Pre-create the symlink target so the scriptlet succeeds. The resulting
+# /usr/local/bin/1password-mcp symlink lives under /var and is intentionally not
+# part of the final image: /usr/local is per-machine mutable state on ostree.
+mkdir -p "$(readlink -f /usr/local)/bin"
+
 # Now let's install the packages.
 dnf install -y 1password 1password-cli
 
