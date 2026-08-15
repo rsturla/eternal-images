@@ -21,8 +21,8 @@ source $ZSH/oh-my-zsh.sh
 # Set EDITOR based on current environment
 if [[ -n "$CURSOR_TRACE_ID" ]] || [[ "$TERM_PROGRAM" == "cursor" ]]; then
   export EDITOR='cursor --wait'
-elif [[ -n "$VSCODE_INJECTION" ]] || [[ "$TERM_PROGRAM" == "vscode" ]]; then
-  export EDITOR='code --wait'
+elif [[ "$TERM_PROGRAM" == "zed" ]]; then
+  export EDITOR='zed --wait'
 elif command -v nvim &> /dev/null; then
   export EDITOR='nvim'
 elif command -v vim &> /dev/null; then
