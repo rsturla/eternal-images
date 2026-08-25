@@ -31,6 +31,24 @@ Key features of this image include:
 - 1Password
 - Additional CLI tools
 
+#### AI agent configuration
+
+Managed agent instructions and skills ship read-only under
+`/usr/share/workbench/agents/` and are versioned with the image. User tmpfiles
+rules project them into each user's home at login, so existing users receive
+updates when the image changes.
+
+The image provides:
+
+- `~/AGENTS.md` and `~/.claude/CLAUDE.md` with the managed instructions.
+- `~/.agents/skills/asd-ste100` for controlled technical English.
+- `~/.agents/skills/unslop` for removing common AI writing patterns.
+- `~/.agents/skills/use-modern-go` for version-specific Go guidance.
+- `~/.agents/skills/writing-pull-requests` for pull request writing.
+
+The skills directory stays writable. Users can install additional skills
+alongside the managed skills.
+
 #### Usage
 
 You can either setup Lumina by installing the ISO (linked in the table above) or rebase through an existing Fedora Atomic Desktop installation.
