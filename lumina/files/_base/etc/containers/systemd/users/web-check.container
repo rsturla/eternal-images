@@ -3,7 +3,7 @@ Description=A Web-Check container (https://github.com/Lissy93/web-check) - http:
 After=network-online.target
 
 [Container]
-Image=ghcr.io/lissy93/web-check:latest
+Image=ghcr.io/lissy93/web-check:latest@sha256:a4e021c0f6a9382d9b3dbab7217eb33b8e1f09dd005ab82ff9131b85692f5a6a
 AutoUpdate=registry
 ContainerName=web-check
 PublishPort=3000:3000

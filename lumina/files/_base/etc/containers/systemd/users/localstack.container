@@ -4,7 +4,7 @@ After=network-online.target
 Requires=podman.socket
 
 [Container]
-Image=docker.io/localstack/localstack:latest
+Image=docker.io/localstack/localstack:latest@sha256:4aef81c531684570d7b3cfd2805afa02194c929d52bbeedabb7d4874798b1572
 AutoUpdate=registry
 ContainerName=localstack
 Environment=DOCKER_SOCK=unix:///var/run/podman/podman.sock
