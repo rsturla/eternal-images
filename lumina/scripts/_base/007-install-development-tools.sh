@@ -22,7 +22,12 @@ dnf install -y \
   ripgrep \
   strace \
   patch \
-  socat  # Required for sandboxing in Claude Code
+  socat \
+  nodejs
+
+# OpenCode 2 beta installs its native launcher as opencode2.
+HOME=/tmp npm_config_cache=/tmp/npm-cache npm install --global --prefix /usr @opencode-ai/cli@beta
+ln -s /usr/bin/opencode2 /usr/bin/opencode
 
 dnf install -y https://api2.cursor.sh/updates/download/golden/linux-x64-rpm/cursor/latest
 
