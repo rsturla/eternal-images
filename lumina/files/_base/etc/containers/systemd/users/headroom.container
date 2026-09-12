@@ -3,7 +3,7 @@ Description=A Headroom context compression proxy - http://localhost:8787
 After=network-online.target
 
 [Container]
-Image=ghcr.io/chopratejas/headroom:code-nonroot
+Image=ghcr.io/chopratejas/headroom:code-nonroot@sha256:a642ad983f35651272a5817f46b287132bad871cbbf0227bc65c8c825ab494e0
 AutoUpdate=registry
 ContainerName=headroom
 UserNS=keep-id

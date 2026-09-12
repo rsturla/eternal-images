@@ -4,7 +4,7 @@ After=network-online.target
 Requires=podman.socket
 
 [Container]
-Image=docker.io/harness/gitness:unstable
+Image=docker.io/harness/gitness:unstable@sha256:57b034a968560fd5bd0b4687773125c894d148ad3701c29d83bb50115e68aa29
 AutoUpdate=registry
 ContainerName=gitness
 Network=eternal.network

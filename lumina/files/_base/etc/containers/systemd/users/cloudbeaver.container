@@ -3,7 +3,7 @@ Description=A CloudBeaver container - http://localhost:8978
 After=local-fs.target network-online.target
 
 [Container]
-Image=docker.io/dbeaver/cloudbeaver:latest
+Image=docker.io/dbeaver/cloudbeaver:latest@sha256:c06c1859700bd9202d9d49ebc10ee2512d745997d05e7ca6423267b227af1ca7
 AutoUpdate=registry
 ContainerName=cloudbeaver
 Network=eternal.network
