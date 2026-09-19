@@ -3,7 +3,7 @@ Description=A Flipt feature flagging server container - http://localhost:8080
 After=network-online.target
 
 [Container]
-Image=ghcr.io/flipt-io/flipt:latest
+Image=ghcr.io/flipt-io/flipt:latest@sha256:5ca2de7f408fb8435380c6fe26eb9a3faff0064a9ee9a5c67fe44a83d652a987
 AutoUpdate=registry
 ContainerName=flipt
 Network=eternal.network
