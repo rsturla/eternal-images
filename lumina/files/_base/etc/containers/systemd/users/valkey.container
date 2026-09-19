@@ -3,7 +3,7 @@ Description=A Valkey container
 After=network-online.target
 
 [Container]
-Image=docker.io/valkey/valkey:latest
+Image=docker.io/valkey/valkey:latest@sha256:c123e3715db63d06d4ad6964884037aa0d5d4d703939b9929954112889708e1d
 AutoUpdate=registry
 ContainerName=valkey
 Network=eternal.network
