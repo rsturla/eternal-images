@@ -3,7 +3,7 @@ Description=A Glance feed container - http://localhost:8080
 After=local-fs.target network-online.target
 
 [Container]
-Image=docker.io/glanceapp/glance:latest
+Image=docker.io/glanceapp/glance:latest@sha256:9dfb09470b207dcb67ac715994bdb1929374ba3f9c0d7df7462c24adf10fd073
 AutoUpdate=registry
 ContainerName=glance
 Network=eternal.network
