@@ -63,6 +63,8 @@ jobs:
       build-context: .
       containerfile: ./lumina/Containerfile
       source-image: ghcr.io/rsturla/eternal-linux/main/silverblue
+      # This base contains kernel 7.1.13 and NVIDIA 610.57.04.
+      source-image-ref: ghcr.io/rsturla/eternal-linux/main/silverblue@sha256:5122d5e06e1afa06862bf2a76ecc122d9db5243917053a59e793d6fd71f0dbd4
       is-nvidia: true
       compression-format: "zstd:chunked"
 
@@ -106,6 +108,8 @@ jobs:
       build-context: .
       containerfile: ./lumina/Containerfile
       source-image: ghcr.io/rsturla/eternal-linux/main/cosmic
+      # Match the working NVIDIA driver and kernel while Cosmic packages update.
+      source-image-ref: ghcr.io/rsturla/eternal-linux/main/cosmic@sha256:7735cfa6d3eb1fa28361e276126b78b479786c79259ef4589a8e563827a1c7d3
       is-nvidia: true
       compression-format: "zstd:chunked"
 
