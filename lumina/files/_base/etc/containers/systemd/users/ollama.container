@@ -3,7 +3,7 @@ Description=An ollama container
 After=network-online.target
 
 [Container]
-Image=docker.io/ollama/ollama:latest
+Image=docker.io/ollama/ollama:latest@sha256:292ee7945dfc3d5840a181f3ab86fedb1e66703e02c8af98b50f4da56b7e278c
 AutoUpdate=registry
 ContainerName=ollama
 Network=eternal.network
