@@ -3,7 +3,7 @@ Description=A Zot registry container - http://localhost:5000
 After=network-online.target
 
 [Container]
-Image=ghcr.io/project-zot/zot-linux-amd64:latest
+Image=ghcr.io/project-zot/zot-linux-amd64:latest@sha256:8258443838e95989c13c891f78a02bc1c391b5a00591ffef24cb8c17cde28038
 AutoUpdate=registry
 ContainerName=zot
 Exec=serve /etc/zot/config.yaml
