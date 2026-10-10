@@ -3,7 +3,7 @@ Description=A Neo4j container
 After=network-online.target
 
 [Container]
-Image=docker.io/library/neo4j:latest
+Image=docker.io/library/neo4j:latest@sha256:6f3f17e72d69bb6f26b03f6186f5afb15a201f8b460bb69b0cd8030717f9f01a
 AutoUpdate=registry
 ContainerName=neo4j
 Environment=NEO4J_AUTH=none

@@ -3,7 +3,7 @@ Description=A Prometheus container for collecting metrics
 After=local-fs.target network-online.target
 
 [Container]
-Image=docker.io/prom/prometheus:latest
+Image=docker.io/prom/prometheus:latest@sha256:efd719c99d83b060d9daefdcf00360461adf279f45ef5391f8d111892118753e
 AutoUpdate=registry
 ContainerName=prometheus
 Network=eternal.network
