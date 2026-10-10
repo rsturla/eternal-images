@@ -3,7 +3,7 @@ Description=A ScyllaDB container
 After=network-online.target
 
 [Container]
-Image=docker.io/scylladb/scylla:latest
+Image=docker.io/scylladb/scylla:latest@sha256:f96119dbbfa8bad4abe6161f11ac4f6d5a5c34fdc297fd23cf32626791ed2e59
 AutoUpdate=registry
 ContainerName=scylladb
 Exec=--developer-mode 1 --smp 1 --overprovisioned 1

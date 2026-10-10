@@ -3,7 +3,7 @@ Description=An OWASP ZAP container
 After=network-online.target
 
 [Container]
-Image=ghcr.io/zaproxy/zaproxy:stable
+Image=ghcr.io/zaproxy/zaproxy:stable@sha256:7aaa659b0d43078febd82e29bad112285c370727e86ab8340444220e17d9f0d2
 AutoUpdate=registry
 ContainerName=owasp-zap
 Exec=./zap-webswing.sh
