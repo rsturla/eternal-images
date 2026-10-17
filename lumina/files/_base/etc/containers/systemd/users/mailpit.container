@@ -3,7 +3,7 @@ Description=A Mailpit container
 After=network-online.target
 
 [Container]
-Image=docker.io/axllent/mailpit:latest
+Image=docker.io/axllent/mailpit:latest@sha256:23fe39e81bde596a918000b3135c0f85dc8bb4c9ea6be274b051143f3e300387
 AutoUpdate=registry
 ContainerName=mailpit
 Network=eternal.network
