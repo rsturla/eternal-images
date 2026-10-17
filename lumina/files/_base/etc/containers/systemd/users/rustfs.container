@@ -3,7 +3,7 @@ Description=A RustFS server container for local S3 compatible storage - http://l
 After=local-fs.target network-online.target
 
 [Container]
-Image=docker.io/rustfs/rustfs:latest
+Image=docker.io/rustfs/rustfs:latest@sha256:7e948dad4748bda48f8985fda7195f8cf2e4259427011f6120acc2c9acf51587
 AutoUpdate=registry
 ContainerName=rustfs
 Exec=/data
