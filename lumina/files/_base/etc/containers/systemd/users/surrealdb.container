@@ -3,7 +3,7 @@ Description=A SurrealDB container
 After=network-online.target
 
 [Container]
-Image=docker.io/surrealdb/surrealdb:latest
+Image=docker.io/surrealdb/surrealdb:latest@sha256:649a60a3b9c0177d9923c938e1c2563e48cde2a9d06ac2c0519714be719b02af
 AutoUpdate=registry
 ContainerName=surrealdb
 Exec=start file://var/lib/surrealdb/data/database.db

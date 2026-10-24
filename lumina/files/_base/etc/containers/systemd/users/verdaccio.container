@@ -3,7 +3,7 @@ Description=A local NPM registry container - http://localhost:4873
 After=network-online.target
 
 [Container]
-Image=docker.io/verdaccio/verdaccio:latest
+Image=docker.io/verdaccio/verdaccio:latest@sha256:d394c36d62a62d264cf5566eabe323050f3e0a3f6455ccff9c355fcbfcb28073
 AutoUpdate=registry
 ContainerName=verdaccio
 Network=eternal.network

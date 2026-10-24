@@ -49,7 +49,7 @@ concurrency:
 jobs:
   build-single:
     if: ${{ github.event_name == 'workflow_dispatch' }}
-    uses: rsturla/eternal-main/.github/workflows/_build-iso.yml@main
+    uses: rsturla/eternal-main/.github/workflows/_build-iso.yml@095b01ff182a751f08defa8649bc6fc488fecc76 # main
     secrets: inherit
     with:
       image-name: ${{ inputs.image-name }}
@@ -65,7 +65,7 @@ jobs:
 
   build-all:
     if: ${{ github.event_name != 'workflow_dispatch' }}
-    uses: rsturla/eternal-main/.github/workflows/_build-iso.yml@main
+    uses: rsturla/eternal-main/.github/workflows/_build-iso.yml@095b01ff182a751f08defa8649bc6fc488fecc76 # main
     secrets: inherit
     strategy:
       fail-fast: false
