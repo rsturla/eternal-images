@@ -3,7 +3,7 @@ Description=A Postgres container
 After=network-online.target
 
 [Container]
-Image=docker.io/library/postgres:18
+Image=docker.io/library/postgres:18@sha256:979bccfde35445db618c65107d27d08c6c21339d8dc3ad4c830c6633947be0e4
 AutoUpdate=registry
 ContainerName=postgres
 Environment=POSTGRES_USER=admin

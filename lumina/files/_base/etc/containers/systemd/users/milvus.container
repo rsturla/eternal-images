@@ -3,7 +3,7 @@ Description=A Milvus container
 After=network-online.target
 
 [Container]
-Image=docker.io/milvusdb/milvus:latest-gpu
+Image=docker.io/milvusdb/milvus:latest-gpu@sha256:7e6128b31bc83a99961675fb8385545843150486e6802d9be924a15ec25d3f46
 AutoUpdate=registry
 ContainerName=milvus
 Exec=milvus run standalone

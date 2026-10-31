@@ -3,7 +3,7 @@ Description=A JupyterLab Notebook container - http://localhost:8888
 After=network-online.target
 
 [Container]
-Image=quay.io/jupyter/base-notebook:latest
+Image=quay.io/jupyter/base-notebook:latest@sha256:e7e1d8727cdca641ae97c4aa96afafc21b85eb8908da1a0dafa7ddb00c8e1554
 AutoUpdate=registry
 ContainerName=jupyter-notebook
 Exec=start-notebook.py --NotebookApp.token=''

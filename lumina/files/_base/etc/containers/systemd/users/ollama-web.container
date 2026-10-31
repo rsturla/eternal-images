@@ -4,7 +4,7 @@ After=network-online.target ollama.service
 Requires=ollama.service
 
 [Container]
-Image=ghcr.io/open-webui/open-webui:latest
+Image=ghcr.io/open-webui/open-webui:latest@sha256:0b399a8ba34558e181d316750455f2a95376a38cd60a61b9c942e138898944bd
 AutoUpdate=registry
 ContainerName=ollama-web
 Environment=OLLAMA_BASE_URL=http://ollama:11434
