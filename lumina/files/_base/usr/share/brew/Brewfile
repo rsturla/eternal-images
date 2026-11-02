@@ -1,4 +1,5 @@
 brew "block-goose-cli"
+brew "anomalyco/tap/opencode-v2"
 brew "oras"
 brew "cosign"
 brew "devcontainer"
