@@ -29,11 +29,13 @@ on:
       image-tag:
         description: "The tag to build"
         required: true
-        default: "44"
+        default: "45"
         type: choice
         options:
           - 44
           - 44-nvidia
+          - 45
+          - 45-nvidia
       arch:
         description: "The architecture to build"
         required: true
@@ -76,6 +78,8 @@ jobs:
         image-tag:
           - 44
           - 44-nvidia
+          - 45
+          - 45-nvidia
         arch:
           - amd64
     with:

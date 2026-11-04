@@ -14,7 +14,7 @@ A collection of Immutable Linux Desktop images from the Eternal Linux project.  
 
 | Desktop Environment | Intended Usage | Description | Is Stable | ISOs |
 | ------------------- | -------------- | ----------- | --------- | --- |
-| GNOME               | DevOps         | A desktop optimised for DevOps | Yes | [Regular](https://download.eternal.sturla.tech/lumina-44-amd64-live.iso) / [NVIDIA](https://download.eternal.sturla.tech/lumina-44-nvidia-amd64-live.iso) |
+| GNOME               | DevOps         | A desktop optimised for DevOps | Yes | [Regular](https://download.eternal.sturla.tech/lumina-45-amd64-live.iso) / [NVIDIA](https://download.eternal.sturla.tech/lumina-45-nvidia-amd64-live.iso) |
 
 ![Lumina Desktop](./_assets/lumina-desktop.png)
 > The Lumina GNOME Desktop Environment featuring Distrobox and VSCode
@@ -55,7 +55,7 @@ You can either setup Lumina by installing the ISO (linked in the table above) or
 To rebase to the image, you will need to have pre-installed a Fedora Atomic Desktop and run the following commands:
 
 ```bash
-$ bootc switch --enforce-container-sigpolicy ghcr.io/rsturla/eternal-linux/lumina:44
+$ bootc switch --enforce-container-sigpolicy ghcr.io/rsturla/eternal-linux/lumina:45
 $ systemctl reboot
 $ eternal setup
 ```
