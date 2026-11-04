@@ -86,8 +86,10 @@ systemd-sysusers /usr/lib/sysusers.d/onepassword-mcp.conf
 # part of the final image: /usr/local is per-machine mutable state on ostree.
 mkdir -p "$(readlink -f /usr/local)/bin"
 
-# Now let's install the packages.
-dnf install -y 1password 1password-cli
+# Use the vendor packages: Terra also ships these on Fedora 45, with a
+# different filesystem layout that does not match the relocation below.
+# Dependencies can still come from the other enabled repositories.
+dnf install -y --from-repo=1password 1password 1password-cli
 
 # Clean up the yum repo (updates are baked into new images)
 rm /etc/yum.repos.d/1password.repo -f
