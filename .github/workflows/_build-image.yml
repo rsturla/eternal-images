@@ -291,16 +291,23 @@ jobs:
         env:
           MANIFEST: ${{ steps.create-manifest.outputs.MANIFEST }}
           TAGS: ${{ steps.generate-image-tags.outputs.tags }}
+          PRIMARY_TAG: ${{ steps.generate-image-tags.outputs.primary-tag }}
+          IS_RELEASE: ${{ inputs.is-release }}
           IMAGE_REGISTRY: ${{ env.IMAGE_REGISTRY }}
           IMAGE_NAME: ${{ inputs.image-name }}
         run: |
-          while IFS=' ' read -ra tag; do
-            podman manifest push --all=false --digestfile=/tmp/digestfile $MANIFEST $IMAGE_REGISTRY/$IMAGE_NAME:$tag
-          done <<< "$TAGS"
+          if [[ "$IS_RELEASE" == "true" ]]; then
+            # Push the immutable tag first. Sign it before the stable tag moves.
+            podman manifest push --all=false --digestfile=/tmp/digestfile "$MANIFEST" "$IMAGE_REGISTRY/$IMAGE_NAME:$PRIMARY_TAG"
+          else
+            while IFS=' ' read -ra tag; do
+              podman manifest push --all=false --digestfile=/tmp/digestfile "$MANIFEST" "$IMAGE_REGISTRY/$IMAGE_NAME:$tag"
+            done <<< "$TAGS"
+          fi
 
           DIGEST=$(cat /tmp/digestfile)
-          echo "DIGEST=$DIGEST" >> $GITHUB_OUTPUT
-          echo "IMAGE=$IMAGE_REGISTRY/$IMAGE_NAME" >> $GITHUB_OUTPUT
+          echo "DIGEST=$DIGEST" >> "$GITHUB_OUTPUT"
+          echo "IMAGE=$IMAGE_REGISTRY/$IMAGE_NAME" >> "$GITHUB_OUTPUT"
 
       - name: Sign Manifest
         uses: rsturla/eternal-main/.github/actions/sign-image@main
@@ -310,3 +317,20 @@ jobs:
           digest: ${{ steps.push-manifest.outputs.digest }}
           private-key: ${{ secrets.ETERNAL_LINUX_SIGNING_KEY }}
           private-key-passphrase: ${{ secrets.ETERNAL_LINUX_SIGNING_KEY_PASSPHRASE }}
+
+      - name: Push Stable Tag
+        if: inputs.is-release
+        env:
+          MANIFEST: ${{ steps.create-manifest.outputs.MANIFEST }}
+          STABLE_TAG: ${{ steps.generate-image-tags.outputs.stable-tag }}
+          DIGEST: ${{ steps.push-manifest.outputs.digest }}
+          IMAGE_REGISTRY: ${{ env.IMAGE_REGISTRY }}
+          IMAGE_NAME: ${{ inputs.image-name }}
+        run: |
+          podman manifest push --all=false --digestfile=/tmp/stable-digestfile "$MANIFEST" "$IMAGE_REGISTRY/$IMAGE_NAME:$STABLE_TAG"
+
+          STABLE_DIGEST=$(cat /tmp/stable-digestfile)
+          if [[ "$STABLE_DIGEST" != "$DIGEST" ]]; then
+            echo "Stable tag digest $STABLE_DIGEST does not match signed digest $DIGEST" >&2
+            exit 1
+          fi
