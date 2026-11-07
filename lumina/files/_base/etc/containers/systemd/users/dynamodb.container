@@ -3,7 +3,7 @@ Description=A DynamoDB local container
 After=network-online.target
 
 [Container]
-Image=docker.io/amazon/dynamodb-local:latest
+Image=docker.io/amazon/dynamodb-local:latest@sha256:6ada631ec7aa5fc83446855eb17233e3dad184fec47477e8140c6c569cfe0c86
 AutoUpdate=registry
 ContainerName=dynamodb-local
 Exec=-jar DynamoDBLocal.jar -sharedDb -dbPath ./data

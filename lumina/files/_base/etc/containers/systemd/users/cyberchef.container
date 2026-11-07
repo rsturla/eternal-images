@@ -3,7 +3,7 @@ Description=A CyberChef container - http://localhost:8080
 After=network-online.target
 
 [Container]
-Image=ghcr.io/gchq/cyberchef:latest
+Image=ghcr.io/gchq/cyberchef:latest@sha256:f04a39926344faf8e4cbbc8c92fb125d2b466f9be62db09aff23c7c406101a51
 AutoUpdate=registry
 ContainerName=cyberchef
 PublishPort=8080:80

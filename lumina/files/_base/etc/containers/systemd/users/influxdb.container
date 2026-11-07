@@ -3,7 +3,7 @@ Description=An InfluxDB container
 After=network-online.target
 
 [Container]
-Image=docker.io/library/influxdb:latest
+Image=docker.io/library/influxdb:latest@sha256:e4572d094ac3272f06528ea904ce6b4cb3bb19be2db3b3b1acbd27ba5c3a73e2
 AutoUpdate=registry
 ContainerName=influxdb
 Environment=DOCKER_INFLUXDB_INIT_MODE=setup
