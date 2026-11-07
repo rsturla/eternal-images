@@ -3,7 +3,7 @@ Description=A Qdrant container
 After=network-online.target
 
 [Container]
-Image=docker.io/qdrant/qdrant:latest
+Image=docker.io/qdrant/qdrant:latest@sha256:9bfc89f9914fc14876a88c05270685921a55b8877b254a98bcc1cc2f0a424cd2
 AutoUpdate=registry
 ContainerName=qdrant
 Network=eternal.network

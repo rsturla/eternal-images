@@ -3,7 +3,7 @@ Description=An ElasticMQ container
 After=network-online.target
 
 [Container]
-Image=docker.io/softwaremill/elasticmq-native:latest
+Image=docker.io/softwaremill/elasticmq-native:latest@sha256:e4580ab9ad1bd5cd37b4ba04911bc5ccc8cd2d9ab4de56ece65acee71c24e05c
 AutoUpdate=registry
 ContainerName=elasticmq
 Network=eternal.network
