@@ -3,7 +3,7 @@ Description=A Keycloak container for identity and access management - http://loc
 After=network-online.target
 
 [Container]
-Image=quay.io/keycloak/keycloak:latest
+Image=quay.io/keycloak/keycloak:latest@sha256:c68e286cacd87b942ac1939a0a1481461109d6acd3a57dc496969a319a76bbf0
 AutoUpdate=registry
 ContainerName=keycloak
 Exec=start-dev

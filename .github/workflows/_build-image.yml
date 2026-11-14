@@ -123,7 +123,7 @@ jobs:
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
       - name: Generate Image Tags
-        uses: rsturla/eternal-main/.github/actions/generate-image-tags@main
+        uses: rsturla/eternal-main/.github/actions/generate-image-tags@cf27d1a939f76aed691b57fb645a3de0b4c87297 # main
         id: generate-image-tags
         with:
           image-name: ${{ env.IMAGE_REGISTRY}}/${{ inputs.image-name }}
@@ -134,7 +134,7 @@ jobs:
 
       - name: Build Image
         id: build
-        uses: rsturla/eternal-main/.github/actions/build-image@main
+        uses: rsturla/eternal-main/.github/actions/build-image@cf27d1a939f76aed691b57fb645a3de0b4c87297 # main
         with:
           context: ${{ inputs.build-context }}
           containerfile: ${{ inputs.containerfile }}
@@ -153,7 +153,7 @@ jobs:
 
       - name: Push Image
         id: push
-        uses: rsturla/eternal-main/.github/actions/push-image@main
+        uses: rsturla/eternal-main/.github/actions/push-image@cf27d1a939f76aed691b57fb645a3de0b4c87297 # main
         with:
           image-ref: ${{ steps.build.outputs.image }}:${{ steps.build.outputs.tag }}
           image-name: ${{ steps.build.outputs.image }}
@@ -242,7 +242,7 @@ jobs:
           echo "DIGESTS_JSON=$(echo $DIGESTS_JSON | jq -c '.')" >> $GITHUB_OUTPUT
 
       - name: Generate Image Tags
-        uses: rsturla/eternal-main/.github/actions/generate-image-tags@main
+        uses: rsturla/eternal-main/.github/actions/generate-image-tags@cf27d1a939f76aed691b57fb645a3de0b4c87297 # main
         id: generate-image-tags
         with:
           image-name: ${{ env.IMAGE_REGISTRY}}/${{ inputs.image-name }}
@@ -310,7 +310,7 @@ jobs:
           echo "IMAGE=$IMAGE_REGISTRY/$IMAGE_NAME" >> "$GITHUB_OUTPUT"
 
       - name: Sign Manifest
-        uses: rsturla/eternal-main/.github/actions/sign-image@main
+        uses: rsturla/eternal-main/.github/actions/sign-image@cf27d1a939f76aed691b57fb645a3de0b4c87297 # main
         if: inputs.is-release
         with:
           registry: ${{ steps.push-manifest.outputs.IMAGE }}
