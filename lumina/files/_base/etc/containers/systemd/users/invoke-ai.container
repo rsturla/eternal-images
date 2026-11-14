@@ -3,7 +3,7 @@ Description=An InvokeAI container - http://localhost:9090
 After=network-online.target
 
 [Container]
-Image=ghcr.io/invoke-ai/invokeai:latest
+Image=ghcr.io/invoke-ai/invokeai:latest@sha256:7c19dcc078351f4fb1948fdfb5b5e2578d2cd92001a9792c0c720cbfb4a078b2
 AutoUpdate=registry
 ContainerName=invoke-ai
 Environment=INVOKEAI_ROOT=/var/lib/invokeai
