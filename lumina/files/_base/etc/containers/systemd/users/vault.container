@@ -3,7 +3,7 @@ Description=A HashiCorp Vault development server
 After=network-online.target
 
 [Container]
-Image=docker.io/hashicorp/vault:latest
+Image=docker.io/hashicorp/vault:latest@sha256:dfa48c2fa2b0099ccb47681ec5c4804bf5aec9d6879ecfee07ad4b92a5427ad6
 AutoUpdate=registry
 ContainerName=vault
 Exec=server -dev
