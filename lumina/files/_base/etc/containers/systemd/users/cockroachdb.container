@@ -3,7 +3,7 @@ Description=A CockroachDB container - http://localhost:8080
 After=network-online.target
 
 [Container]
-Image=docker.io/cockroachdb/cockroach:latest
+Image=docker.io/cockroachdb/cockroach:latest@sha256:bc15746ef2c2493b2cfd46a76898a745587d068b1a259fff3c4447c3f3b36ea2
 AutoUpdate=registry
 ContainerName=cockroachdb
 Exec=start-single-node --http-addr=0.0.0.0:8080 --insecure
